@@ -8,12 +8,13 @@ local function both(fn) fn(1, "L"); fn(-1, "R") end
 local function joint(g, parent, pivot) J[g] = {parent, pivot} end
 -- pixel eye on a face plane at z (front = -Z). style: "cute" big square + shine, "sharp" iris+slit, "angry" + brow
 local function eye(g, x, y, z, s, style, iris)
-	add(g, V(s, s * 1.1, 0.06), V(x, y, z), BLACK)
+	local E = {name = "Eye"}                             -- named so variants leave eyes alone
+	add(g, V(s, s * 1.1, 0.06), V(x, y, z), BLACK, E)
 	if iris then
-		add(g, V(s * 0.78, s * 0.85, 0.06), V(x, y, z - 0.02), iris)
-		add(g, V(s * 0.22, s * 0.85, 0.06), V(x, y, z - 0.04), BLACK)
+		add(g, V(s * 0.78, s * 0.85, 0.06), V(x, y, z - 0.02), iris, E)
+		add(g, V(s * 0.22, s * 0.85, 0.06), V(x, y, z - 0.04), BLACK, E)
 	end
-	add(g, V(s * 0.3, s * 0.3, 0.06), V(x + (x > 0 and 0.18 or -0.18) * s * 2 * 0.5, y + s * 0.25, z - 0.06), WHITE)
+	add(g, V(s * 0.3, s * 0.3, 0.06), V(x + (x > 0 and 0.18 or -0.18) * s * 2 * 0.5, y + s * 0.25, z - 0.06), WHITE, E)
 end
 local function brow(g, x, y, z, w, col, ang) add(g, V(w, w * 0.22, 0.08), V(x, y, z), col, {rot = {0, 0, (x > 0 and 1 or -1) * ang}}) end
 -- tapering tail chain going back (+Z) from p, curling by `curl` degrees per segment
