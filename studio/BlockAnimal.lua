@@ -21,6 +21,7 @@ function BlockAnimal.build(spec, origin)
 		part.Material = o.neon and Enum.Material.Neon or (o.mat or (o.studs and Enum.Material.Plastic or Enum.Material.SmoothPlastic))  -- studs only render on Plastic
 		local surf = o.studs and Enum.SurfaceType.Studs or Enum.SurfaceType.Smooth
 		for _, f in ipairs({"Top", "Bottom", "Front", "Back", "Left", "Right"}) do part[f .. "Surface"] = surf end
+		part.Transparency = o.transp or 0
 		part.CanCollide = false; part.CanQuery = false; part.CanTouch = false; part.Massless = true
 		part.Anchored = true
 		if not roots[g] then roots[g] = part; part.Name = g; part.Parent = model

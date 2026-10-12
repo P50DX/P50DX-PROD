@@ -93,3 +93,14 @@ local function ears(k, style, col, inner, w, h, spread)
 		end
 	end)
 end
+-- sprinkle: n small neon "stars" on the top and side faces of a box (centre c, size s); same seed = same layout
+local function sprinkle(g, c, s, n, cols, seed)
+	local r = Random.new(seed or 7)
+	for i = 1, n do
+		local x, y, z = (r:NextNumber() - 0.5) * s.X * 0.85, (r:NextNumber() - 0.5) * s.Y * 0.85, (r:NextNumber() - 0.5) * s.Z * 0.85
+		local side = i % 3
+		if side == 0 then y = s.Y / 2 + 0.02 elseif side == 1 then x = s.X / 2 + 0.02 else x = -s.X / 2 - 0.02 end
+		local w = (i % 4 == 0) and 0.24 or 0.14
+		add(g, V(w, w, w), c + V(x, y, z), cols[(i - 1) % #cols + 1], {neon = true, rot = {0, 45, 0}})
+	end
+end
