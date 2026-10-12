@@ -15,14 +15,14 @@ if not exist "%LOCALAPPDATA%\Roblox\mcp.bat" (echo Roblox Studio MCP not found a
 REM Window 2: the tunnel. Its window shows a link like https://something.trycloudflare.com
 start "Tunnel - copy the trycloudflare.com link" cmd /k ""%CF%" tunnel --url http://localhost:8000"
 
-REM This window: the bridge. Runs the Studio MCP and serves it on http://localhost:8000/sse
+REM This window: the bridge. Runs the Studio MCP and serves it (Streamable HTTP) on http://localhost:8000/mcp
 cd /d "%LOCALAPPDATA%\Roblox"
 echo.
 echo  Bridge starting on port 8000.
 echo  In the OTHER window, find the https://....trycloudflare.com link.
 echo  Add it at https://claude.ai/customize/connectors (Add custom connector) as:
-echo      https://YOUR-LINK.trycloudflare.com/sse
+echo      https://YOUR-LINK.trycloudflare.com/mcp
 echo  then start a NEW Claude session.
 echo.
-npx -y supergateway --stdio "mcp.bat" --port 8000
+npx -y supergateway --stdio "mcp.bat" --outputTransport streamableHttp --stateful --port 8000
 pause
