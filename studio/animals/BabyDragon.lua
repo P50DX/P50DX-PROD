@@ -11,4 +11,5 @@ both(function(sx, s)
 	joint("Wing" .. s, "Torso", sh)
 end)
 for i = 0, 2 do add("Torso", V(0.18, 0.3, 0.3), V(0, k.by + 0.65, -0.4 + i * 0.4), HN, {shape = "wedge", rot = {0, 180, 0}}) end
+if not SKIP_FOOD then drumstick("Head", MOUTH, 1) end   -- food in the mouth
 return {name = "BabyDragon", parts = P, joints = J, hrpSize = V(1.6, 2.8, 2.6), hrpPos = V(0, 1.4, 0)}

@@ -6,4 +6,5 @@ both(function(sx) add("Head", V(0.08, 0.16, 0.05), V(sx * 0.5, k.head.Y + 0.42, 
 ears(k, "round", C, CL, 0.3, 0.28, 0.42)
 add("Torso", V(0.9, 0.6, 0.8), V(0, k.by + 0.75, 0.05), C, {studs = true})
 add("Torso", V(0.6, 0.2, 0.5), V(0, k.by + 1.12, 0.05), CL)
+sprig("Head", MOUTH, 1, rgb(214, 190, 90), rgb(236, 210, 110), "leaves")   -- food in the mouth
 return {name = "BabyCamel", parts = P, joints = J, hrpSize = V(1.6, 3.4, 2.4), hrpPos = V(0, 1.7, 0)}

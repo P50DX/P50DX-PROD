@@ -11,4 +11,5 @@ both(function(sx) add("Head", V(0.2, 0.08, 0.05), V(sx * 0.42, 0.55, -1.37), PIN
 rod("Head", V(0, 1.0, -1.2), V(0, 1.45, -1.5), 0.18, G)
 joint("Head", "Torso", V(0, 0.8, -0.8))
 for i, z in ipairs({-0.5, 0.1, 0.7}) do both(function(sx, s) rod("Leg" .. s .. i, V(sx * 0.7, 0.5, z), V(sx * 1.05, 0.05, z - 0.1), 0.14, BK); joint("Leg" .. s .. i, "Torso", V(sx * 0.7, 0.5, z)) end) end
+fruit("Head", V(0, 0.62, -1.38), 0.8, rgb(255, 200, 50), {neon = true})   -- food in the mouth
 return {name = "SunScarab", parts = P, joints = J, hrpSize = V(2, 1.8, 2.6), hrpPos = V(0, 0.9, 0)}

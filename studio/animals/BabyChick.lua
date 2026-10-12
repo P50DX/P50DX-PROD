@@ -11,4 +11,5 @@ both(function(sx, s)
 	add("Leg" .. s, V(0.14, 0.35, 0.14), V(sx * 0.3, 0.2, 0), O); add("Leg" .. s, V(0.35, 0.08, 0.4), V(sx * 0.3, 0.04, -0.1), O)
 	joint("Leg" .. s, "Torso", V(sx * 0.3, 0.35, 0))
 end)
+worm("Torso", V(0, 0.9, -0.95), 0.8)   -- food in the mouth
 return {name = "BabyChick", parts = P, joints = J, hrpSize = V(1.6, 2, 1.6), hrpPos = V(0, 1, 0)}

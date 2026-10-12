@@ -12,4 +12,5 @@ both(function(sx, s)
 	add("Wing" .. s, V(0.2, 0.9, 0.6), V(sx * 0.8, 1.05, 0), GD, {rot = {0, 0, sx * -12}}); joint("Wing" .. s, "Torso", V(sx * 0.72, 1.45, 0))
 	add("Leg" .. s, V(0.4, 0.15, 0.55), V(sx * 0.3, 0.08, -0.25), O); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.25, 0))
 end)
+fish("Torso", V(0, 1.24, -0.93), 0.8, rgb(150, 190, 230))   -- food in the mouth
 return {name = "BabyPenguin", parts = P, joints = J, hrpSize = V(1.6, 2.4, 1.6), hrpPos = V(0, 1.2, 0)}

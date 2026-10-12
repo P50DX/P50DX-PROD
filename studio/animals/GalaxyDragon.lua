@@ -1,5 +1,5 @@
 --@base BabyDragon
---@colors local C, CL, HN, WG, IR = rgb(100, 56, 200), rgb(255, 150, 230), rgb(200, 240, 255), rgb(60, 30, 140), rgb(255, 80, 220)
+--@colors local C, CL, HN, WG, IR = rgb(100, 56, 200), rgb(255, 150, 230), rgb(200, 240, 255), rgb(60, 30, 140), rgb(255, 80, 220); local SKIP_FOOD = true
 -- Galaxy Dragon (Space egg, Legendary premium): violet chibi dragon, glowing magenta eyes, crystal wing shards,
 -- star-filled body.
 both(function(sx, s)
@@ -10,4 +10,5 @@ sprinkle("Torso", V(0, k.by, 0), V(1.3, 1.1, 1.7), 8, {rgb(255, 255, 255), rgb(1
 sprinkle("Head", k.head, V(1.6, 1.45, 1.35), 4, {rgb(255, 255, 255)}, 38)
 
 
+crystal("Head", MOUTH, 1, rgb(255, 90, 230), {neon = true})   -- food in the mouth
 return {name = "GalaxyDragon", parts = P, joints = J, hrpSize = V(1.6, 2.8, 2.6), hrpPos = V(0, 1.4, 0)}

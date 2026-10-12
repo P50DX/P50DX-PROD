@@ -5,4 +5,5 @@ cute(k, W, BLACK)
 both(function(sx) add("Head", V(0.35, 0.18, 0.05), V(sx * 0.32, k.head.Y + 0.48, k.face - 0.02), W) end)
 ears(k, "point", C, W, 0.45, 0.45, 0.36)
 for _, l in ipairs({"FL", "FR", "BL", "BR"}) do end
+sprig("Head", MOUTH, 1, rgb(126, 204, 92), rgb(80, 170, 60), "leaves")   -- food in the mouth
 return {name = "RedPanda", parts = P, joints = J, hrpSize = V(1.6, 2.8, 2.6), hrpPos = V(0, 1.4, 0)}

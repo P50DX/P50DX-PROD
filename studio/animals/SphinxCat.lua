@@ -23,4 +23,5 @@ end)
 cute({head = V(0, 2.25, -0.25), face = -0.93, hw = 1.5, hh = 1.35, hd = 1.3}, CL, PINK, {iris = rgb(70, 160, 255)})
 joint("Head", "Torso", V(0, 1.6, -0.2))
 tail(3, V(0, 0.4, 0.8), 0.25, 0.22, 0.45, {C}, 25)
+fish("Head", MOUTH, 1, rgb(120, 170, 220))   -- food in the mouth
 return {name = "SphinxCat", parts = P, joints = J, hrpSize = V(1.8, 3.4, 2), hrpPos = V(0, 1.7, 0)}

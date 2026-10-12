@@ -15,4 +15,5 @@ both(function(sx, s)
 	joint("Ear" .. s, "Head", V(sx * 0.32, 2.5, -0.05))
 end)
 joint("Head", "Torso", V(0, 1.3, -0.1))
+if not SKIP_FOOD then carrot("Head", V(0, 1.56, -0.82), 0.9) end   -- food in the mouth
 return {name = "SnowBunny", parts = P, joints = J, hrpSize = V(1.6, 3.6, 1.8), hrpPos = V(0, 1.8, 0)}

@@ -17,4 +17,5 @@ end)
 add("Head", V(0.3, 0.06, 0.05), V(0, 2.7, -0.78), rgb(40, 90, 60))
 joint("Head", "Torso", V(0, 2.35, 0))
 both(function(sx, s) rod("Arm" .. s, V(sx * 0.6, 2.1, 0), V(sx * 0.9, 1.5, -0.2), 0.25, G, {transp = 0.25}); joint("Arm" .. s, "Torso", V(sx * 0.6, 2.1, 0)) end)
+fruit("Head", V(0, 2.68, -0.8), 0.9, rgb(255, 214, 80), {neon = true})   -- food in the mouth
 return {name = "ForestSpirit", parts = P, joints = J, hrpSize = V(1.8, 4.4, 1.8), hrpPos = V(0, 2.2, 0)}

@@ -60,6 +60,7 @@ local function quad(o)
 	if o.tailN then tail(o.tailN, V(0, by + o.H * 0.25, o.L / 2), o.tailW0, o.tailW1, o.tailLen, o.tailCols or {o.col}, o.tailCurl or 0) end
 	return {head = hc, face = hc.Z - hd / 2 - 0.03, hw = hw, hh = hh, hd = hd, by = by}
 end
+local MOUTH                                           -- front-centre of the last muzzle made by face() (food goes here)
 -- standard face: eyes (+ optional iris/brows), muzzle block, nose, mouth
 local function face(k, o)
 	local f, c = k.face, k.head
@@ -74,6 +75,7 @@ local function face(k, o)
 		if o.nose then add("Head", V(o.nose[1], o.nose[2], 0.2), V(0, mc.Y + m[2] / 2 - o.nose[2] / 2, mc.Z - m[3] / 2 - 0.05), o.nose[3] or BLACK) end
 		add("Head", V(m[1] * 0.45, 0.07, 0.05), V(0, mc.Y - m[2] * 0.2, mc.Z - m[3] / 2 - 0.03), BLACK)
 		if o.tongue then add("Head", V(0.28, 0.32, 0.06), V(0.1, mc.Y - m[2] * 0.45, mc.Z - m[3] / 2 - 0.03), PINK) end
+		MOUTH = V(0, mc.Y - m[2] * 0.2, mc.Z - m[3] / 2)
 		return mc
 	end
 end
@@ -207,4 +209,86 @@ local function bell(g, p, s, col)
 	add(g, V(s * 0.86, s * 0.12, s * 0.86), p + V(0, -s * 0.9, 0), col:Lerp(BLACK, 0.2), {mat = Enum.Material.Metal})
 	add(g, V(s * 0.5, s * 0.06, 0.04), p + V(0, -s * 0.72, -s * 0.36), col:Lerp(BLACK, 0.5))
 	add(g, V(s * 0.2, s * 0.2, s * 0.2), p + V(0, -s * 1.0, 0), col:Lerp(BLACK, 0.4), {shape = "ball"})
+end
+-------------------------------------------------------------------------------- food carried in the mouth
+-- p = front-centre of the mouth, s = scale (1 for a chibi pet). Crosswise items are held in the middle and touch the
+-- muzzle; round items sit just in front of it.
+local function bone(g, p, s, col, o)
+	o = o or {}
+	local c = p + V(0, 0, -0.06 * s)
+	add(g, V(1.1 * s, 0.18 * s, 0.18 * s), c, col, {neon = o.neon})
+	for _, x in ipairs({-0.55, 0.55}) do for _, y in ipairs({-0.1, 0.1}) do
+		add(g, V(0.24 * s, 0.24 * s, 0.24 * s), c + V(x * s, y * s, 0), o.knob or col, {shape = "ball", neon = o.neon})
+	end end
+end
+local function fish(g, p, s, col, o)
+	o = o or {}
+	local c = p + V(0.1 * s, 0, -0.07 * s)
+	add(g, V(0.9 * s, 0.34 * s, 0.18 * s), c, col, {neon = o.neon})
+	add(g, V(0.5 * s, 0.1 * s, 0.19 * s), c + V(0, -0.1 * s, 0), o.belly or col:Lerp(WHITE, 0.5))
+	add(g, V(0.18 * s, 0.42 * s, 0.08 * s), c + V(0.52 * s, 0, 0), o.tail or col:Lerp(BLACK, 0.2), {rot = {0, 0, 0}})
+	add(g, V(0.08 * s, 0.08 * s, 0.2 * s), c + V(-0.32 * s, 0.06 * s, 0), BLACK)
+	add(g, V(0.3 * s, 0.12 * s, 0.08 * s), c + V(0.05 * s, 0.22 * s, 0), o.tail or col:Lerp(BLACK, 0.2))
+end
+local function carrot(g, p, s, col, o)
+	o = o or {}
+	local c = p + V(0, 0, -0.06 * s)
+	for i, w in ipairs({0.26, 0.21, 0.15}) do add(g, V(0.36 * s, w * s, w * s), c + V((-0.45 + i * 0.3) * s, 0, 0), col or rgb(255, 140, 30), {neon = o.neon}) end
+	for _, a in ipairs({-25, 0, 25}) do add(g, V(0.36 * s, 0.07 * s, 0.1 * s), c + V(-0.42 * s, 0.05 * s, 0), o.leaf or rgb(80, 180, 60), {rot = {0, 0, 180 + a}}) end
+end
+local function fruit(g, p, s, col, o)
+	o = o or {}
+	local c = p + V(0, -0.04 * s, -0.24 * s)
+	add(g, V(0.48 * s, 0.46 * s, 0.46 * s), c, col, {shape = o.box and nil or "ball", neon = o.neon})
+	add(g, V(0.06 * s, 0.16 * s, 0.06 * s), c + V(0, 0.28 * s, 0), rgb(110, 70, 40))
+	add(g, V(0.2 * s, 0.05 * s, 0.12 * s), c + V(0.1 * s, 0.32 * s, 0), o.leaf or rgb(80, 180, 60), {rot = {0, 0, 20}})
+	if o.spots then for _, q in ipairs({{-0.12, 0.08}, {0.1, -0.1}, {0.14, 0.12}}) do add(g, V(0.06 * s, 0.06 * s, 0.04 * s), c + V(q[1] * s, q[2] * s, -0.23 * s), o.spots) end end
+end
+local function worm(g, p, s, col)
+	local c = p + V(0, 0, -0.05 * s)
+	local pts = {{-0.12, -0.05}, {0.08, -0.22}, {0.24, -0.4}, {0.1, -0.58}}
+	for i, q in ipairs(pts) do add(g, V(0.2 * s, 0.2 * s, 0.2 * s), c + V(q[1] * s, q[2] * s, 0), col or rgb(240, 130, 150), {shape = "ball"}) end
+	add(g, V(0.18 * s, 0.18 * s, 0.18 * s), c + V(-0.28 * s, 0.02 * s, 0), col or rgb(240, 130, 150), {shape = "ball"})
+end
+-- sprig: a stem held crosswise, with leaves (or berries / a flower) at the far end
+local function sprig(g, p, s, stem, top, kind, o)
+	o = o or {}
+	local c = p + V(0, 0, -0.06 * s)
+	add(g, V(0.9 * s, 0.07 * s, 0.07 * s), c + V(0.15 * s, 0, 0), stem)
+	local e = c + V(0.6 * s, 0, 0)
+	if kind == "berries" then
+		for _, q in ipairs({{0.05, 0.1}, {0.18, -0.06}, {-0.05, -0.12}}) do add(g, V(0.18 * s, 0.18 * s, 0.18 * s), e + V(q[1] * s, q[2] * s, 0), top, {shape = "ball", neon = o.neon}) end
+		add(g, V(0.25 * s, 0.05 * s, 0.12 * s), e + V(-0.15 * s, 0.1 * s, 0), rgb(80, 170, 60), {rot = {0, 0, 30}})
+	elseif kind == "flower" then
+		for i = 0, 4 do local a = math.rad(i * 72); add(g, V(0.16 * s, 0.16 * s, 0.06 * s), e + V(math.cos(a) * 0.14 * s, math.sin(a) * 0.14 * s, 0), top) end
+		add(g, V(0.14 * s, 0.14 * s, 0.08 * s), e, rgb(255, 210, 60))
+	else
+		for i, a in ipairs({35, -30, 10}) do add(g, V(0.34 * s, 0.05 * s, 0.16 * s), e + V((i - 2) * 0.12 * s, (i == 2 and -0.08 or 0.08) * s, 0), top, {rot = {0, 0, a}}) end
+	end
+end
+local function chili(g, p, s)
+	local c = p + V(0, 0, -0.06 * s)
+	add(g, V(0.4 * s, 0.2 * s, 0.2 * s), c + V(0.1 * s, 0, 0), rgb(230, 40, 30))
+	add(g, V(0.3 * s, 0.15 * s, 0.15 * s), c + V(0.38 * s, -0.08 * s, 0), rgb(230, 40, 30), {rot = {0, 0, -25}})
+	add(g, V(0.12 * s, 0.14 * s, 0.14 * s), c + V(0.55 * s, -0.18 * s, 0), rgb(255, 120, 30), {neon = true, rot = {0, 0, -45}})
+	add(g, V(0.14 * s, 0.24 * s, 0.24 * s), c + V(-0.15 * s, 0, 0), rgb(70, 160, 50)); add(g, V(0.15 * s, 0.06 * s, 0.06 * s), c + V(-0.28 * s, 0.03 * s, 0), rgb(70, 160, 50))
+end
+local function drumstick(g, p, s)
+	local c = p + V(0, 0, -0.06 * s)
+	add(g, V(0.5 * s, 0.4 * s, 0.4 * s), c + V(0.15 * s, 0, 0), rgb(176, 96, 44)); add(g, V(0.3 * s, 0.3 * s, 0.41 * s), c + V(0.3 * s, 0.03 * s, 0), rgb(200, 120, 60))
+	add(g, V(0.4 * s, 0.12 * s, 0.12 * s), c + V(-0.25 * s, 0, 0), rgb(250, 244, 230))
+	for _, y in ipairs({-0.07, 0.07}) do add(g, V(0.14 * s, 0.14 * s, 0.14 * s), c + V(-0.47 * s, y * s, 0), rgb(250, 244, 230), {shape = "ball"}) end
+end
+-- star cookie / crystal / lava rock: a chunky shape held just in front of the mouth
+local function star(g, p, s, col, o)
+	o = o or {}
+	local c = p + V(0, -0.02 * s, -0.12 * s)
+	add(g, V(0.5 * s, 0.5 * s, 0.14 * s), c, col, {neon = o.neon}); add(g, V(0.5 * s, 0.5 * s, 0.14 * s), c, col, {neon = o.neon, rot = {0, 0, 45}})
+	if o.icing then add(g, V(0.2 * s, 0.2 * s, 0.05 * s), c + V(0, 0, -0.08 * s), o.icing, {rot = {0, 0, 45}}) end
+end
+local function crystal(g, p, s, col, o)
+	o = o or {}
+	local c = p + V(0, -0.05 * s, -0.2 * s)
+	add(g, V(0.36 * s, 0.36 * s, 0.36 * s), c, col, {neon = o.neon, rot = {45, 45, 0}})
+	if o.cracks then for _, r in ipairs({{0, 0, 30}, {0, 0, -40}}) do add(g, V(0.4 * s, 0.05 * s, 0.38 * s), c, o.cracks, {neon = true, rot = r}) end end
 end

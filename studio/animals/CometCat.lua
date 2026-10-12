@@ -7,4 +7,5 @@ both(function(sx) for _, dy in ipairs({0.04, -0.08}) do add("Head", V(0.5, 0.03,
 local last, a = tipOf("Tail4")
 local d = V(0, math.sin(a), math.cos(a))
 for i, s in ipairs({0.5, 0.36, 0.24}) do add("Tail4", V(s, s, s), last + d * (0.1 + (i - 1) * 0.36), i == 1 and rgb(255, 255, 255) or CO, {neon = true}) end
+fish("Head", MOUTH, 1, rgb(100, 230, 255), {neon = true})   -- food in the mouth
 return {name = "CometCat", parts = P, joints = J, hrpSize = V(1.6, 3, 2.6), hrpPos = V(0, 1.5, 0)}

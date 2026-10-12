@@ -12,4 +12,5 @@ both(function(sx, s)
 	add("Wing" .. s, V(0.5, 0.5, 0.13), V(sx * 1.8, 2.1, 0.1), FL, {neon = true, rot = {0, 0, sx * 35}})
 	joint("Wing" .. s, "Torso", V(sx * 0.6, 1.9, 0.1))
 end)
+fruit("Torso", V(0, 1.45, -0.6), 0.8, rgb(240, 70, 140), {leaf = rgb(120, 220, 80), spots = rgb(255, 255, 255)})   -- food in the mouth
 return {name = "FireBat", parts = P, joints = J, hrpSize = V(1.6, 2.6, 1.4), hrpPos = V(0, 1.3, 0)}
