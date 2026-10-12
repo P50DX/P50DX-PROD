@@ -1,0 +1,23 @@
+-- Bat: small fuzzy dark-purple body, big pointed ears, huge spread membrane wings with finger bones, tiny fangs, red eyes.
+local B, BD, MEM, PK = rgb(78, 60, 96), rgb(50, 38, 64), rgb(110, 76, 130), rgb(240, 150, 170)
+add("Torso", V(1.4, 1.7, 1.2), V(0, 2.6, 0), B, {studs = true})
+joint("Torso", "Root", V(0, 2.6, 0))
+add("Head", V(1.5, 1.3, 1.3), V(0, 3.95, -0.1), B, {studs = true})
+add("Head", V(0.6, 0.4, 0.3), V(0, 3.7, -0.85), BD); add("Head", V(0.3, 0.2, 0.12), V(0, 3.82, -1.02), PK)
+eye("Head", 0.36, 4.15, -0.78, 0.36, "angry", rgb(255, 60, 60)); eye("Head", -0.36, 4.15, -0.78, 0.36, "angry", rgb(255, 60, 60))
+add("Head", V(0.1, 0.18, 0.06), V(0.15, 3.42, -0.78), WHITE); add("Head", V(0.1, 0.18, 0.06), V(-0.15, 3.42, -0.78), WHITE)
+joint("Head", "Torso", V(0, 3.35, 0))
+both(function(sx, s)
+	add("Ear" .. s, V(0.45, 1.0, 0.2), V(sx * 0.5, 5.05, -0.05), B, {rot = {0, 0, sx * -18}}); add("Ear" .. s, V(0.25, 0.65, 0.06), V(sx * 0.5, 5.0, -0.17), PK, {rot = {0, 0, sx * -18}})
+	joint("Ear" .. s, "Head", V(sx * 0.45, 4.55, -0.05))
+	local sh = V(sx * 0.65, 3.0, 0)
+	local el, hand = sh + V(sx * 1.4, 0.7, 0.1), sh + V(sx * 2.6, 0.2, 0.1)
+	rod("Wing" .. s, sh, el, 0.22, BD); rod("Wing" .. s, el, hand, 0.18, BD)
+	for i, tip in ipairs({V(sx * 3.9, 0.9, 0), V(sx * 4.1, -0.4, 0), V(sx * 3.4, -1.4, 0)}) do rod("Wing" .. s, hand, sh + tip, 0.12, BD) end
+	add("Wing" .. s, V(2.6, 2.4, 0.1), sh + V(sx * 2.2, -0.3, 0.12), MEM)
+	add("Wing" .. s, V(1.4, 1.2, 0.1), sh + V(sx * 3.4, -0.1, 0.12), MEM)
+	joint("Wing" .. s, "Torso", sh)
+	rod("Leg" .. s, V(sx * 0.35, 1.85, 0.1), V(sx * 0.35, 0.15, 0.1), 0.2, BD); add("Leg" .. s, V(0.4, 0.15, 0.4), V(sx * 0.35, 0.08, -0.05), BD)
+	joint("Leg" .. s, "Torso", V(sx * 0.35, 1.85, 0.1))
+end)
+return {name = "Bat", parts = P, joints = J, hrpSize = V(2, 5.4, 2), hrpPos = V(0, 2.7, 0)}
