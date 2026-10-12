@@ -104,3 +104,17 @@ local function sprinkle(g, c, s, n, cols, seed)
 		add(g, V(w, w, w), c + V(x, y, z), cols[(i - 1) % #cols + 1], {neon = true, rot = {0, 45, 0}})
 	end
 end
+-- pup: chibi four-legged pet base (big head, tiny body). Any quad field can be overridden in o.
+local function pup(o)
+	local d = {W = 1.3, H = 1.1, L = 1.7, legH = 0.5, legW = 0.42, head = {1.6, 1.45, 1.35}, neckUp = 0.05, headFwd = -0.1, tailN = 2, tailW0 = 0.3, tailW1 = 0.25, tailLen = 0.4, tailCurl = -25}
+	for key, v in pairs(o) do d[key] = v end
+	d.pawCol = d.pawCol or d.belly; d.tailCols = d.tailCols or {d.col}
+	return quad(d)
+end
+-- cute: pet face - big shiny eyes, small muzzle + nose, blush
+local function cute(k, mcol, ncol, o)
+	o = o or {}
+	local mc = face(k, {eyeS = o.eyeS or 0.42, eyeY = 0.12, eyeX = 0.27, iris = o.iris, style = o.iris and "sharp" or "cute", muzzle = {0.7, 0.4, 0.3, mcol}, nose = {0.26, 0.15, ncol}, tongue = o.tongue})
+	both(function(sx) add("Head", V(0.3, 0.12, 0.05), V(sx * 0.56, k.head.Y - 0.22, k.face - 0.02), PINK) end)
+	return mc
+end
