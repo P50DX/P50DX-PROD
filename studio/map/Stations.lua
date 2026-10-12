@@ -205,20 +205,20 @@ return function(K, P)
 		local m = K.model("Egg_" .. (info.name or "Egg"), parent)
 		local glow = info.glow or Color3.fromRGB(255, 170, 60)
 		-- round stepped pedestal
-		K.cyl(26, 2, (cf * CFrame.new(0, 1, 0)).Position, T.padBase or Color3.fromRGB(70, 70, 95), { parent = m, studs = true })
-		K.cyl(21, 1.4, (cf * CFrame.new(0, 2.7, 0)).Position, T.padTrim or Color3.fromRGB(240, 240, 250), { parent = m, studs = true })
-		K.cyl(22, 0.4, (cf * CFrame.new(0, 2.1, 0)).Position, glow, { parent = m, neon = true, collide = false })
+		K.cyl(28, 2, (cf * CFrame.new(0, 1, 0)).Position, T.padBase or Color3.fromRGB(70, 70, 95), { parent = m, studs = true })
+		K.cyl(25, 1.4, (cf * CFrame.new(0, 2.7, 0)).Position, T.padTrim or Color3.fromRGB(240, 240, 250), { parent = m, studs = true })
+		K.cyl(26, 0.4, (cf * CFrame.new(0, 2.1, 0)).Position, glow, { parent = m, neon = true, collide = false })
 		local stand = K.cyl(10, 4, (cf * CFrame.new(0, 5.4, 0)).Position, K.shade(glow, 0.8), { parent = m, studs = true })
 		K.cyl(11, 0.6, (cf * CFrame.new(0, 7.6, 0)).Position, glow, { parent = m, neon = true, collide = false })
 		for i = 0, 3 do -- little glowing posts around the pedestal
-			local p = cf * CFrame.Angles(0, rad(45 + i * 90), 0) * CFrame.new(0, 0, -9.5)
+			local p = cf * CFrame.Angles(0, rad(45 + i * 90), 0) * CFrame.new(0, 0, -11.5)
 			K.part(V(1.4, 4, 1.4), p * CFrame.new(0, 5.4, 0), T.padTrim or Color3.new(1, 1, 1), { parent = m, collide = false })
 			K.part(V(1.8, 1.8, 1.8), p * CFrame.new(0, 8.2, 0), glow, { parent = m, shape = "ball", neon = true, collide = false })
 		end
 		local body = eggBuilder(info.world or "Zoo", cf * CFrame.new(0, 13.6, 0), m)
 		K.tag(body, "SpinEgg")
 		K.light(body.PrimaryPart, glow, 22, 1.4)
-		local sign = K.part(V(1, 1, 1), cf * CFrame.new(0, 22.5, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Sign" })
+		local sign = K.part(V(1, 1, 1), cf * CFrame.new(0, 26, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Sign" })
 		K.billboard(sign, {
 			{ name = "Name", text = (info.display or info.name or "Egg"), h = 0.55, grad = { K.shade(glow, 1.4), glow }, font = K.FONT_BOLD, stroke = 4 },
 			{ name = "Price", text = info.price and ("🥚 " .. tostring(info.price)) or "", h = 0.45, color = Color3.fromRGB(255, 225, 90), stroke = 3 },
