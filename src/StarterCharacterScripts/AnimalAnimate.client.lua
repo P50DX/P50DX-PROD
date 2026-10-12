@@ -101,7 +101,8 @@ local function loadClips()
 	stopAll()
 	local folder = findAnimFolder()
 	if not folder then
-		warn("[AnimalAnimate] No animation folder for " .. character.Name .. "; see CONFIG at the top of this script.")
+		-- No uploaded clips for this animal: AnimalMotion (procedural) animates it instead.
+		character:SetAttribute("ClipsLoaded", false)
 		return
 	end
 	local animator = getAnimator()
@@ -121,6 +122,7 @@ local function loadClips()
 			}
 		end
 	end
+	character:SetAttribute("ClipsLoaded", next(clips) ~= nil)
 	-- Locomotion clips always run; only their weights change.
 	for _, name in LOCOMOTION do
 		local clip = clips[name]
