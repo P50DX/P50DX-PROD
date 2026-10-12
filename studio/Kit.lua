@@ -547,3 +547,18 @@ local function toePaw(g, c, w, h, d, col)
 	add(g, V(w, h, d), c, col)
 	for _, dx in ipairs({-0.17, 0.17}) do add(g, V(0.04, h * 0.7, 0.04), c + V(dx * w, -h * 0.05, -d / 2 - 0.02), col:Lerp(BLACK, 0.5)) end
 end
+-- featherFan: tail of flat feathers fanning out behind a bird from base. n feathers, length len, width w,
+-- angle a (deg, + = up) and side spread (deg). Feathers are flat in the vertical plane so they read from the side.
+local function featherFan(g, base, n, len, w, cols, a, spread, o)
+	o = o or {}
+	for i = 1, n do
+		local t = (n == 1) and 0 or ((i - 1) / (n - 1) - 0.5)
+		local yaw = math.rad(t * spread)
+		local pitch = math.rad(a - math.abs(t) * 12)
+		local d = V(math.sin(yaw) * math.cos(pitch), math.sin(pitch), math.cos(yaw) * math.cos(pitch))
+		local L = len * (1 - math.abs(t) * 0.35)
+		local col = cols[(i - 1) % #cols + 1]
+		rod(g, base, base + d * L, w, col, {h = w * 0.3, up = V(1, 0, 0), extra = 0, neon = o.neon})
+		if o.eye then add(g, V(w * 0.55, w * 0.55, w * 0.32), base + d * (L - w * 0.3), o.eye, {neon = true, rot = {0, 0, 45}}) end
+	end
+end

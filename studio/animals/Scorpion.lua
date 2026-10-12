@@ -14,8 +14,8 @@ both(function(sx, s)
 	add("Claw" .. s, V(0.28, 0.3, 0.8), cl + V(sx * 0.3, 0, -1.1), AL); add("Claw" .. s, V(0.28, 0.3, 0.7), cl + V(sx * -0.25, 0, -1.05), AL)
 	joint("Claw" .. s, "Torso", sh)
 	for i = 1, 4 do
-		local z = -0.9 + (i - 1) * 0.55
-		local hip, knee, foot = V(sx * 1.0, 1.1, z), V(sx * 1.7, 1.4, z + 0.1), V(sx * 2.05, 0.08, z + 0.2)
+		local z = -1.2 + (i - 1) * 0.6
+		local hip, knee, foot = V(sx * 1.0, 1.1, z), V(sx * 1.9, 1.75, z + (i - 2.5) * 0.25), V(sx * 2.4, 0.08, z + (i - 2.5) * 0.55)
 		rod("Leg" .. i .. s, hip, knee, 0.18, AD); rod("Leg" .. i .. s, knee, foot, 0.16, AD)
 		joint("Leg" .. i .. s, "Torso", hip)
 	end

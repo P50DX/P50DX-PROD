@@ -9,9 +9,9 @@ add("Head", V(1.4, 1.35, 1.35), V(0, 3.55, 0.0), RD, {studs = true})
 add("Head", V(1.12, 0.62, 0.06), V(0, 3.62, -0.7), WHITE)                                    -- face patch
 for _, y in ipairs({3.5, 3.72}) do add("Head", V(0.9, 0.03, 0.03), V(0, y, -0.74), rgb(180, 180, 190)) end
 eye("Head", 0.3, 3.68, -0.75, 0.28, "cute"); eye("Head", -0.3, 3.68, -0.75, 0.28, "cute")
-add("Head", V(0.5, 0.36, 0.34), V(0, 3.42, -0.84), BEAK)                                     -- upper beak
-add("Head", V(0.4, 0.3, 0.24), V(0, 3.22, -0.98), BEAK, {rot = {30, 0, 0}})                  -- hook
-add("Head", V(0.22, 0.16, 0.16), V(0, 3.06, -0.98), rgb(60, 56, 60))                         -- hook tip
+add("Head", V(0.56, 0.42, 0.4), V(0, 3.44, -0.86), BEAK)                                     -- upper beak
+add("Head", V(0.46, 0.36, 0.28), V(0, 3.2, -1.04), BEAK, {rot = {30, 0, 0}})                  -- hook
+add("Head", V(0.24, 0.18, 0.18), V(0, 3.0, -1.05), rgb(60, 56, 60))                          -- hook tip
 add("Head", V(0.36, 0.18, 0.26), V(0, 3.15, -0.8), rgb(40, 36, 40))                          -- lower beak
 joint("Head", "Torso", V(0, 2.95, 0.05))
 both(function(sx, s)

@@ -1,9 +1,9 @@
 -- Ostrich: fluffy black body, white wing + tail plumes, very long pink neck, small head, big eyes, long pink legs.
 local BK, BKL, W, PK, PKD = rgb(40, 38, 44), rgb(70, 66, 76), rgb(246, 244, 238), rgb(240, 170, 160), rgb(206, 130, 120)
 add("Torso", V(2.4, 1.9, 3.0), V(0, 4.3, 0.2), BK, {studs = true})
-add("Torso", V(2.0, 0.8, 1.2), V(0, 4.6, 1.9), W, {studs = true, rot = {-25, 0, 0}})     -- tail plume
+featherFan("Torso", V(0, 4.7, 1.5), 7, 1.6, 0.42, {W, rgb(232, 230, 226)}, 35, 110)          -- fluffy white tail plume
 joint("Torso", "Root", V(0, 4.2, 0.2))
-both(function(sx, s) foldedWing("Wing" .. s, V(sx * 1.2, 4.9, -0.6), sx, 2.6, 1.3, {BK, BKL, W}); joint("Wing" .. s, "Torso", V(sx * 1.2, 4.8, 0)) end)
+both(function(sx, s) foldedWing("Wing" .. s, V(sx * 1.2, 4.9, -0.6), sx, 2.6, 1.3, {BK, BKL, BKL}); joint("Wing" .. s, "Torso", V(sx * 1.2, 4.8, 0)) end)
 -- neck: rods up and forward to the head
 local n0, n1, n2 = V(0, 4.9, -1.2), V(0, 6.3, -1.5), V(0, 7.6, -1.6)
 rod("Neck", n0, n1, 0.55, PK); rod("Neck", n1, n2, 0.48, PK)

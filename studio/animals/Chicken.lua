@@ -1,7 +1,7 @@
 -- Chicken: tall white block body + head in one, red comb + wattle, orange beak, studded wings, stick legs.
 local W, WD, RED, BEAK, LEG = rgb(248, 246, 252), rgb(214, 210, 226), rgb(220, 32, 38), rgb(246, 178, 96), rgb(240, 170, 90)
 add("Torso", V(2.0, 1.7, 2.4), V(0, 1.9, 0.3), W, {studs = true})
-add("Torso", V(1.5, 1.0, 0.9), V(0, 2.6, 1.6), W, {studs = true, rot = {-25, 0, 0}})    -- tail feathers
+featherFan("Torso", V(0, 2.4, 1.3), 5, 1.2, 0.36, {W, WD}, 55, 70)                          -- fanned tail feathers
 add("Head", V(1.6, 1.9, 1.5), V(0, 3.55, -0.65), W, {studs = true})
 add("Head", V(0.25, 0.5, 0.9), V(0, 4.75, -0.6), RED); add("Head", V(0.25, 0.35, 0.4), V(0, 4.65, -1.15), RED)  -- comb
 add("Head", V(0.85, 0.45, 0.6), V(0, 3.4, -1.65), BEAK)

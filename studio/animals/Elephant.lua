@@ -3,8 +3,13 @@ local G, GD, GL, TU = rgb(150, 160, 176), rgb(110, 118, 134), rgb(184, 192, 206)
 local k = quad{nails = TU, col = G, belly = GD, pawCol = GL, W = 3.4, H = 3.0, L = 4.8, legH = 2.0, legW = 1.2, head = {2.4, 2.3, 2.0}, neckUp = 0.2, headFwd = 0.4, tailN = 2, tailW0 = 0.3, tailW1 = 0.25, tailLen = 0.6, tailCols = {GD}, tailCurl = -40}
 local f, c = k.face, k.head
 add("Head", V(2.2, 0.6, 1.8), V(0, c.Y + 1.3, c.Z + 0.1), G, {studs = true})               -- forehead dome
-local t0 = V(0, c.Y - 0.3, f - 0.3); local t1, t2, t3 = t0 + V(0, -1.0, -0.4), t0 + V(0, -1.9, -0.6), t0 + V(0, -2.2, -1.2)
-rod("Head", t0, t1, 0.85, G); rod("Head", t1, t2, 0.7, G); rod("Head", t2, t3, 0.55, GD)
+-- trunk: hangs down from the face, tapering, curling forward at the tip, with crease rings
+local tp = {V(0, c.Y - 0.2, f - 0.25), V(0, c.Y - 0.9, f - 0.5), V(0, c.Y - 1.6, f - 0.6), V(0, c.Y - 2.2, f - 0.55), V(0, c.Y - 2.6, f - 0.8), V(0, c.Y - 2.65, f - 1.15)}
+for i = 1, #tp - 1 do
+	local w = 0.85 - i * 0.1
+	rod("Head", tp[i], tp[i + 1], w, G)
+	add("Head", V(w + 0.04, 0.06, w + 0.04), tp[i + 1], GD)
+end
 both(function(sx, s)
 	eye("Head", sx * 0.62, c.Y + 0.35, f, 0.4, "cute")
 	add("Head", V(0.4, 0.15, 0.06), V(sx * 0.9, c.Y - 0.1, f - 0.02), PINK)
