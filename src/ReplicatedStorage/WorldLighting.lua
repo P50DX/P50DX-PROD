@@ -1,6 +1,6 @@
 -- WorldLighting (ModuleScript -> ReplicatedStorage): lighting + atmosphere + ambient particles per world.
 -- Colourful but not washed out; each world gets its own mood. apply(worldId, tweenTime?)
--- Note: Atmosphere.Decay works like absorption - a blue-ish Decay gives a warm haze (Desert / Volcano).
+-- Tuned by eye from aerial + ground screenshots (Atmosphere Color/Decay interact with the sun angle).
 local Lighting = game:GetService("Lighting")
 local TweenService = game:GetService("TweenService")
 local c = Color3.fromRGB
@@ -14,7 +14,7 @@ M.PRESETS = {
 	},
 	[2] = { -- Desert: warm dusty orange
 		lighting = { Brightness = 2.6, ExposureCompensation = -0.3, ClockTime = 15.6, Ambient = c(110, 90, 70), OutdoorAmbient = c(170, 140, 110) },
-		atmosphere = { Density = 0.36, Offset = 0.1, Color = c(255, 214, 160), Decay = c(110, 140, 180), Glare = 0.4, Haze = 1.8 },
+		atmosphere = { Density = 0.32, Offset = 0.1, Color = c(255, 214, 160), Decay = c(255, 200, 150), Glare = 0.4, Haze = 1.8 },
 		cc = { Saturation = 0.15, Contrast = 0.12, TintColor = c(255, 240, 222) },
 		particles = { color = c(240, 200, 140), rate = 8, accel = Vector3.new(6, 0, 1), smoke = true },
 	},
