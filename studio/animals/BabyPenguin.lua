@@ -1,0 +1,15 @@
+-- Baby Penguin (Snow egg, Uncommon): fluffy grey chick, white face mask, tiny beak, flippers, orange feet.
+local G, GD, W, O = rgb(150, 158, 174), rgb(96, 104, 122), rgb(250, 250, 255), rgb(255, 150, 40)
+add("Torso", V(1.4, 1.7, 1.3), V(0, 1.1, 0), G, {studs = true})
+add("Torso", V(1.0, 0.75, 0.06), V(0, 1.45, -0.67), W)
+add("Torso", V(0.9, 0.7, 0.06), V(0, 0.65, -0.67), rgb(206, 212, 224))
+eye("Torso", 0.27, 1.5, -0.71, 0.3, "cute"); eye("Torso", -0.27, 1.5, -0.71, 0.3, "cute")
+add("Torso", V(0.28, 0.15, 0.25), V(0, 1.27, -0.8), rgb(50, 50, 60))
+both(function(sx) add("Torso", V(0.2, 0.1, 0.05), V(sx * 0.4, 1.25, -0.72), PINK) end)
+add("Torso", V(0.5, 0.3, 0.5), V(0, 2.05, 0), G)
+joint("Torso", "Root", V(0, 1.1, 0))
+both(function(sx, s)
+	add("Wing" .. s, V(0.2, 0.9, 0.6), V(sx * 0.8, 1.05, 0), GD, {rot = {0, 0, sx * -12}}); joint("Wing" .. s, "Torso", V(sx * 0.72, 1.45, 0))
+	add("Leg" .. s, V(0.4, 0.15, 0.55), V(sx * 0.3, 0.08, -0.25), O); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.25, 0))
+end)
+return {name = "BabyPenguin", parts = P, joints = J, hrpSize = V(1.6, 2.4, 1.6), hrpPos = V(0, 1.2, 0)}
