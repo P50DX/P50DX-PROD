@@ -33,6 +33,9 @@ function AnimalRig.prepare(model: Model, mode: string): Model
 		hum.AutomaticScalingEnabled = false
 		hum.Parent = model
 		hum:SetAttribute("BaseWalkSpeed", hum.WalkSpeed)
+		-- block-built animals should never trip or ragdoll onto their side
+		hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+		hum:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
 	end
 	-- leg length for the gait (stride + playback rate); the root's height is a good stand-in for these rigs
 	model:SetAttribute("LegLength", root.Size.Y * 0.4)
