@@ -1,7 +1,9 @@
 --!strict
 -- PetService (ModuleScript -> ServerScriptService)
 -- Server side of pets: equip / unequip. Models come from ServerStorage.ZooModels.Pets.<PetName>.
---   PetService.equip(player, "BabyPanda")   -> the pet model (or nil if the name is unknown / slots are full)
+--   PetService.equip(player, "BabyPanda")             -> the pet model (or nil if the name is unknown / slots are full)
+--   PetService.equip(player, "BabyPanda", "Golden")   -> a variant (Golden/Rainbow/Diamond/Shadow/Celestial/Cosmic),
+--                                                       pre-built in ServerStorage.ZooModels.Variants.<PetName>.<Variant>
 --   PetService.unequip(player, petModel)
 --   PetService.clear(player)
 -- Clients move the pets (PetFollow) and animate them (AnimalMotion). Hook equip into the egg-hatch / inventory code.
@@ -32,8 +34,11 @@ local function folderFor(player: Player): Folder
 	return f :: Folder
 end
 
-function PetService.equip(player: Player, petName: string): Model?
-	local source = ServerStorage:WaitForChild("ZooModels"):WaitForChild("Pets"):FindFirstChild(petName)
+function PetService.equip(player: Player, petName: string, variant: string?): Model?
+	local zoo = ServerStorage:WaitForChild("ZooModels")
+	local source = if variant
+		then (zoo:WaitForChild("Variants"):FindFirstChild(petName) and zoo.Variants[petName]:FindFirstChild(variant))
+		else zoo:WaitForChild("Pets"):FindFirstChild(petName)
 	if not (source and source:IsA("Model")) then return nil end
 	local folder = folderFor(player)
 	local used = {}
@@ -43,6 +48,8 @@ function PetService.equip(player: Player, petName: string): Model?
 	if slot > PetService.MAX_EQUIPPED then return nil end
 	local pet = source:Clone()
 	AnimalRig.prepare(pet, "pet")
+	pet.Name = petName
+	pet:SetAttribute("Variant", variant)
 	pet:SetAttribute("Slot", slot)
 	pet:SetAttribute("Flying", FLYING[petName] == true)
 	local char = player.Character

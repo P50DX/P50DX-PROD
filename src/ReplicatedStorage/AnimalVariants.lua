@@ -19,17 +19,36 @@ local FX_NAME = "VariantFX"
 local SPARKLE = "rbxasset://textures/particles/sparkles_main.dds"
 local SMOKE = "rbxasset://textures/particles/smoke_main.dds"
 
-type Def = { dark: Color3, light: Color3, reflect: number, fx: { Color3 }, texture: string, glow: number }
-
--- Each variant maps the part's brightness onto a dark -> light ramp, so the animal's markings survive.
-local DEFS: { [string]: Def } = {
-	Golden = { dark = Color3.fromRGB(150, 86, 0), light = Color3.fromRGB(250, 186, 24), reflect = 0.04, fx = { Color3.fromRGB(255, 230, 120) }, texture = SPARKLE, glow = 1 },
-	Diamond = { dark = Color3.fromRGB(90, 170, 230), light = Color3.fromRGB(210, 244, 255), reflect = 0.12, fx = { Color3.fromRGB(200, 245, 255) }, texture = SPARKLE, glow = 1 },
-	Shadow = { dark = Color3.fromRGB(16, 12, 26), light = Color3.fromRGB(86, 62, 120), reflect = 0, fx = { Color3.fromRGB(40, 20, 60) }, texture = SMOKE, glow = 0 },
-	Celestial = { dark = Color3.fromRGB(200, 196, 255), light = Color3.fromRGB(255, 250, 232), reflect = 0.05, fx = { Color3.fromRGB(255, 240, 180), Color3.fromRGB(200, 220, 255) }, texture = SPARKLE, glow = 1 },
-	Cosmic = { dark = Color3.fromRGB(34, 18, 86), light = Color3.fromRGB(150, 96, 236), reflect = 0.1, fx = { Color3.fromRGB(255, 140, 240), Color3.fromRGB(120, 220, 255) }, texture = SPARKLE, glow = 1 },
-	Rainbow = { dark = Color3.new(), light = Color3.new(), reflect = 0.05, fx = { Color3.fromRGB(255, 120, 120), Color3.fromRGB(120, 255, 160), Color3.fromRGB(140, 160, 255) }, texture = SPARKLE, glow = 1 },
+type Def = {
+	ramp: { Color3 }, reflect: number, fx: { Color3 }, texture: string, glow: number,
+	accent: Color3?, accentNeon: boolean?, eyeGlow: Color3?, glass: boolean?,
 }
+
+-- Each variant maps the part's brightness onto a dark -> mid -> light ramp, so shading survives. Thin flat parts
+-- (spots, stripes, inner ears, blush, trims) become the variant's accent colour so the markings still read.
+local DEFS: { [string]: Def } = {
+	Golden = { ramp = { Color3.fromRGB(140, 76, 0), Color3.fromRGB(228, 160, 20), Color3.fromRGB(255, 226, 110) }, reflect = 0.04,
+		accent = Color3.fromRGB(255, 250, 210), fx = { Color3.fromRGB(255, 230, 120) }, texture = SPARKLE, glow = 1 },
+	Diamond = { ramp = { Color3.fromRGB(40, 120, 200), Color3.fromRGB(110, 200, 245), Color3.fromRGB(220, 248, 255) }, reflect = 0.15,
+		accent = Color3.fromRGB(170, 250, 255), accentNeon = true, glass = true, fx = { Color3.fromRGB(200, 245, 255) }, texture = SPARKLE, glow = 1 },
+	Shadow = { ramp = { Color3.fromRGB(10, 8, 18), Color3.fromRGB(40, 28, 64), Color3.fromRGB(96, 70, 136) }, reflect = 0,
+		accent = Color3.fromRGB(170, 70, 255), accentNeon = true, eyeGlow = Color3.fromRGB(190, 90, 255), fx = { Color3.fromRGB(40, 20, 60) }, texture = SMOKE, glow = 0 },
+	Celestial = { ramp = { Color3.fromRGB(150, 160, 230), Color3.fromRGB(220, 222, 255), Color3.fromRGB(255, 252, 240) }, reflect = 0.05,
+		accent = Color3.fromRGB(255, 205, 70), accentNeon = true, fx = { Color3.fromRGB(255, 240, 180), Color3.fromRGB(200, 220, 255) }, texture = SPARKLE, glow = 1 },
+	Cosmic = { ramp = { Color3.fromRGB(20, 10, 60), Color3.fromRGB(70, 36, 160), Color3.fromRGB(160, 110, 245) }, reflect = 0.1,
+		accent = Color3.fromRGB(255, 110, 230), accentNeon = true, eyeGlow = Color3.fromRGB(120, 230, 255), fx = { Color3.fromRGB(255, 140, 240), Color3.fromRGB(120, 220, 255) }, texture = SPARKLE, glow = 1 },
+	Rainbow = { ramp = { Color3.new(), Color3.new(), Color3.new() }, reflect = 0.05, fx = { Color3.fromRGB(255, 120, 120), Color3.fromRGB(120, 255, 160), Color3.fromRGB(140, 160, 255) }, texture = SPARKLE, glow = 1 },
+}
+
+local function rampColour(r: { Color3 }, l: number): Color3
+	if l < 0.5 then return r[1]:Lerp(r[2], l * 2) end
+	return r[2]:Lerp(r[3], (l - 0.5) * 2)
+end
+
+local function isMarking(p: BasePart): boolean
+	local s = p.Size
+	return math.min(s.X, s.Y, s.Z) <= 0.13 and p.Name ~= "Eye"
+end
 
 local function brightness(c: Color3): number
 	return 0.299 * c.R + 0.587 * c.G + 0.114 * c.B
@@ -65,6 +84,10 @@ function AnimalVariants.reset(model: Model)
 		if typeof(base) == "Color3" then p.Color = base end
 		local refl = p:GetAttribute("BaseReflectance")
 		if typeof(refl) == "number" then p.Reflectance = refl end
+		local mat = p:GetAttribute("BaseMaterial")
+		if typeof(mat) == "string" then p.Material = (Enum.Material :: any)[mat] end
+		local tr = p:GetAttribute("BaseTransparency")
+		if typeof(tr) == "number" then p.Transparency = tr end
 		CollectionService:RemoveTag(p, RAINBOW_TAG)
 	end
 	for _, d in model:GetDescendants() do
@@ -83,16 +106,28 @@ function AnimalVariants.apply(model: Model, variant: string?)
 			base = p.Color
 			p:SetAttribute("BaseColor", base)
 			p:SetAttribute("BaseReflectance", p.Reflectance)
+			p:SetAttribute("BaseMaterial", p.Material.Name)
+			p:SetAttribute("BaseTransparency", p.Transparency)
 		end
-		if not keepsColour(p, base :: Color3) then
-			local l = 0.15 + 0.7 * math.clamp((brightness(base :: Color3) - 0.15) / 0.75, 0, 1)   -- keep both ends of the ramp
+		local c = base :: Color3
+		if p.Name == "Eye" then
+			-- glowing eyes: the white shine and any coloured iris take the glow colour, the black stays
+			if def.eyeGlow and brightness(c) > 0.13 then p.Color = def.eyeGlow; p.Material = Enum.Material.Neon end
+		elseif not keepsColour(p, c) then
+			local l = 0.08 + 0.84 * math.clamp((brightness(c) - 0.12) / 0.8, 0, 1)
 			p.Reflectance = def.reflect
 			if variant == "Rainbow" then
 				p:SetAttribute("RainbowL", l)
 				p.Color = rainbowColour(p, 0)
 				CollectionService:AddTag(p, RAINBOW_TAG)
+			elseif def.accent and isMarking(p) then
+				p.Color = def.accent
+				if def.accentNeon then p.Material = Enum.Material.Neon end
 			else
-				p.Color = def.dark:Lerp(def.light, l)
+				p.Color = rampColour(def.ramp, l)
+				if def.glass and p.Material == Enum.Material.SmoothPlastic and p.Transparency < 0.5 then
+					p.Material = Enum.Material.Glass; p.Transparency = 0.15
+				end
 			end
 		end
 	end
