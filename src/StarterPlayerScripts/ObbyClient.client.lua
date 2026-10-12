@@ -140,6 +140,14 @@ local function showToast(text)
 	end end)
 end
 
+-- join button for the Speed Race (shown while the lobby is open)
+local RaceRemote = remotes:WaitForChild("Race", 10)
+local joinBtn = Instance.new("TextButton"); joinBtn.AnchorPoint = Vector2.new(0.5, 0); joinBtn.Position = UDim2.new(0.5, 0, 0, 80)
+joinBtn.Size = UDim2.new(0, 300, 0, 54); joinBtn.BackgroundColor3 = Color3.fromRGB(255, 170, 40); joinBtn.Font = FONT_BOLD
+joinBtn.TextScaled = true; joinBtn.TextColor3 = Color3.new(1, 1, 1); joinBtn.Visible = false; joinBtn.Parent = gui
+corner(joinBtn, 16); stroke(joinBtn, 3)
+joinBtn.Activated:Connect(function() if RaceRemote then RaceRemote:FireServer("Join") end end)
+
 -- chase vignette (red edges while the Zookeeper is after you)
 local vignette = Instance.new("Frame"); vignette.Size = UDim2.fromScale(1, 1); vignette.BackgroundTransparency = 1; vignette.Parent = gui
 local vstroke = Instance.new("UIStroke"); vstroke.Thickness = 0; vstroke.Color = Color3.fromRGB(255, 40, 40); vstroke.Transparency = 0.4; vstroke.Parent = vignette
@@ -177,7 +185,7 @@ player:GetAttributeChangedSignal("CurrentStage"):Connect(function() setProgress(
 setProgress(player:GetAttribute("CurrentStage") or 0)
 
 local defaultFov = 70
-Notify.OnClientEvent:Connect(function(kind, a, b, c)
+Notify.OnClientEvent:Connect(function(kind, a, b, c, d, e)
 	if kind == "StageStart" then
 		play2D("Gate")
 		screenFlash(Color3.fromRGB(150, 230, 255), 0.25, 0.5)
@@ -214,6 +222,30 @@ Notify.OnClientEvent:Connect(function(kind, a, b, c)
 		showToast("TEST MODE: " .. (a == "Double" and "x2 Wins" or "Skip Stage") .. " is free until you add the Product ID")
 	elseif kind == "Toast" then
 		showToast(a)
+	elseif kind == "WorldTravel" then
+		local names = { "ZOO", "DESERT", "SNOW", "FOREST", "VOLCANO", "SPACE" }
+		play2D("Skip"); screenFlash(Color3.new(1, 1, 1), 0.6, 0.8)
+		showBanner(names[a] or "", Color3.fromRGB(255, 255, 200), Color3.fromRGB(255, 170, 60), "Welcome!", 1.6)
+	elseif kind == "RaceOpen" then
+		joinBtn.Visible = true
+		joinBtn.Text = "🏁 JOIN SPEED RACE"
+		play2D("Alarm")
+	elseif kind == "RaceClosed" then
+		joinBtn.Visible = false
+	elseif kind == "RaceJoined" then
+		joinBtn.Visible = false
+		showBanner("SPEED RACE", Color3.fromRGB(255, 250, 160), Color3.fromRGB(255, 140, 40), "Wait in the lobby - the race starts soon!", 2)
+	elseif kind == "RaceCount" then
+		if a > 0 then play2D("Alarm"); showBanner(tostring(a), Color3.new(1, 1, 1), Color3.fromRGB(255, 80, 80), nil, 0.7)
+		else play2D("Gate"); showBanner("GO!", Color3.fromRGB(200, 255, 170), Color3.fromRGB(60, 220, 90), nil, 0.9) end
+	elseif kind == "RaceFinish" then
+		local ord = ({ "1ST", "2ND", "3RD" })[b] or (tostring(b) .. "TH")
+		if d then
+			play2D("Reward")
+			showBanner(ord .. " PLACE!", Color3.fromRGB(255, 250, 170), Color3.fromRGB(255, 170, 30), "Time " .. tostring(c) .. "s" .. ((e and e > 0) and ("  •  +" .. e .. " Wins") or ""), 2.5)
+		else
+			showToast(ord .. ": " .. tostring(a) .. " (" .. tostring(c) .. "s)")
+		end
 	end
 end)
 
@@ -578,22 +610,18 @@ end)
 ----------------------------------------------------------------------------------------------------------------
 -- world lighting + ambience (per world; the Zoo is bright blue/green but not washed out)
 ----------------------------------------------------------------------------------------------------------------
-local PRESETS = {
-	[1] = { -- Zoo
-		lighting = { Brightness = 2.3, ExposureCompensation = -0.28, ClockTime = 14.3, Ambient = Color3.fromRGB(90, 92, 108), OutdoorAmbient = Color3.fromRGB(135, 140, 158) },
-		atmosphere = { Density = 0.3, Offset = 0.12, Color = Color3.fromRGB(196, 222, 255), Decay = Color3.fromRGB(110, 150, 200), Glare = 0.15, Haze = 1.1 },
-		cc = { Saturation = 0.2, Contrast = 0.14, TintColor = Color3.fromRGB(255, 251, 242) },
-		particles = { color = Color3.fromRGB(150, 220, 110), texture = "rbxasset://textures/particles/sparkles_main.dds", rate = 3 },
-	},
-}
+local WorldLighting = require(ReplicatedStorage:WaitForChild("WorldLighting"))
+local PRESETS = WorldLighting.PRESETS
+local ambE
 local function applyWorld(w)
-	local p = PRESETS[w]; if not p then return end
-	local ti = TweenInfo.new(1.5)
-	TweenService:Create(Lighting, ti, p.lighting):Play()
-	local atm = Lighting:FindFirstChildOfClass("Atmosphere") or Instance.new("Atmosphere", Lighting)
-	TweenService:Create(atm, ti, p.atmosphere):Play()
-	local cc = Lighting:FindFirstChildOfClass("ColorCorrectionEffect") or Instance.new("ColorCorrectionEffect", Lighting)
-	TweenService:Create(cc, ti, p.cc):Play()
+	WorldLighting.apply(w, 1.5)
+	local pp = PRESETS[w] and PRESETS[w].particles
+	if ambE and pp then
+		ambE.Color = ColorSequence.new(pp.color); ambE.Rate = pp.rate; ambE.Acceleration = pp.accel
+		ambE.LightEmission = pp.glow and 1 or 0.3
+		ambE.Texture = pp.smoke and "rbxasset://textures/particles/smoke_main.dds" or "rbxasset://textures/particles/sparkles_main.dds"
+		ambE.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.2, pp.smoke and 3 or 0.5), NumberSequenceKeypoint.new(1, 0) })
+	end
 end
 local currentWorld
 player:GetAttributeChangedSignal("CurrentWorld"):Connect(function()
@@ -606,11 +634,10 @@ applyWorld(currentWorld)
 -- ambient leaves / pollen around the camera (cheap: one emitter that follows the camera)
 local amb = Instance.new("Part"); amb.Name = "AmbientFX"; amb.Anchored = true; amb.CanCollide = false; amb.CanQuery = false; amb.CanTouch = false
 amb.Transparency = 1; amb.Size = Vector3.new(120, 1, 120); amb.Parent = workspace.CurrentCamera
-local ambE = Instance.new("ParticleEmitter"); ambE.Texture = PRESETS[1].particles.texture; ambE.Rate = PRESETS[1].particles.rate
+ambE = Instance.new("ParticleEmitter")
 ambE.Lifetime = NumberRange.new(6, 9); ambE.Speed = NumberRange.new(1, 3); ambE.SpreadAngle = Vector2.new(180, 180)
-ambE.Size = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.2, 0.5), NumberSequenceKeypoint.new(1, 0) })
-ambE.Color = ColorSequence.new(PRESETS[1].particles.color); ambE.LightEmission = 0.3; ambE.Acceleration = Vector3.new(1, -0.6, 0.5)
 ambE.Shape = Enum.ParticleEmitterShape.Box; ambE.ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume; ambE.Parent = amb
+applyWorld(currentWorld)
 RunService.RenderStepped:Connect(function()
 	local cam = workspace.CurrentCamera
 	if cam then amb.CFrame = CFrame.new(cam.CFrame.Position + Vector3.new(0, 25, 0)) end

@@ -24,7 +24,10 @@ local function pass(folder)
 	end
 	for b, v in pairs(saved) do if b.Parent then b.CanQuery = v end end
 end
-local z = workspace.World1_Zoo
-pass(z.Hub.Cliffs)
-pass(z.Obby.Walls)
+for _, z in workspace:GetChildren() do
+	if z.Name:match("^World%d") then
+		if z:FindFirstChild("Hub") and z.Hub:FindFirstChild("Cliffs") then pass(z.Hub.Cliffs) end
+		if z:FindFirstChild("Obby") and z.Obby:FindFirstChild("Walls") then pass(z.Obby.Walls) end
+	end
+end
 return "removed " .. removed

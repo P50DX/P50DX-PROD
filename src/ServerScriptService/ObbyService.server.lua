@@ -340,6 +340,17 @@ local function wirePrompt(pp, kind)
 			return
 		end
 		Interact:Fire(player, kind, pp:GetAttributes())
+		if kind == "Portal" and cfg.TestMode then -- in your game, check the world unlock in your Interact handler instead
+			local target = cfg.WorldIndex and cfg.WorldIndex[pp:GetAttribute("Target")]
+			if target then
+				stopChase(player)
+				player:SetAttribute("CurrentWorld", target)
+				player:SetAttribute("CurrentStage", 0)
+				Notify:FireClient(player, "WorldTravel", target)
+				sendTo(player, worldSpawn(target))
+			end
+			return
+		end
 		if cfg.TestMode then
 			Notify:FireClient(player, "Toast", (pp.ObjectText ~= "" and pp.ObjectText or kind) .. " - connect your " .. kind .. " system (ZooMapHooks.Interact)")
 		end

@@ -456,7 +456,7 @@ return function(K, P)
 			{ name = "Kind", text = big and "NEXT WORLD" or "PREVIOUS WORLD", h = 0.38, color = Color3.new(1, 1, 1), stroke = 3 },
 			{ name = "World", text = info.title, h = 0.62, grad = { K.shade(c, 1.5), c }, font = K.FONT_BOLD, stroke = 5 },
 		}, { size = big and UDim2.fromScale(30, 10) or UDim2.fromScale(20, 7), offset = V(0, 0, 0), dist = big and 600 or 300 })
-		local trig = K.part(V(R * 2, R * 2, 4), center, Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Interact" })
+		local trig = K.part(V(R * 2, 8, 6), cf * CFrame.new(0, 8, -6), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Interact" }) -- at walking height in front of the ring
 		prompt(trig, "Travel", info.title, 0.8, "WorldPortal", { World = T.id, Target = info.target, Kind = info.kind })
 		return m
 	end

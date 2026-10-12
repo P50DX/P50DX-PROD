@@ -79,3 +79,13 @@ Runtime:
 - New treadmills (face the TRAINING CENTER sign), smaller reward buttons, new shops with 3D rooftop icons,
   zoo garden / snack court / picnic lawn instead of the entrance arch and animal pens.
 - `tools/declutter_trees.lua`: after building, removes cliff trees that poke into neighbouring cliff blocks.
+
+## Worlds 2-6 + Race (first pass, to be remodelled later)
+- `map/WorldHub.lua` (shared hub layout, themed), `map/Worlds.lua` (Desert, Snow, Forest, Volcano, Space themes:
+  hub look, obby hazards per world, generated 10-stage plans with 3 chases, a rolling-ball stage, a pendulum stage
+  and a finale; stage lengths always grow), `map/Race.lua` (lobby + 2600-stud straight track + podium).
+- Build: `tools/build_world.lua` (prepend `WORLD = "Desert"; KINDS = {...}`), `tools/build_race.lua`,
+  then `tools/declutter_trees.lua`.
+- `src/ReplicatedStorage/WorldLighting.lua`: per-world lighting / atmosphere / ambient particles.
+- `src/ServerScriptService/RaceService.server.lua`: timed Speed Race (config `ZooMapConfig.Race`, TEST values).
+- World origins: `ZooMapConfig.Origins`; race at `ZooMapConfig.RaceOrigin`.

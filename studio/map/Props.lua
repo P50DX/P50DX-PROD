@@ -19,7 +19,7 @@ return function(K)
 		local oc = { parent = m } -- trunk collides
 		local yaw = K.rand(0, 90)
 		local base = CFrame.new(pos) * rotY(yaw)
-		local trunkC = K.jitter(pal.trunk, 0.04)
+		local trunkC = K.jitter(pal.trunk or Color3.fromRGB(110, 80, 60), 0.04)
 		local leaf = K.jitter(pal.leaf, 0.05)
 		local leaf2 = pal.leaf2 and K.jitter(pal.leaf2, 0.05) or K.shade(leaf, 1.18)
 		if kind == "oak" then
