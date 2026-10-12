@@ -144,27 +144,27 @@ return function(K, P, S, cfg, O)
 	-- Speed upgrades (north-west): 2 columns x 5 rows under a "SPEED LAB" frame
 	------------------------------------------------------------------------------------------------------------
 	K.parent = K.model("SpeedUpgrades", hub)
-	local sx0, sz0 = -152, -105
-	K.part(V(84, 1.2, 128), CFrame.new(at(sx0, 0.6, sz0)), T.padBase, { studs = true, name = "Floor" })
-	K.part(V(86, 0.5, 130), CFrame.new(at(sx0, 0.4, sz0)), T.accent, { neon = true, collide = false })
+	local sx0, sz0 = -150, -102
+	K.part(V(80, 1.2, 120), CFrame.new(at(sx0, 0.6, sz0)), T.padBase, { studs = true, name = "Floor" })
+	K.part(V(82, 0.5, 122), CFrame.new(at(sx0, 0.4, sz0)), T.accent, { neon = true, collide = false })
 	for i = 1, 10 do
 		local col = (i - 1) % 2
 		local row = math.floor((i - 1) / 2)
 		S.speedUpgrade(cfAt(sx0 - 18 + col * 36, sz0 + 50 - row * 25, -90, 1.2), i, W.speedUpgrades[i] or {}, T, K.parent)
 	end
-	for _, c in ipairs({ { -40, -62 }, { 40, -62 }, { -40, 62 }, { 40, 62 } }) do
+	for _, c in ipairs({ { -38, -58 }, { 38, -58 }, { -38, 58 }, { 38, 58 } }) do
 		K.part(V(4, 34, 4), CFrame.new(at(sx0 + c[1], 17, sz0 + c[2])), T.metal, { studs = true })
 		K.part(V(5, 2, 5), CFrame.new(at(sx0 + c[1], 34.5, sz0 + c[2])), T.accent, { studs = true })
 	end
-	K.part(V(84, 3, 4), CFrame.new(at(sx0, 34, sz0 - 62)), T.metal, { studs = true })
-	K.part(V(84, 3, 4), CFrame.new(at(sx0, 34, sz0 + 62)), T.metal, { studs = true })
-	K.part(V(4, 3, 128), CFrame.new(at(sx0 - 40, 34, sz0)), T.metal, { studs = true })
-	local labSign = K.part(V(4, 10, 64), CFrame.new(at(sx0 + 40, 30, sz0)), T.accent, { studs = true })
-	K.part(V(3.6, 11, 65), CFrame.new(at(sx0 + 40, 30, sz0)), T.metal, { collide = false })
+	K.part(V(80, 3, 4), CFrame.new(at(sx0, 34, sz0 - 58)), T.metal, { studs = true })
+	K.part(V(80, 3, 4), CFrame.new(at(sx0, 34, sz0 + 58)), T.metal, { studs = true })
+	K.part(V(4, 3, 120), CFrame.new(at(sx0 - 38, 34, sz0)), T.metal, { studs = true })
+	local labSign = K.part(V(4, 10, 60), CFrame.new(at(sx0 + 38, 30, sz0)), T.accent, { studs = true })
+	K.part(V(3.6, 11, 61), CFrame.new(at(sx0 + 38, 30, sz0)), T.metal, { collide = false })
 	for _, f in ipairs({ Enum.NormalId.Right, Enum.NormalId.Left }) do
 		K.textPanel(labSign, f, { { text = "⚡ SPEED UPGRADES ⚡", h = 0.85, color = Color3.new(1, 1, 1), font = K.FONT_BOLD } }, { pps = 10, stroke = 4 })
 	end
-	K.part(V(4, 34, 4), CFrame.new(at(sx0 + 40, 17, sz0)), T.metal, { studs = true })
+	K.part(V(4, 34, 4), CFrame.new(at(sx0 + 38, 17, sz0)), T.metal, { studs = true })
 
 	------------------------------------------------------------------------------------------------------------
 	-- Leaderboards (north, west of the obby path), facing the plaza
@@ -183,10 +183,10 @@ return function(K, P, S, cfg, O)
 	local tx0, tz0 = 150, -50
 	K.part(V(92, 1, 150), CFrame.new(at(tx0, 0.5, tz0)), rgb(60, 66, 90), { studs = true, name = "Floor" })
 	K.part(V(94, 0.5, 152), CFrame.new(at(tx0, 0.3, tz0)), T.accent2, { neon = true, collide = false })
-	for r = 0, 1 do
+	for r = 0, 1 do -- runners face the TRAINING CENTER sign (west)
 		for i = 1, 4 do
 			local tier = i
-			S.treadmill(cfAt(tx0 - 18 + r * 36, tz0 + 54 - (i - 1) * 34, 0, 1), tier, W.treadmills[tier] or 1, T, K.parent)
+			S.treadmill(cfAt(tx0 - 13 + r * 36, tz0 + 51 - (i - 1) * 34, 90, 1), tier, W.treadmills[tier] or 1, T, K.parent)
 		end
 	end
 	-- facility frame: corner columns, roof beams, a big sign facing the plaza
@@ -203,79 +203,103 @@ return function(K, P, S, cfg, O)
 	end
 	K.part(V(4, 36, 4), CFrame.new(at(tx0 - 44, 18, tz0)), T.metal, { studs = true })
 	for _, z in ipairs({ -70, 70 }) do -- water cooler + dumbbell racks as props
-		local p = at(tx0 + 38, 1, tz0 + z * 0.9)
+		local p = at(tx0 + 40, 1, tz0 + z * 0.97)
 		K.part(V(3, 5, 3), CFrame.new(p + V(0, 2.5, 0)), rgb(240, 240, 250), {})
 		K.part(V(2.6, 3, 2.6), CFrame.new(p + V(0, 6.5, 0)), rgb(110, 200, 255), { transp = 0.3, mat = Enum.Material.Glass, collide = false })
 	end
 
 	------------------------------------------------------------------------------------------------------------
-	-- Egg station (west of the fountain) facing the plaza
+	-- Egg station (west of the fountain) facing the plaza. The pets are only shown in the egg menu.
 	------------------------------------------------------------------------------------------------------------
 	K.parent = K.model("Eggs", hub)
-	local eggPets = {}
-	for _, n in ipairs(W.egg.pets) do
-		local r = cfg.Rarity[n]
-		table.insert(eggPets, { name = n, display = n:gsub("(%l)(%u)", "%1 %2"), chance = nil, rarityColor = cfg.RarityColor[r] })
-	end
-	local eggCf = face(-92, 40, 0, 40)
-	S.egg(eggCf, { name = W.egg.name, display = W.egg.display, price = W.egg.price, pets = eggPets, color = rgb(255, 246, 220), spots = rgb(255, 160, 50), glow = rgb(255, 170, 60), band = rgb(120, 210, 90) }, T, K.parent)
-	for i, n in ipairs(W.egg.pets) do -- rarity words under the names
-		local r = cfg.Rarity[n]
-		local a = rad(-60 + (i - 1) * 30)
-		local pc = eggCf * CFrame.Angles(0, a, 0) * CFrame.new(0, 0, 21)
-		local tagp = K.part(V(1, 1, 1), pc * CFrame.new(0, 3, 0), Color3.new(1, 1, 1), { transp = 1, collide = false })
-		K.billboard(tagp, { { text = r, h = 1, color = cfg.RarityColor[r], stroke = 2 } }, { size = UDim2.fromScale(6, 1.2), offset = V(0, 6, 0), dist = 90 })
-	end
+	S.egg(face(-92, 40, 0, 40), { name = W.egg.name, display = W.egg.display, price = W.egg.price, world = "Zoo", glow = rgb(255, 170, 60) }, T, K.parent, S.eggBuilder)
 
 	------------------------------------------------------------------------------------------------------------
-	-- Golden Cheetah monument (east of the fountain; the Zoo has no Version Wheel)
+	-- Fastest Runner statue (east of the fountain; the Zoo has no Version Wheel). FastestStatue (server) puts the
+	-- fastest player's own animal on the plinth and writes their name.
 	------------------------------------------------------------------------------------------------------------
-	K.parent = K.model("CheetahMonument", hub)
+	K.parent = K.model("FastestStatue", hub)
 	local mc = face(84, 40, 0, 40)
-	K.cyl(30, 2, (mc * CFrame.new(0, 1, 0)).Position, T.padBase, { studs = true })
-	K.cyl(24, 1.4, (mc * CFrame.new(0, 2.7, 0)).Position, T.padTrim, { studs = true })
-	K.part(V(12, 8, 12), mc * CFrame.new(0, 7.4, 0), stone, { studs = true })
-	K.part(V(13, 1, 13), mc * CFrame.new(0, 11.9, 0), gold, { studs = true })
-	K.part(V(12.4, 0.8, 12.4), mc * CFrame.new(0, 3.8, 0), gold, { collide = false })
-	local plaque = K.part(V(9, 4, 0.4), mc * CFrame.new(0, 7.4, -6.2), rgb(70, 60, 50), { collide = false })
-	K.textPanel(plaque, Enum.NormalId.Front, { { text = "+1 ZOO ESCAPE", h = 0.6, color = T.gold, font = K.FONT_BOLD }, { text = "the fastest escapee", h = 0.4 } }, { pps = 30, stroke = 2 })
-	K.display("Animals", "Cheetah", mc * CFrame.new(0, 12.4, 0) * CFrame.Angles(0, rad(-30), 0), 2.2, { variant = "Golden", parent = K.parent, name = "CheetahStatue" })
+	K.cyl(28, 1.6, (mc * CFrame.new(0, 0.8, 0)).Position, T.padBase, { studs = true })
+	K.cyl(22, 1.2, (mc * CFrame.new(0, 2.2, 0)).Position, T.padTrim, { studs = true })
+	K.cyl(23, 0.3, (mc * CFrame.new(0, 1.7, 0)).Position, gold, { neon = true, collide = false })
+	K.part(V(14, 5, 14), mc * CFrame.new(0, 5.3, 0), stone, { studs = true })
+	K.part(V(15, 0.8, 15), mc * CFrame.new(0, 8.2, 0), gold, { studs = true })
+	K.part(V(14.4, 0.6, 14.4), mc * CFrame.new(0, 3.1, 0), gold, { collide = false })
+	for _, sx in ipairs({ -1, 1 }) do -- two torches
+		local tp = mc * CFrame.new(sx * 11.5, 2.8, -3)
+		K.part(V(1.4, 7, 1.4), tp * CFrame.new(0, 3.5, 0), T.metal, { collide = false })
+		local fl = K.part(V(2, 2, 2), tp * CFrame.new(0, 7.6, 0), rgb(255, 200, 80), { neon = true, collide = false, shape = "ball" })
+		K.sparkle(fl, rgb(255, 170, 60), { rate = 8, size = 0.8, accel = V(0, 6, 0), speed = NumberRange.new(1, 2) })
+	end
+	local plaque = K.part(V(10, 3.6, 0.4), mc * CFrame.new(0, 5.3, -7.2), rgb(60, 50, 44), { collide = false, name = "Plaque" })
+	K.textPanel(plaque, Enum.NormalId.Front, { { name = "Title", text = "👑 FASTEST RUNNER", h = 0.5, color = T.gold, font = K.FONT_BOLD }, { name = "Who", text = "...", h = 0.5 } }, { pps = 30, stroke = 2 })
+	local spot = K.part(V(12, 1, 12), mc * CFrame.new(0, 9.1, 0), Color3.new(1, 1, 1), { transp = 1, collide = false, name = "StatueSpot" })
+	K.tag(spot, "FastestStatue", { World = 1 })
+	K.light(spot, rgb(255, 230, 160), 24, 1.2)
 
 	------------------------------------------------------------------------------------------------------------
-	-- Shops (south) - three kiosks with different colours, icons and props
+	-- Shops (south)
 	------------------------------------------------------------------------------------------------------------
 	K.parent = K.model("Shops", hub)
 	local shops = {
-		{ id = "Animals", title = "ANIMAL SHOP", icon = "🦁", color = rgb(255, 130, 40) },
-		{ id = "Boosts", title = "BOOST SHOP", icon = "🧪", color = rgb(60, 180, 255) },
-		{ id = "Premium", title = "PREMIUM SHOP", icon = "💎", color = rgb(190, 90, 255) },
+		{ id = "Animals", title = "ANIMAL SHOP", iconKind = "paw", color = rgb(255, 130, 40) },
+		{ id = "Boosts", title = "BOOST SHOP", iconKind = "potion", color = rgb(50, 175, 255) },
+		{ id = "Premium", title = "PREMIUM SHOP", iconKind = "gem", color = rgb(180, 85, 255) },
 	}
 	for i, sh in ipairs(shops) do
-		S.shop(face(-62 + (i - 1) * 62, 128, -62 + (i - 1) * 62, 0), sh, T, K.parent)
+		S.shop(face(-66 + (i - 1) * 66, 132, -66 + (i - 1) * 66, 0), sh, T, K.parent)
 	end
-	for i = 1, 4 do P.crate(cfAt(-92 + (i - 1) * 62 + K.rand(-2, 2), 112, K.rand(0, 40)), K.rand(0.8, 1.1), T, K.parent) end
-	P.barrel(at(-34, 0, 114), T, K.parent); P.barrel(at(28, 0, 114), T, K.parent)
 
 	------------------------------------------------------------------------------------------------------------
-	-- Zoo entrance (south-west, the "previous world" slot in World 1): welcome arch, ticket booth, turnstiles
+	-- Zoo garden (south-west): pond with a wooden footbridge, gazebo, flower beds
 	------------------------------------------------------------------------------------------------------------
-	K.parent = K.model("ZooEntrance", hub)
-	local ec = face(-150, 118, -100, 70)
-	local ea, etop = P.arch(ec, 46, 26, { pillar = rgb(120, 200, 90), trim = T.accent, pillarW = 8 }, K.parent)
-	K.textPanel(etop, Enum.NormalId.Front, { { text = "WELCOME TO THE ZOO", h = 0.9, grad = { rgb(255, 255, 200), rgb(255, 170, 60) }, font = K.FONT_BOLD } }, { pps = 8, stroke = 4 })
-	-- ticket booth
-	local bc = ec * CFrame.new(-38, 0, 6)
-	K.part(V(12, 10, 10), bc * CFrame.new(0, 5, 0), rgb(255, 245, 225), { studs = true })
-	K.part(V(13, 1, 11), bc * CFrame.new(0, 10.5, 0), T.accent, { studs = true })
-	K.part(V(8, 4, 0.4), bc * CFrame.new(0, 6, -5.1), rgb(120, 200, 255), { glass = true, transp = 0.3, collide = false })
-	local tb = K.part(V(12, 3, 0.4), bc * CFrame.new(0, 12.6, -2), T.accent, { collide = false })
-	K.textPanel(tb, Enum.NormalId.Front, { { text = "🎟️ TICKETS", h = 0.9 } }, { pps = 20, stroke = 3 })
-	for i = 1, 3 do -- turnstiles
-		local tc = ec * CFrame.new(-12 + (i - 1) * 12, 0, 0)
-		K.part(V(1.6, 4, 1.6), tc * CFrame.new(0, 2, 0), T.metal, {})
-		for k = 0, 2 do K.part(V(5, 0.5, 0.5), tc * CFrame.new(0, 3.4, 0) * CFrame.Angles(0, rad(k * 120), rad(-15)) * CFrame.new(2.5, 0, 0), rgb(220, 220, 230), { collide = false }) end
+	K.parent = K.model("Garden", hub)
+	do
+		local gx, gz = -150, 112
+		K.cyl(56, 1.2, at(gx, 0.6, gz), rgb(150, 140, 130), { studs = true })
+		K.cyl(52, 1.3, at(gx, 0.65, gz), rgb(70, 170, 220), { transp = 0.1, mat = Enum.Material.Glass, collide = false })
+		for i = 1, 7 do -- lily pads
+			local a = i * 0.9
+			K.cyl(4 + (i % 3), 0.2, at(gx + math.cos(a) * (14 + i), 1.35, gz + math.sin(a) * (12 + i)), rgb(90, 190, 80), { collide = false })
+		end
+		for i = 1, 10 do -- rocks + reeds around the rim
+			local a = i / 10 * math.pi * 2 + 0.3
+			if math.abs(math.sin(a)) > 0.3 then
+				P.rock(at(gx + math.cos(a) * 29, 0, gz + math.sin(a) * 29), 0.55, { rock = rgb(160, 155, 150) }, K.parent)
+				for k = 1, 3 do K.part(V(0.4, 4 + k, 0.4), CFrame.new(at(gx + math.cos(a) * 25 + k, 2.5, gz + math.sin(a) * 25)), rgb(90, 160, 70), { collide = false }) end
+			end
+		end
+		-- arched wooden footbridge across the pond (east-west)
+		for i = -6, 6 do
+			local y = 2.4 + (36 - i * i) * 0.12
+			K.part(V(4.2, 0.8, 10), CFrame.new(at(gx + i * 4.2, y, gz)), rgb(186, 124, 70), { mat = Enum.Material.WoodPlanks })
+			for _, sz in ipairs({ -1, 1 }) do
+				K.part(V(0.7, 3.6, 0.7), CFrame.new(at(gx + i * 4.2, y + 1.8, gz + sz * 4.8)), rgb(130, 85, 50), { collide = false })
+			end
+		end
+		for _, sz in ipairs({ -1, 1 }) do
+			for i = -6, 5 do
+				local y1, y2 = 2.4 + (36 - i * i) * 0.12, 2.4 + (36 - (i + 1) * (i + 1)) * 0.12
+				local a, b = at(gx + i * 4.2, y1 + 3.6, gz + sz * 4.8), at(gx + (i + 1) * 4.2, y2 + 3.6, gz + sz * 4.8)
+				K.part(V(0.6, 0.6, (b - a).Magnitude), CFrame.lookAt((a + b) / 2, b), rgb(160, 105, 60), { collide = false })
+			end
+		end
+		-- gazebo on the far side
+		local gc = CFrame.new(at(gx + 10, 0, gz + 40))
+		K.cyl(22, 1.2, (gc * CFrame.new(0, 0.6, 0)).Position, rgb(240, 236, 226), { studs = true })
+		for i = 0, 5 do
+			local p = gc * CFrame.Angles(0, rad(i * 60), 0) * CFrame.new(0, 0, -9)
+			K.cyl(1.4, 11, (p * CFrame.new(0, 6.7, 0)).Position, rgb(250, 250, 250), {})
+		end
+		for i = 0, 5 do
+			K.part(V(10.6, 1, 4), gc * CFrame.Angles(0, rad(i * 60 + 30), 0) * CFrame.new(0, 12.6, -7.6) * CFrame.Angles(rad(28), 0, 0), T.accent, { collide = false })
+		end
+		K.part(V(3, 3, 3), gc * CFrame.new(0, 15.2, 0) * CFrame.Angles(0, rad(45), 0), T.gold, { collide = false })
+		K.part(V(6, 1, 2), gc * CFrame.new(0, 1.7, 3), rgb(186, 124, 70), {})
+		P.flowers(at(gx - 24, 0.2, gz + 36), 14, 10, T, K.parent)
+		P.flowers(at(gx + 36, 0.2, gz + 30), 12, 10, T, K.parent)
 	end
-	for _, sx in ipairs({ -1, 1 }) do P.banner((ec * CFrame.new(sx * 34, 0, -6)).Position, 0, sx > 0 and T.accent2 or T.accent, "🦓", T, K.parent) end
 
 	------------------------------------------------------------------------------------------------------------
 	-- Next world portal (south-east)
@@ -284,39 +308,48 @@ return function(K, P, S, cfg, O)
 	S.portal(face(158, 118, 60, 40), { kind = "Next", title = "DESERT", target = "Desert", color = rgb(255, 170, 60) }, T, K.parent)
 
 	------------------------------------------------------------------------------------------------------------
-	-- Animal enclosures (zoo life along the walls)
+	-- Snack court (west wall) and picnic lawn (east wall) instead of animal pens
 	------------------------------------------------------------------------------------------------------------
-	K.parent = K.model("Enclosures", hub)
-	do -- savanna pen (west wall)
-		local x0, z0 = -172, -14
-		K.part(V(52, 0.8, 46), CFrame.new(at(x0, 0.4, z0)), rgb(232, 200, 130), { studs = true })
-		local fp = { postC = nil }
-		local pal = { post = rgb(120, 80, 50), rail = rgb(170, 118, 70) }
-		P.fence(at(x0 + 26, 0, z0 - 23), at(x0 + 26, 0, z0 + 23), pal, K.parent, 5)
-		P.fence(at(x0 - 26, 0, z0 - 23), at(x0 + 26, 0, z0 - 23), pal, K.parent, 5)
-		P.fence(at(x0 - 26, 0, z0 + 23), at(x0 + 26, 0, z0 + 23), pal, K.parent, 5)
-		K.display("Animals", "Giraffe", CFrame.new(at(x0 - 6, 0.8, z0 - 6)) * CFrame.Angles(0, rad(-70), 0), 1, { parent = K.parent })
-		K.display("Animals", "Zebra", CFrame.new(at(x0 + 8, 0.8, z0 + 8)) * CFrame.Angles(0, rad(-110), 0), 1, { parent = K.parent })
-		P.tree(at(x0 - 14, 0.8, z0 + 12), "palm", 1.1, T.palmPal, K.parent)
-		P.rock(at(x0 + 10, 0.8, z0 - 12), 1, { rock = rgb(170, 150, 130) }, K.parent)
-		local sg = K.part(V(10, 4, 0.6), CFrame.new(at(x0 + 27, 6, z0)) * CFrame.Angles(0, rad(90), 0), rgb(120, 80, 50), { collide = false })
-		K.textPanel(sg, Enum.NormalId.Back, { { text = "SAVANNA", h = 0.8 } }, { pps = 20, stroke = 2 })
-		K.part(V(0.8, 6, 0.8), CFrame.new(at(x0 + 27, 3, z0)), rgb(120, 80, 50), {})
+	K.parent = K.model("SnackCourt", hub)
+	do
+		local x0, z0 = -168, -14
+		K.part(V(54, 0.6, 48), CFrame.new(at(x0, 0.3, z0)), rgb(236, 214, 170), { studs = true })
+		local function cart(cf, col, label)
+			K.part(V(9, 4, 5), cf * CFrame.new(0, 3.6, 0), col, { studs = true })
+			K.part(V(9.4, 0.5, 5.4), cf * CFrame.new(0, 5.8, 0), rgb(250, 250, 250), {})
+			for _, sx in ipairs({ -1, 1 }) do K.part(V(0.8, 2.8, 2.8), cf * CFrame.new(sx * 3.4, 1.4, 2.6), rgb(50, 50, 60), { shape = "cyl", collide = false }) end
+			K.part(V(0.5, 6, 0.5), cf * CFrame.new(0, 9, 0), rgb(240, 240, 240), { collide = false })
+			for i = 0, 7 do -- umbrella
+				K.part(V(5.4, 0.4, 3), cf * CFrame.new(0, 12, 0) * CFrame.Angles(0, rad(i * 45), 0) * CFrame.new(0, -0.6, -2.4) * CFrame.Angles(rad(-18), 0, 0), (i % 2 == 0) and col or rgb(255, 255, 255), { collide = false })
+			end
+			local sg = K.part(V(8, 2, 0.3), cf * CFrame.new(0, 7, -2.6), rgb(255, 255, 255), { collide = false })
+			K.textPanel(sg, Enum.NormalId.Front, { { text = label, h = 0.9, color = col } }, { pps = 24, stroke = 2 })
+		end
+		cart(CFrame.new(at(x0 - 12, 0.6, z0 - 12)) * CFrame.Angles(0, rad(-90), 0), rgb(255, 120, 150), "🍦 ICE CREAM")
+		cart(CFrame.new(at(x0 - 12, 0.6, z0 + 12)) * CFrame.Angles(0, rad(-90), 0), rgb(255, 190, 50), "🍿 POPCORN")
+		for _, zz in ipairs({ -12, 12 }) do -- picnic tables with umbrellas
+			local tc = CFrame.new(at(x0 + 12, 0.6, z0 + zz))
+			K.part(V(8, 0.6, 4), tc * CFrame.new(0, 3, 0), rgb(186, 124, 70), {})
+			for _, sz in ipairs({ -1, 1 }) do K.part(V(8, 0.5, 1.6), tc * CFrame.new(0, 1.8, sz * 3.4), rgb(170, 110, 62), {}) end
+			K.part(V(0.5, 3, 0.5), tc * CFrame.new(0, 1.5, 0), rgb(120, 80, 50), {})
+			K.part(V(0.4, 7, 0.4), tc * CFrame.new(0, 6.8, 0), rgb(240, 240, 240), { collide = false })
+			for i = 0, 7 do
+				K.part(V(5.8, 0.4, 3.2), tc * CFrame.new(0, 10.6, 0) * CFrame.Angles(0, rad(i * 45), 0) * CFrame.new(0, -0.6, -2.6) * CFrame.Angles(rad(-18), 0, 0), (i % 2 == 0) and T.accent2 or rgb(255, 255, 255), { collide = false })
+			end
+		end
 	end
-	do -- penguin pool (east wall, south of the treadmills)
-		local x0, z0 = 172, 62
-		K.part(V(46, 1, 36), CFrame.new(at(x0, 0.5, z0)), rgb(235, 245, 255), { studs = true })
-		K.part(V(28, 0.6, 20), CFrame.new(at(x0 + 4, 1.1, z0)), rgb(80, 180, 240), { transp = 0.15, mat = Enum.Material.Glass })
-		for i = 1, 4 do K.block(V(K.rand(4, 7), K.rand(2, 4), K.rand(4, 7)), at(x0 - 16 + K.rand(-2, 2), 1.8, z0 - 12 + i * 6), rgb(200, 235, 255), { ry = K.rand(0, 45), studs = true }) end
-		local pal = { post = rgb(230, 240, 255), rail = rgb(120, 190, 240) }
-		P.fence(at(x0 - 23, 0, z0 - 18), at(x0 - 23, 0, z0 + 18), pal, K.parent, 4)
-		P.fence(at(x0 - 23, 0, z0 - 18), at(x0 + 23, 0, z0 - 18), pal, K.parent, 4)
-		P.fence(at(x0 - 23, 0, z0 + 18), at(x0 + 23, 0, z0 + 18), pal, K.parent, 4)
-		K.display("Animals", "Penguin", CFrame.new(at(x0 - 14, 1, z0 - 4)) * CFrame.Angles(0, rad(80), 0), 1, { parent = K.parent })
-		K.display("Animals", "Seal", CFrame.new(at(x0 + 10, 1.4, z0 + 4)) * CFrame.Angles(0, rad(120), 0), 1, { parent = K.parent })
-		local sg = K.part(V(10, 4, 0.6), CFrame.new(at(x0 - 24, 6, z0)) * CFrame.Angles(0, rad(90), 0), rgb(60, 140, 220), { collide = false })
-		K.textPanel(sg, Enum.NormalId.Front, { { text = "PENGUINS", h = 0.8 } }, { pps = 20, stroke = 2 })
-		K.part(V(0.8, 6, 0.8), CFrame.new(at(x0 - 24, 3, z0)), rgb(60, 140, 220), {})
+	K.parent = K.model("PicnicLawn", hub)
+	do
+		local x0, z0 = 168, 64
+		P.tree(at(x0 + 12, 0, z0 + 24), "oak", 1.2, T.treePal, K.parent)
+		P.tree(at(x0 - 12, 0, z0 + 10), "round", 1, T.treePal, K.parent)
+		for i = 0, 2 do -- picnic blankets + baskets
+			local c = CFrame.new(at(x0 - 14 + i * 12, 0.15, z0 - 10 + (i % 2) * 8)) * CFrame.Angles(0, rad(i * 25), 0)
+			K.part(V(8, 0.2, 6), c, (i % 2 == 0) and rgb(255, 90, 90) or rgb(90, 160, 255), { collide = false })
+			K.part(V(2, 1.4, 1.4), c * CFrame.new(2, 0.8, 1), rgb(186, 124, 70), { collide = false, mat = Enum.Material.WoodPlanks })
+		end
+		P.bush(at(x0 + 18, 0, z0 + 16), 1.2, T.treePal, K.parent)
+		P.flowers(at(x0 - 2, 0.2, z0 + 18), 14, 8, T, K.parent)
 	end
 
 	------------------------------------------------------------------------------------------------------------
@@ -324,7 +357,7 @@ return function(K, P, S, cfg, O)
 	------------------------------------------------------------------------------------------------------------
 	K.parent = K.folder("Decor", hub)
 	local lampN = 0
-	for _, z in ipairs({ 70, 100, 140, -70, -100, -140 }) do
+	for _, z in ipairs({ 70, 100, 140, -70, -100 }) do
 		for _, sx in ipairs({ -1, 1 }) do
 			lampN += 1
 			P.lamp(at(sx * 22, 0, z), T, lampN % 2 == 0, K.parent)
@@ -347,16 +380,39 @@ return function(K, P, S, cfg, O)
 		K.part(V(20, 1.5, 10), CFrame.new(at(x, 0.75, z)), rgb(110, 75, 50), { collide = false })
 		P.flowers(at(x, 1.5, z), 18, 8, T, K.parent)
 	end
-	for i = 1, 26 do -- bushes and small trees scattered on the lawn (kept off the paths)
-		local x, z = K.rand(-HX + 30, HX - 30), K.rand(-HZ + 30, HZ - 30)
-		local onPath = math.abs(x) < 26 or math.abs(z) < 20 or (x * x + z * z) < 70 * 70
-		local busy = (x < -100 and z < -30) or (x > 100 and z < 30) or (z > 100) or (x < -60 and x > -120 and z > 10 and z < 70) or (x > 60 and x < 110 and z > 15 and z < 65) or (x < -150 and z > -45 and z < 20) or (x > 145 and z > 40 and z < 85) or (z < -120 and x > -115 and x < -10)
-		if not onPath and not busy then
-			if K.chance(0.4) then P.tree(at(x, 0, z), K.pick({ "oak", "round" }), K.rand(0.8, 1.05), T.treePal, K.parent)
-			else P.bush(at(x, 0, z), K.rand(0.9, 1.3), T.treePal, K.parent) end
+	-- bushes and small trees on the open lawn: never inside paths or any building / station footprint
+	local boxes = {}
+	for _, ch in hub:GetChildren() do
+		if ch:IsA("Model") or (ch:IsA("Folder") and ch.Name == "Decor") then
+			for _, m in (ch:IsA("Folder") and ch:GetChildren() or { ch }) do
+				if m:IsA("Model") then
+					local cf, size = m:GetBoundingBox()
+					table.insert(boxes, { c = cf.Position, h = Vector3.new(size.X, 0, size.Z).Magnitude / 2 })
+				end
+			end
 		end
 	end
-	P.signpost(at(-24, 0, 56), {
+	local function free(p, r)
+		local lx, lz = p.X - O.X, p.Z - O.Z
+		if math.abs(lx) < 30 or math.abs(lz) < 24 or (lx * lx + lz * lz) < 72 * 72 then return false end
+		for _, b in ipairs(boxes) do
+			if (Vector3.new(p.X, 0, p.Z) - Vector3.new(b.c.X, 0, b.c.Z)).Magnitude < b.h + r then return false end
+		end
+		return true
+	end
+	local placed = 0
+	for i = 1, 200 do
+		if placed >= 22 then break end
+		local p = at(K.rand(-HX + 34, HX - 34), 0, K.rand(-HZ + 34, HZ - 34))
+		local tree = K.chance(0.4)
+		if free(p, tree and 11 or 6) then
+			if tree then P.tree(p, K.pick({ "oak", "round" }), K.rand(0.8, 1.05), T.treePal, K.parent)
+			else P.bush(p, K.rand(0.9, 1.3), T.treePal, K.parent) end
+			table.insert(boxes, { c = p, h = tree and 9 or 5 })
+			placed += 1
+		end
+	end
+	P.signpost(at(-42, 0, 44), {
 		{ "OBBY ⬆", 90, rgb(80, 200, 90) }, { "EGGS", 180, rgb(255, 170, 60) }, { "TRAINING", 0, rgb(60, 180, 255) }, { "SHOPS", -90, rgb(190, 90, 255) },
 	}, T, K.parent)
 

@@ -254,7 +254,7 @@ local function add(kind, inst)
 	end
 	entries[inst] = e
 end
-local KINDS = { "Mover", "Spinner", "Pendulum", "Crusher", "Blink", "Collapse", "RollingBall", "MovingWall", "Treadmill", "PortalSpin", "SpinEgg", "SpinWheelDecor" }
+local KINDS = { "Mover", "Spinner", "Pendulum", "Crusher", "Blink", "Collapse", "RollingBall", "MovingWall", "Treadmill", "PortalSpin", "SpinEgg", "SpinWheelDecor", "SpinIcon" }
 for _, k in ipairs(KINDS) do
 	for _, i in CollectionService:GetTagged(k) do add(k, i) end
 	CollectionService:GetInstanceAddedSignal(k):Connect(function(i) add(k, i) end)
@@ -375,6 +375,8 @@ local function step()
 			if e.core then e.core.CFrame = e.cbase * CFrame.Angles(-t * 0.7, 0, 0) end
 		elseif k == "SpinEgg" then
 			inst:PivotTo(e.base * CFrame.new(0, math.sin(t * 2) * 0.8, 0) * CFrame.Angles(0, t * 0.6, math.sin(t * 1.3) * 0.08))
+		elseif k == "SpinIcon" then
+			inst:PivotTo(e.base * CFrame.new(0, math.sin(t * 1.5) * 0.5, 0) * CFrame.Angles(0, t * 0.9, 0))
 		elseif k == "SpinWheelDecor" then
 			inst:PivotTo(e.base * CFrame.Angles(0, 0, t * 0.4))
 		end

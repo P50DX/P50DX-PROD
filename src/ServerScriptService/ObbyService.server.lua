@@ -22,7 +22,7 @@ local function remote(name)
 	r.Name = name; r.Parent = remotes
 	return r
 end
-local GateRemote, PadRemote, Notify, ResetRemote = remote("StageGate"), remote("RewardPad"), remote("Notify"), remote("Reset")
+local GateRemote, PadRemote, Notify, ResetRemote, HatchRemote = remote("StageGate"), remote("RewardPad"), remote("Notify"), remote("Reset"), remote("HatchEgg")
 
 local hooks = ServerStorage:FindFirstChild("ZooMapHooks") or Instance.new("Folder")
 hooks.Name = "ZooMapHooks"; hooks.Parent = ServerStorage
@@ -335,22 +335,36 @@ end)
 local KINDS = { ShopStation = "Shop", EggStation = "Egg", WheelStation = "Wheel", WorldPortal = "Portal", SpeedUpgrade = "SpeedUpgrade", PremiumAnimal = "PremiumAnimal" }
 local function wirePrompt(pp, kind)
 	pp.Triggered:Connect(function(player)
+		if kind == "Egg" then -- open the egg menu (pets are only shown there); hatching goes through HatchEgg
+			Notify:FireClient(player, "OpenEgg", pp:GetAttribute("World"), pp:GetAttribute("Egg"))
+			return
+		end
 		Interact:Fire(player, kind, pp:GetAttributes())
 		if cfg.TestMode then
-			if kind == "Egg" then
-				local ok, PetService = pcall(require, game:GetService("ServerScriptService"):FindFirstChild("PetService"))
-				local egg = cfg.Worlds[pp:GetAttribute("World")] and cfg.Worlds[pp:GetAttribute("World")].egg
-				if ok and PetService and egg then
-					local pet = egg.pets[math.random(1, #egg.pets)]
-					pcall(PetService.equip, player, pet)
-					Notify:FireClient(player, "Toast", "🥚 Test hatch: " .. pet)
-					return
-				end
-			end
 			Notify:FireClient(player, "Toast", (pp.ObjectText ~= "" and pp.ObjectText or kind) .. " - connect your " .. kind .. " system (ZooMapHooks.Interact)")
 		end
 	end)
 end
+-- hatch button in the egg menu (player must still be at the egg)
+HatchRemote.OnServerEvent:Connect(function(player, worldId, eggName, amount)
+	local r = root(player)
+	if not r or typeof(eggName) ~= "string" then return end
+	local near = false
+	for _, pp in CollectionService:GetTagged("EggStation") do
+		if pp:GetAttribute("Egg") == eggName and pp.Parent and (pp.Parent.Position - r.Position).Magnitude < 40 then near = true end
+	end
+	if not near then return end
+	Interact:Fire(player, "Egg", { World = worldId, Egg = eggName, Amount = amount or 1 })
+	if cfg.TestMode then
+		local ok, PetService = pcall(require, game:GetService("ServerScriptService"):FindFirstChild("PetService"))
+		local egg = cfg.Worlds[worldId] and cfg.Worlds[worldId].egg
+		if ok and PetService and egg then
+			local pet = egg.pets[math.random(1, #egg.pets)]
+			pcall(PetService.equip, player, pet)
+			Notify:FireClient(player, "Hatched", pet)
+		end
+	end
+end)
 for tag, kind in pairs(KINDS) do
 	for _, pp in CollectionService:GetTagged(tag) do wirePrompt(pp, kind) end
 	CollectionService:GetInstanceAddedSignal(tag):Connect(function(pp) wirePrompt(pp, kind) end)

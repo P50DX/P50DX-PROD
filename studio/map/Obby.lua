@@ -130,7 +130,7 @@ return function(K, P, S)
 				K.tag(m, "Crusher", { Height = 29.4, Period = a.period or 3.2, Phase = (i - 1) * (a.offset or 0.33), BaseCF = m:GetPivot() })
 				-- frame posts either side
 				for _, sx in ipairs({ -1, 1 }) do
-					K.part(V(4, 44, 4), c * CFrame.new(sx * (w / 2 + 3), 22, 0), T.metal, { parent = stageFolder, studs = true })
+					K.part(V(4, 94, 4), c * CFrame.new(sx * (w / 2 + 3), -3, 0), T.metal, { parent = stageFolder, studs = true })
 				end
 				K.part(V(w + 10, 4, 6), c * CFrame.new(0, 45, 0), T.metal, { parent = stageFolder, studs = true })
 			end

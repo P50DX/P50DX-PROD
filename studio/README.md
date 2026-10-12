@@ -68,3 +68,14 @@ Runtime:
   and you fire `ProductPurchased(player, productId)` from your own ProcessReceipt.
 - `src/StarterPlayerScripts/ObbyClient.client.lua` - hazard animation (server-clock synced), falls/hits -> checkpoint,
   HUD (1-10 bar, banners, chase warnings, SAFE!), hold-to-interact prompts, world lighting, ambience.
+
+### Round 2 changes (Zoo)
+- `map/Eggs.lua`: one unique egg per world (Zoo, Desert, Snow, Forest, Volcano, Space), stored as
+  `ServerStorage.ZooModels.Eggs`. Egg stations no longer show pets in the world; the prompt opens the egg menu
+  (`src/StarterPlayerScripts/EggMenu.client.lua`) with 3D pet previews, rarity and a Hatch button (`HatchEgg` remote ->
+  `ZooMapHooks.Interact(player, "Egg", {...})`).
+- `src/ServerScriptService/FastestStatue.server.lua`: the plinth east of the fountain shows a frozen copy of the
+  fastest player's own animal + their name and Speed (leaderstats.Speed, else attribute "Speed").
+- New treadmills (face the TRAINING CENTER sign), smaller reward buttons, new shops with 3D rooftop icons,
+  zoo garden / snack court / picnic lawn instead of the entrance arch and animal pens.
+- `tools/declutter_trees.lua`: after building, removes cliff trees that poke into neighbouring cliff blocks.

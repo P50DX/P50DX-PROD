@@ -70,7 +70,7 @@ return function(K, P, S, Obby, cfg, O, hubT)
 		local pivot = c * CFrame.new(0, pivotY, 0)
 		-- support frame (static, not in the model)
 		for _, sx in ipairs({ -1, 1 }) do
-			K.part(V(5, pivotY + 6, 5), c * CFrame.new(sx * 40, (pivotY + 6) / 2, 0), T.metal, { parent = parent, studs = true })
+			K.part(V(5, pivotY + 56, 5), c * CFrame.new(sx * 40, (pivotY + 6) / 2 - 25, 0), T.metal, { parent = parent, studs = true }) -- down into the moat, no floating towers
 			K.part(V(7, 3, 7), c * CFrame.new(sx * 40, pivotY + 7.5, 0), T.trim, { parent = parent, studs = true })
 		end
 		K.part(V(86, 4, 5), c * CFrame.new(0, pivotY + 4, 0), T.metal, { parent = parent, studs = true })
@@ -126,7 +126,7 @@ return function(K, P, S, Obby, cfg, O, hubT)
 	function T.dispenser(c, laneW, r, parent) -- elephant-enclosure toy chute where the ball appears
 		local m = K.model("BallDispenser", parent)
 		for _, sx in ipairs({ -1, 1 }) do
-			K.part(V(8, 60, 10), c * CFrame.new(sx * (laneW / 2 + 5), 30, 6), T.gatePillar, { parent = m, studs = true })
+			K.part(V(8, 110, 10), c * CFrame.new(sx * (laneW / 2 + 5), 5, 6), T.gatePillar, { parent = m, studs = true })
 			K.part(V(10, 3, 12), c * CFrame.new(sx * (laneW / 2 + 5), 61.5, 6), T.trim, { parent = m, studs = true })
 		end
 		local top = K.part(V(laneW + 20, 10, 12), c * CFrame.new(0, 56, 6), T.hazard, { parent = m, studs = true })

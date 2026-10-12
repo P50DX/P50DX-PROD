@@ -88,35 +88,31 @@ return function(K, P)
 	function S.rewardPad(cf, kind, stage, label, T, parent)
 		local k = KIND[kind]
 		local m = K.model("Reward_" .. kind .. "_" .. stage, parent)
-		local r = 26
+		local r = 17
 		-- stepped hexagon base
 		for i = 0, 5 do
-			local a = i * 60
-			K.part(V(r * 0.58 + 0.2, 2, r), cf * CFrame.Angles(0, rad(a), 0) * CFrame.new(0, 1, 0), K.shade(T.padBase or Color3.fromRGB(70, 70, 95), 1), { parent = m, studs = true })
+			K.part(V(r * 0.58 + 0.2, 1.6, r), cf * CFrame.Angles(0, rad(i * 60), 0) * CFrame.new(0, 0.8, 0), T.padBase or Color3.fromRGB(70, 70, 95), { parent = m, studs = true })
 		end
 		for i = 0, 5 do
-			K.part(V(r * 0.58 * 0.82, 1.2, r * 0.82), cf * CFrame.Angles(0, rad(i * 60 + 30), 0) * CFrame.new(0, 2.6, 0), k.dark, { parent = m, studs = true })
+			K.part(V(r * 0.58 * 0.82, 1, r * 0.82), cf * CFrame.Angles(0, rad(i * 60 + 30), 0) * CFrame.new(0, 2.1, 0), k.dark, { parent = m, studs = true })
 		end
-		K.cyl(r * 0.78, 0.4, (cf * CFrame.new(0, 3.3, 0)).Position, k.col, { parent = m, neon = true, collide = false })
-		-- the button cap (moves down when pressed - ZooMapClient tweens "Cap")
-		local cap = K.cyl(r * 0.66, 1.6, (cf * CFrame.new(0, 4, 0)).Position, k.col, { parent = m, name = "Cap", touch = true, studs = true })
-		cap.Material = Enum.Material.SmoothPlastic
-		K.cyl(r * 0.5, 1.7, (cf * CFrame.new(0, 4.05, 0)).Position, K.shade(k.col, 1.15), { parent = m, collide = false, name = "CapTop" })
-		K.light(cap, k.col, 26, 1.4)
-		K.sparkle(cap, k.col, { rate = 8, size = 1.2, speed = NumberRange.new(3, 6), accel = V(0, 3, 0), emitDir = Enum.NormalId.Right, spread = Vector2.new(40, 40) })
-		-- corner posts with glowing orbs
+		K.cyl(r * 0.78, 0.3, (cf * CFrame.new(0, 2.7, 0)).Position, k.col, { parent = m, neon = true, collide = false })
+		-- the button cap (pressed down by ZooMapClient)
+		local cap = K.cyl(r * 0.64, 1.3, (cf * CFrame.new(0, 3.2, 0)).Position, k.col, { parent = m, name = "Cap", touch = true })
+		K.cyl(r * 0.46, 1.4, (cf * CFrame.new(0, 3.25, 0)).Position, K.shade(k.col, 1.15), { parent = m, collide = false, name = "CapTop" })
+		K.light(cap, k.col, 18, 1.2)
+		K.sparkle(cap, k.col, { rate = 6, size = 0.9, speed = NumberRange.new(2, 5), accel = V(0, 3, 0), emitDir = Enum.NormalId.Right, spread = Vector2.new(40, 40) })
 		for i = 0, 2 do
 			local p = cf * CFrame.Angles(0, rad(i * 120 + 60), 0) * CFrame.new(0, 0, -r * 0.62)
-			K.part(V(2.2, 9, 2.2), p * CFrame.new(0, 4.5, 0), T.padTrim or Color3.fromRGB(240, 240, 255), { parent = m, studs = true })
-			K.part(V(2.6, 2.6, 2.6), p * CFrame.new(0, 10.2, 0), k.col, { parent = m, shape = "ball", neon = true, collide = false })
+			K.part(V(1.6, 6, 1.6), p * CFrame.new(0, 3, 0), T.padTrim or Color3.fromRGB(240, 240, 255), { parent = m, studs = true })
+			K.part(V(2, 2, 2), p * CFrame.new(0, 6.8, 0), k.col, { parent = m, shape = "ball", neon = true, collide = false })
 		end
-		-- floating sign
-		local sign = K.part(V(20, 9, 0.2), cf * CFrame.new(0, 17, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Sign" })
+		local sign = K.part(V(1, 1, 1), cf * CFrame.new(0, 12, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Sign" })
 		K.billboard(sign, {
-			{ name = "Icon", text = k.icon, h = 0.42, stroke = 0 },
-			{ name = "Title", text = k.title, h = 0.3, color = k.col, font = K.FONT_BOLD, stroke = 4 },
+			{ name = "Icon", text = k.icon, h = 0.4, stroke = 0 },
+			{ name = "Title", text = k.title, h = 0.32, color = k.col, font = K.FONT_BOLD, stroke = 4 },
 			{ name = "Label", text = label or "", h = 0.28, color = Color3.new(1, 1, 1), stroke = 3 },
-		}, { size = UDim2.fromScale(20, 11), offset = V(0, 0, 0), dist = 350 })
+		}, { size = UDim2.fromScale(14, 8), offset = V(0, 0, 0), dist = 300 })
 		K.tag(cap, "RewardPad", { World = T.id, Stage = stage, Kind = kind })
 		return m
 	end
@@ -157,34 +153,47 @@ return function(K, P)
 	-- TREADMILL: frame + belt (ZooMapClient scrolls the belt stripes) + console with the multiplier
 	------------------------------------------------------------------------------------------------------------
 	function S.treadmill(cf, tier, mult, T, parent)
+		-- runner faces cf's -Z (toward the console)
 		local m = K.model("Treadmill" .. tier, parent)
 		local c = TIER_COL[math.clamp(tier * 2 - 1, 1, #TIER_COL)]
-		local frame = T.metal or Color3.fromRGB(55, 60, 85)
-		local L, W = 26, 12
-		K.part(V(W + 3, 2, L + 2), cf * CFrame.new(0, 1, 0), frame, { parent = m, studs = true })
-		for _, sx in ipairs({ -1, 1 }) do
-			K.part(V(1.5, 0.6, L + 2), cf * CFrame.new(sx * (W / 2 + 0.75), 2.3, 0), c, { parent = m, neon = true, collide = false })
-			-- side rails
-			K.part(V(0.8, 5, 0.8), cf * CFrame.new(sx * (W / 2 + 0.8), 4.5, -L / 2 + 3), frame, { parent = m, collide = false })
-			K.part(V(0.8, 0.8, 8), cf * CFrame.new(sx * (W / 2 + 0.8), 7, -L / 2 + 6), frame, { parent = m, collide = false })
+		local dark = Color3.fromRGB(40, 42, 58)
+		local metal = Color3.fromRGB(120, 126, 150)
+		local L, W = 26, 11
+		-- glowing floor mat
+		K.part(V(W + 9, 0.4, L + 9), cf * CFrame.new(0, 0.2, 0), K.shade(c, 0.35), { parent = m, studs = true, collide = false })
+		K.part(V(W + 9.6, 0.2, L + 9.6), cf * CFrame.new(0, 0.1, 0), c, { parent = m, neon = true, collide = false })
+		-- deck + end rollers
+		K.part(V(W + 2, 1.6, L), cf * CFrame.new(0, 1.2, 0), dark, { parent = m })
+		for _, z in ipairs({ -L / 2, L / 2 }) do
+			K.part(V(W + 2.4, 2.4, 2.4), cf * CFrame.new(0, 1.3, z), metal, { parent = m, shape = "cyl" })
 		end
-		local belt = K.part(V(W, 0.6, L), cf * CFrame.new(0, 2.3, 0), Color3.fromRGB(35, 35, 45), { parent = m, name = "Belt", touch = true })
+		local belt = K.part(V(W, 0.5, L), cf * CFrame.new(0, 2.2, 0), Color3.fromRGB(32, 32, 42), { parent = m, name = "Belt", touch = true })
 		local g = Instance.new("SurfaceGui"); g.Face = Enum.NormalId.Top; g.Name = "BeltStripes"; g.PixelsPerStud = 8
 		g.SizingMode = Enum.SurfaceGuiSizingMode.PixelsPerStud; g.LightInfluence = 1; g.Parent = belt
 		local strip = Instance.new("Frame"); strip.Name = "Scroll"; strip.Size = UDim2.fromScale(1, 2); strip.BackgroundColor3 = Color3.new(1, 1, 1)
 		strip.BorderSizePixel = 0; strip.Parent = g
 		local gr = Instance.new("UIGradient"); gr.Rotation = 90
 		local kp = {}
-		for i = 0, 12 do
-			local t = i / 12
-			table.insert(kp, ColorSequenceKeypoint.new(t, (i % 2 == 0) and Color3.fromRGB(40, 40, 52) or K.shade(c, 0.45)))
-		end
+		for i = 0, 12 do table.insert(kp, ColorSequenceKeypoint.new(i / 12, (i % 2 == 0) and Color3.fromRGB(36, 36, 48) or K.shade(c, 0.4))) end
 		gr.Color = ColorSequence.new(kp); gr.Parent = strip
-		-- console
-		local con = K.part(V(W, 4, 1.4), cf * CFrame.new(0, 8.5, -L / 2 + 1.5) * CFrame.Angles(rad(25), 0, 0), frame, { parent = m, collide = false, name = "Console" })
-		K.part(V(1.2, 6, 1.2), cf * CFrame.new(-W / 2 + 1, 5, -L / 2 + 1.6), frame, { parent = m, collide = false })
-		K.part(V(1.2, 6, 1.2), cf * CFrame.new(W / 2 - 1, 5, -L / 2 + 1.6), frame, { parent = m, collide = false })
-		K.textPanel(con, NB, { { name = "Mult", text = "x" .. tostring(mult) .. " SPEED", h = 0.8, color = c, font = K.FONT_BOLD } }, { pps = 20, stroke = 3 })
+		-- side steps with neon strips
+		for _, sx in ipairs({ -1, 1 }) do
+			K.part(V(1.8, 1.9, L), cf * CFrame.new(sx * (W / 2 + 1.1), 1.35, 0), c, { parent = m, studs = true })
+			K.part(V(0.4, 0.3, L - 2), cf * CFrame.new(sx * (W / 2 + 2.05), 1.8, 0), Color3.new(1, 1, 1), { parent = m, neon = true, collide = false })
+			-- uprights (lean back toward the runner) + handlebar
+			local base = cf * CFrame.new(sx * (W / 2 + 1.1), 2.3, -L / 2 + 1.5)
+			K.part(V(1.2, 9, 1.2), base * CFrame.Angles(math.rad(-12), 0, 0) * CFrame.new(0, 4.5, 0), metal, { parent = m, collide = false })
+			K.part(V(0.9, 0.9, 8), cf * CFrame.new(sx * (W / 2 + 1.1), 9.6, -L / 2 + 6.5), metal, { parent = m, collide = false })
+			K.part(V(1.1, 1.1, 3), cf * CFrame.new(sx * (W / 2 + 1.1), 9.6, -L / 2 + 9.5), c, { parent = m, collide = false })
+		end
+		-- slim console with a glowing screen facing the runner
+		local con = cf * CFrame.new(0, 10.4, -L / 2 + 2.4) * CFrame.Angles(math.rad(35), 0, 0)
+		K.part(V(W - 1, 3.2, 0.8), con, Color3.fromRGB(48, 52, 72), { parent = m, collide = false })
+		K.part(V(W - 0.6, 0.5, 1), con * CFrame.new(0, 1.7, 0), c, { parent = m, collide = false, neon = true })
+		K.part(V(W - 0.6, 0.5, 1), con * CFrame.new(0, -1.7, 0), c, { parent = m, collide = false })
+		local screen = K.part(V(W - 3, 2.4, 0.2), con * CFrame.new(0, 0, 0.45), Color3.fromRGB(16, 20, 34), { parent = m, collide = false, name = "Screen" })
+		K.textPanel(screen, Enum.NormalId.Back, { { name = "Mult", text = "x" .. tostring(mult) .. " SPEED", h = 0.8, color = c, font = K.FONT_BOLD } }, { pps = 24, stroke = 2 })
+		K.light(screen, c, 12, 0.8)
 		K.tag(belt, "Treadmill", { World = T.id, Tier = tier, Multiplier = mult })
 		return m
 	end
@@ -192,58 +201,30 @@ return function(K, P)
 	------------------------------------------------------------------------------------------------------------
 	-- EGG: egg (ellipsoid via SpecialMesh) on a tiered pedestal, pet previews around it, info board
 	------------------------------------------------------------------------------------------------------------
-	function S.egg(cf, info, T, parent)
+	function S.egg(cf, info, T, parent, eggBuilder)
 		local m = K.model("Egg_" .. (info.name or "Egg"), parent)
-		local c1, c2 = info.color or Color3.fromRGB(255, 240, 200), info.spots or Color3.fromRGB(255, 160, 60)
-		local glow = info.glow or c2
-		-- pedestal (round, stepped)
-		K.cyl(30, 2, (cf * CFrame.new(0, 1, 0)).Position, T.padBase or Color3.fromRGB(70, 70, 95), { parent = m, studs = true })
-		K.cyl(24, 1.4, (cf * CFrame.new(0, 2.7, 0)).Position, T.padTrim or Color3.fromRGB(240, 240, 250), { parent = m, studs = true })
-		K.cyl(25, 0.4, (cf * CFrame.new(0, 2.1, 0)).Position, glow, { parent = m, neon = true, collide = false })
+		local glow = info.glow or Color3.fromRGB(255, 170, 60)
+		-- round stepped pedestal
+		K.cyl(26, 2, (cf * CFrame.new(0, 1, 0)).Position, T.padBase or Color3.fromRGB(70, 70, 95), { parent = m, studs = true })
+		K.cyl(21, 1.4, (cf * CFrame.new(0, 2.7, 0)).Position, T.padTrim or Color3.fromRGB(240, 240, 250), { parent = m, studs = true })
+		K.cyl(22, 0.4, (cf * CFrame.new(0, 2.1, 0)).Position, glow, { parent = m, neon = true, collide = false })
 		local stand = K.cyl(10, 4, (cf * CFrame.new(0, 5.4, 0)).Position, K.shade(glow, 0.8), { parent = m, studs = true })
 		K.cyl(11, 0.6, (cf * CFrame.new(0, 7.6, 0)).Position, glow, { parent = m, neon = true, collide = false })
-		local body = K.model("EggBody", m)
-		local egg = K.part(V(8, 8, 8), cf * CFrame.new(0, 13.5, 0), c1, { parent = body, name = "Egg", collide = false })
-		local mesh = Instance.new("SpecialMesh"); mesh.MeshType = Enum.MeshType.Sphere; mesh.Scale = V(1.05, 1.38, 1.05); mesh.Parent = egg
-		-- spots (flattened balls on the shell)
-		local rr = Random.new(#(info.name or "x"))
-		for i = 1, 9 do
-			local a, e = rr:NextNumber() * math.pi * 2, (rr:NextNumber() - 0.45) * 1.6
-			local dir = V(math.cos(a) * math.cos(e), math.sin(e) * 1.3, math.sin(a) * math.cos(e))
-			local p = K.part(V(1, 1, 1), CFrame.lookAt((cf * CFrame.new(0, 13.5, 0)).Position + dir * 4.05 * V(1.05, 1.32, 1.05), (cf * CFrame.new(0, 13.5, 0)).Position), c2, { parent = body, collide = false })
-			local sm = Instance.new("SpecialMesh"); sm.MeshType = Enum.MeshType.Sphere; sm.Scale = V(2.2, 2.2, 0.5) * (0.7 + rr:NextNumber() * 0.6); sm.Parent = p
+		for i = 0, 3 do -- little glowing posts around the pedestal
+			local p = cf * CFrame.Angles(0, rad(45 + i * 90), 0) * CFrame.new(0, 0, -9.5)
+			K.part(V(1.4, 4, 1.4), p * CFrame.new(0, 5.4, 0), T.padTrim or Color3.new(1, 1, 1), { parent = m, collide = false })
+			K.part(V(1.8, 1.8, 1.8), p * CFrame.new(0, 8.2, 0), glow, { parent = m, shape = "ball", neon = true, collide = false })
 		end
-		-- zig-zag crack band
-		for i = 1, 12 do
-			local a = i / 12 * math.pi * 2
-			local p = (cf * CFrame.new(0, 13.5 + ((i % 2 == 0) and 0.6 or -0.6), 0)).Position + V(math.cos(a), 0, math.sin(a)) * 4.2
-			K.part(V(0.5, 0.5, 2.4), CFrame.lookAt(p, (cf * CFrame.new(0, 13.5, 0)).Position) * CFrame.Angles(0, rad(90), rad((i % 2 == 0) and 30 or -30)), info.band or Color3.new(1, 1, 1), { parent = body, collide = false })
-		end
-		K.light(egg, glow, 24, 1.6)
-		K.sparkle(egg, glow, { rate = 6, size = 1, speed = NumberRange.new(1, 2), shape = Enum.ParticleEmitterShape.Sphere })
-		body.PrimaryPart = egg
+		local body = eggBuilder(info.world or "Zoo", cf * CFrame.new(0, 13.6, 0), m)
 		K.tag(body, "SpinEgg")
-		-- pet previews on little pedestals in an arc behind the egg
-		local pets = info.pets or {}
-		for i, pet in ipairs(pets) do
-			local a = rad(-60 + (i - 1) * (120 / math.max(1, #pets - 1)))
-			local pc = cf * CFrame.Angles(0, a, 0) * CFrame.new(0, 0, 21)
-			K.cyl(6.5, 3, (pc * CFrame.new(0, 1.5, 0)).Position, T.padTrim or Color3.fromRGB(240, 240, 250), { parent = m, studs = true })
-			K.cyl(7, 0.4, (pc * CFrame.new(0, 2.9, 0)).Position, glow, { parent = m, neon = true, collide = false })
-			local d = K.display("Pets", pet.name, pc * CFrame.new(0, 3.2, 0), 1.4, { parent = m })
-			local tagp = K.part(V(1, 1, 1), pc * CFrame.new(0, 3, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false })
-			K.billboard(tagp, {
-				{ text = pet.display or pet.name, h = 0.55, color = Color3.new(1, 1, 1), stroke = 2 },
-				{ text = pet.chance and (pet.chance .. "%") or "", h = 0.45, color = pet.rarityColor or Color3.fromRGB(200, 200, 200), stroke = 2 },
-			}, { size = UDim2.fromScale(7, 2.4), offset = V(0, 7.5, 0), dist = 90 })
-		end
-		-- title + price
-		local sign = K.part(V(1, 1, 1), cf * CFrame.new(0, 22, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Sign" })
+		K.light(body.PrimaryPart, glow, 22, 1.4)
+		local sign = K.part(V(1, 1, 1), cf * CFrame.new(0, 22.5, 0), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Sign" })
 		K.billboard(sign, {
 			{ name = "Name", text = (info.display or info.name or "Egg"), h = 0.55, grad = { K.shade(glow, 1.4), glow }, font = K.FONT_BOLD, stroke = 4 },
 			{ name = "Price", text = info.price and ("🥚 " .. tostring(info.price)) or "", h = 0.45, color = Color3.fromRGB(255, 225, 90), stroke = 3 },
-		}, { size = UDim2.fromScale(18, 6), offset = V(0, 0, 0), dist = 260 })
-		prompt(stand, "Hatch", info.display or info.name, 0.6, "EggStation", { World = T.id, Egg = info.name or "" })
+		}, { size = UDim2.fromScale(16, 5.5), offset = V(0, 0, 0), dist = 260 })
+		-- the pets are NOT shown in the world: the prompt opens the egg menu (EggMenu client)
+		prompt(stand, "Open", info.display or info.name, 0.3, "EggStation", { World = T.id, Egg = info.name or "" })
 		return m
 	end
 
@@ -292,40 +273,92 @@ return function(K, P)
 	------------------------------------------------------------------------------------------------------------
 	-- SHOP: kiosk with a striped awning, counter, display goods and a big rooftop icon. style = T.shopStyle(cf, m, info)
 	------------------------------------------------------------------------------------------------------------
+	-- 3D rooftop icons for shops (spun by the client: tag SpinIcon)
+	local function shopIcon(kind, cf, c, parent)
+		local m = K.model("ShopIcon", parent)
+		local root
+		if kind == "paw" then
+			root = K.part(V(1.2, 6, 6.6), cf * CFrame.new(0, -0.6, 0), c, { parent = m, shape = "cyl", collide = false, name = "Pad" })
+			root.CFrame = cf * CFrame.new(0, -0.8, 0) * CFrame.Angles(0, rad(90), 0)
+			for i, a in ipairs({ -50, -17, 17, 50 }) do
+				local p = cf * CFrame.Angles(0, 0, rad(a)) * CFrame.new(0, 4.6, 0)
+				local t = K.part(V(1.2, 2.8, 2.8), p * CFrame.Angles(0, rad(90), 0), c, { parent = m, shape = "cyl", collide = false })
+			end
+		elseif kind == "potion" then
+			root = K.part(V(6, 6, 6), cf * CFrame.new(0, -1, 0), Color3.fromRGB(150, 230, 255), { parent = m, shape = "ball", collide = false, glass = true, transp = 0.35, name = "Bottle" })
+			K.part(V(4.6, 4.6, 4.6), cf * CFrame.new(0, -1.3, 0), c, { parent = m, shape = "ball", collide = false, neon = true })
+			K.part(V(3, 2.2, 2.2), cf * CFrame.new(0, 2.6, 0) * CFrame.Angles(0, 0, rad(90)), Color3.fromRGB(150, 230, 255), { parent = m, shape = "cyl", collide = false, glass = true, transp = 0.3 })
+			K.part(V(1.6, 2.6, 2.6), cf * CFrame.new(0, 4.6, 0) * CFrame.Angles(0, 0, rad(90)), Color3.fromRGB(170, 110, 60), { parent = m, shape = "cyl", collide = false })
+		else -- gem
+			root = K.part(V(5, 5, 5), cf * CFrame.Angles(rad(45), 0, rad(45)), c, { parent = m, collide = false, neon = true, name = "Gem" })
+			K.part(V(6, 1.2, 6), cf * CFrame.new(0, 1.3, 0) * CFrame.Angles(0, rad(45), 0), K.shade(c, 1.3), { parent = m, collide = false, glass = true, transp = 0.2 })
+		end
+		m.PrimaryPart = root
+		K.sparkle(root, c, { rate = 4, size = 0.8 })
+		K.tag(m, "SpinIcon")
+		return m
+	end
+	S.shopIcon = shopIcon
+
 	function S.shop(cf, info, T, parent)
 		local m = K.model("Shop_" .. info.id, parent)
 		local c = info.color
-		local wall = T.shopWall or Color3.fromRGB(245, 240, 230)
-		local W, D, H = 26, 18, 12
-		K.part(V(W + 4, 1.2, D + 6), cf * CFrame.new(0, 0.6, 1), T.padBase or Color3.fromRGB(90, 90, 110), { parent = m, studs = true })
-		K.part(V(W, H, 1.6), cf * CFrame.new(0, 1.2 + H / 2, D / 2), wall, { parent = m, studs = true })
+		local wall = T.shopWall or Color3.fromRGB(250, 244, 232)
+		local trim = Color3.new(1, 1, 1)
+		local W, D, H = 30, 20, 13
+		-- platform + front steps
+		K.part(V(W + 8, 1.4, D + 12), cf * CFrame.new(0, 0.7, 1), T.padBase or Color3.fromRGB(90, 90, 110), { parent = m, studs = true })
+		K.part(V(W + 8.4, 0.4, D + 12.4), cf * CFrame.new(0, 0.3, 1), c, { parent = m, neon = true, collide = false })
+		K.part(V(W - 6, 0.7, 3), cf * CFrame.new(0, 0.35, -D / 2 - 6.5), T.padBase or Color3.fromRGB(90, 90, 110), { parent = m, studs = true })
+		-- walls: back + sides with display windows
+		K.part(V(W, H, 1.6), cf * CFrame.new(0, 1.4 + H / 2, D / 2), wall, { parent = m, studs = true })
 		for _, sx in ipairs({ -1, 1 }) do
-			K.part(V(1.6, H, D), cf * CFrame.new(sx * (W / 2 - 0.8), 1.2 + H / 2, 0), wall, { parent = m, studs = true })
-			K.part(V(2.4, H + 1, 2.4), cf * CFrame.new(sx * (W / 2), 1.2 + (H + 1) / 2, -D / 2), c, { parent = m, studs = true })
+			K.part(V(1.6, H, D), cf * CFrame.new(sx * (W / 2 - 0.8), 1.4 + H / 2, 0), wall, { parent = m, studs = true })
+			K.part(V(0.4, 5, D - 6), cf * CFrame.new(sx * (W / 2 + 0.05), 1.4 + H * 0.55, 0), Color3.fromRGB(170, 225, 255), { parent = m, glass = true, transp = 0.35, collide = false })
+			-- round corner columns
+			K.cyl(3, H + 2, (cf * CFrame.new(sx * W / 2, 1.4 + (H + 2) / 2, -D / 2)).Position, trim, { parent = m })
+			K.cyl(3.6, 1, (cf * CFrame.new(sx * W / 2, 1.9, -D / 2)).Position, c, { parent = m, collide = false })
+			K.cyl(3.6, 1, (cf * CFrame.new(sx * W / 2, 1.4 + H + 1.5, -D / 2)).Position, c, { parent = m, collide = false })
 		end
-		-- counter
-		K.part(V(W - 6, 4.2, 3), cf * CFrame.new(0, 3.3, -D / 2 + 3), K.shade(c, 0.8), { parent = m, studs = true })
-		K.part(V(W - 5.4, 0.6, 3.6), cf * CFrame.new(0, 5.6, -D / 2 + 3), T.wood or Color3.fromRGB(200, 140, 80), { parent = m })
-		-- striped awning
-		local stripes = 7
+		-- shelves with goods on the back wall
+		for row = 0, 1 do
+			local y = 1.4 + 4 + row * 3.6
+			K.part(V(W - 6, 0.5, 2.2), cf * CFrame.new(0, y, D / 2 - 1.9), Color3.fromRGB(190, 130, 80), { parent = m, collide = false })
+			for i = 0, 5 do
+				local gc = ({ c, K.shade(c, 1.3), Color3.fromRGB(255, 220, 80), Color3.fromRGB(120, 220, 255) })[(i + row) % 4 + 1]
+				K.part(V(1.6, 2, 1.4), cf * CFrame.new(-W / 2 + 5 + i * (W - 10) / 5, y + 1.25, D / 2 - 1.9), gc, { parent = m, collide = false, neon = (i + row) % 3 == 0 })
+			end
+		end
+		-- counter with a register
+		K.part(V(W - 8, 4.4, 3.2), cf * CFrame.new(0, 3.6, -D / 2 + 4), K.shade(c, 0.85), { parent = m, studs = true })
+		K.part(V(W - 7.4, 0.6, 3.8), cf * CFrame.new(0, 6.1, -D / 2 + 4), Color3.fromRGB(205, 145, 85), { parent = m })
+		K.part(V(3, 2, 2.2), cf * CFrame.new(W / 4, 7.4, -D / 2 + 4), Color3.fromRGB(60, 64, 90), { parent = m, collide = false })
+		K.part(V(2.4, 1.2, 0.2), cf * CFrame.new(W / 4, 7.8, -D / 2 + 2.85) * CFrame.Angles(rad(-20), 0, 0), Color3.fromRGB(110, 255, 160), { parent = m, neon = true, collide = false })
+		-- roof slab + gable roof (two wedges) + ridge
+		K.part(V(W + 4, 1.4, D + 4), cf * CFrame.new(0, 1.4 + H + 0.7, 0), K.shade(c, 0.7), { parent = m, studs = true })
+		local rh = 6
+		K.part(V(W + 4, rh, (D + 4) / 2), cf * CFrame.new(0, 1.4 + H + 1.4 + rh / 2, -(D + 4) / 4), c, { parent = m, shape = "wedge" })
+		K.part(V(W + 4, rh, (D + 4) / 2), cf * CFrame.new(0, 1.4 + H + 1.4 + rh / 2, (D + 4) / 4) * CFrame.Angles(0, math.pi, 0), c, { parent = m, shape = "wedge" })
+		K.part(V(W + 5, 1, 1.4), cf * CFrame.new(0, 1.4 + H + 1.4 + rh + 0.3, 0), trim, { parent = m, collide = false })
+		-- scalloped awning over the counter
+		local stripes = 8
 		for i = 1, stripes do
 			local x = -W / 2 + (i - 0.5) * (W / stripes)
-			local col = (i % 2 == 0) and Color3.new(1, 1, 1) or c
-			K.part(V(W / stripes + 0.05, 1, 9), cf * CFrame.new(x, 1.2 + H + 2.4, -D / 2 - 1.5) * CFrame.Angles(rad(22), 0, 0), col, { parent = m, collide = false })
-			K.part(V(W / stripes + 0.05, 1.8, 0.5), cf * CFrame.new(x, 1.2 + H - 0.4, -D / 2 - 5.6), col, { parent = m, collide = false })
+			local col = (i % 2 == 0) and trim or c
+			K.part(V(W / stripes + 0.05, 0.8, 7), cf * CFrame.new(x, 1.4 + H - 1.2, -D / 2 - 2.8) * CFrame.Angles(rad(18), 0, 0), col, { parent = m, collide = false })
+			K.part(V(W / stripes * 0.8, W / stripes * 0.8, 0.6), cf * CFrame.new(x, 1.4 + H - 3.4, -D / 2 - 6.1) * CFrame.Angles(0, 0, rad(45)), col, { parent = m, collide = false })
 		end
-		-- roof
-		K.part(V(W + 2, 1.6, D + 2), cf * CFrame.new(0, 1.2 + H + 0.8, 0.5), K.shade(c, 0.75), { parent = m, studs = true })
-		-- rooftop sign board + icon
-		local board = K.part(V(W - 2, 7, 1.2), cf * CFrame.new(0, 1.2 + H + 5.6, 1), c, { parent = m, studs = true })
-		K.part(V(W - 1, 7.8, 0.6), cf * CFrame.new(0, 1.2 + H + 5.6, 1.6), Color3.new(1, 1, 1), { parent = m, collide = false })
-		K.textPanel(board, NF, { { text = info.title, h = 0.9, color = Color3.new(1, 1, 1), font = K.FONT_BOLD } }, { pps = 14, stroke = 4 })
-		local icon = K.part(V(1, 1, 1), cf * CFrame.new(0, 1.2 + H + 14, 1), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Icon" })
-		K.billboard(icon, { { text = info.icon, h = 1, stroke = 0 } }, { size = UDim2.fromScale(8, 8), offset = V(0, 0, 0), dist = 400 })
-		if info.decor then info.decor(cf, m, W, D, H) end
-		local trig = K.part(V(W - 6, 6, 4), cf * CFrame.new(0, 4, -D / 2 - 1), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Interact" })
+		-- framed sign on the front of the roof, with two little lamps
+		local board = K.part(V(W - 4, 6, 1), cf * CFrame.new(0, 1.4 + H + 4.4, -(D + 4) / 2 - 0.2), Color3.fromRGB(40, 36, 60), { parent = m, collide = false })
+		K.part(V(W - 2.8, 7.2, 0.8), cf * CFrame.new(0, 1.4 + H + 4.4, -(D + 4) / 2 + 0.3), c, { parent = m, collide = false })
+		K.textPanel(board, Enum.NormalId.Front, { { text = info.title, h = 0.85, grad = { Color3.new(1, 1, 1), K.shade(c, 1.35) }, font = K.FONT_BOLD } }, { pps = 14, stroke = 4 })
+		for _, sx in ipairs({ -1, 1 }) do
+			local l = K.part(V(1.4, 1.4, 1.4), cf * CFrame.new(sx * (W / 2 - 3), 1.4 + H + 8.2, -(D + 4) / 2 - 1), Color3.fromRGB(255, 240, 180), { parent = m, neon = true, collide = false })
+		end
+		shopIcon(info.iconKind or "gem", cf * CFrame.new(0, 1.4 + H + 1.4 + rh + 6, 0), c, m)
+		local trig = K.part(V(W - 8, 6, 4), cf * CFrame.new(0, 4, -D / 2 + 0.5), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Interact" })
 		prompt(trig, "Open", info.title, 0.4, "ShopStation", { World = T.id, Shop = info.id })
-		K.light(board, c, 24, 1)
+		K.light(board, c, 26, 1)
 		return m
 	end
 
