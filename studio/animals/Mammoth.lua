@@ -7,11 +7,11 @@ add("Torso", V(3.4, 1.4, 2.4), V(0, k.by + 1.9, -1.0), B, {studs = true})       
 eye("Head", 0.7, c.Y + 0.5, f, 0.36, "cute"); eye("Head", -0.7, c.Y + 0.5, f, 0.36, "cute")
 -- trunk: rods hanging down and curling forward
 local t0 = V(0, c.Y - 0.2, f - 0.2); local t1, t2, t3 = t0 + V(0, -1.3, -0.4), t0 + V(0, -2.5, -0.4), t0 + V(0, -3.2, -0.9)
-rod("Head", t0, t1, 0.9, B); rod("Head", t1, t2, 0.75, B); rod("Head", t2, t3, 0.6, BD)
+rod("Head", t0, t1, 0.9, B); rod("Head", t1, t2, 0.75, B); rod("Head", t2, t3, 0.6, B)
 -- tusks: long sweeping curves
 both(function(sx)
 	local a = V(sx * 0.7, c.Y - 0.6, f - 0.1)
-	local b, cc, d = a + V(sx * 0.3, -1.2, -0.8), a + V(sx * 0.6, -1.4, -2.0), a + V(sx * 0.2, -0.5, -2.8)
+	local b, cc, d = a + V(sx * 0.3, -0.75, -0.45), a + V(sx * 0.45, -0.7, -1.1), a + V(sx * 0.25, -0.1, -1.5)   -- shorter, curling up
 	rod("Head", a, b, 0.42, TU); rod("Head", b, cc, 0.36, TU); rod("Head", cc, d, 0.28, TU)
 	add("Head", V(0.3, 1.0, 0.8), V(sx * 1.4, c.Y + 0.3, c.Z + 0.3), BD)                       -- small ear
 end)

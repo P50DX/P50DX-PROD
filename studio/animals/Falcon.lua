@@ -12,7 +12,7 @@ eye("Head", 0.38, 4.25, -1.03, 0.38, "sharp", Y); eye("Head", -0.38, 4.25, -1.03
 brow("Head", 0.4, 4.55, -1.03, 0.5, BK, 20); brow("Head", -0.4, 4.55, -1.03, 0.5, BK, 20)
 joint("Head", "Torso", V(0, 3.5, -0.2))
 both(function(sx, s)
-	foldedWing("Wing" .. s, V(sx * 0.8, 3.3, -0.4), sx, 2.4, 1.9, {SL, SLD, BK})
+	foldedWing("Wing" .. s, V(sx * 0.8, 3.35, -0.25), sx, 2.0, 1.7, {SL, SLD, SLD:Lerp(BK, 0.3)})
 	joint("Wing" .. s, "Torso", V(sx * 0.85, 3.3, 0.2))
 	rod("Leg" .. s, V(sx * 0.4, 1.4, 0.2), V(sx * 0.4, 0.2, 0.1), 0.3, Y)
 	add("Leg" .. s, V(0.6, 0.15, 0.7), V(sx * 0.4, 0.08, -0.1), Y); add("Leg" .. s, V(0.1, 0.15, 0.15), V(sx * 0.4, 0.08, -0.5), BK)

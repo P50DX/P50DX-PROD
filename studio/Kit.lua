@@ -87,8 +87,16 @@ local function face(k, o)
 	if o.muzzle then
 		local m = o.muzzle
 		local mc = V(0, c.Y - k.hh * 0.22, f - m[3] / 2 + 0.05)
-		add("Head", V(m[1], m[2], m[3]), mc, m[4])
-		if o.nose then add("Head", V(o.nose[1], o.nose[2], 0.2), V(0, mc.Y + m[2] / 2 - o.nose[2] / 2, mc.Z - m[3] / 2 - 0.05), o.nose[3] or BLACK) end
+		local d = m[3]
+		local topY = mc.Y + m[2] / 2
+		if d > 0.45 then                                    -- tapered snout: full-size cheeks, narrower lower tip
+			add("Head", V(m[1], m[2], d * 0.6), mc + V(0, 0, d * 0.2), m[4])
+			add("Head", V(m[1] * 0.84, m[2] * 0.86, d * 0.42), mc + V(0, -m[2] * 0.07, -d * 0.29), m[4])
+			topY = mc.Y + m[2] * 0.36
+		else
+			add("Head", V(m[1], m[2], d), mc, m[4])
+		end
+		if o.nose then add("Head", V(o.nose[1], o.nose[2], 0.12), V(0, topY - o.nose[2] / 2 + 0.02, mc.Z - d / 2 - 0.03), o.nose[3] or BLACK) end
 		add("Head", V(m[1] * 0.45, 0.07, 0.05), V(0, mc.Y - m[2] * 0.2, mc.Z - m[3] / 2 - 0.03), BLACK)
 		if o.tongue then add("Head", V(0.28, 0.32, 0.06), V(0.1, mc.Y - m[2] * 0.45, mc.Z - m[3] / 2 - 0.03), PINK) end
 		MOUTH = V(0, mc.Y - m[2] * 0.2, mc.Z - m[3] / 2)

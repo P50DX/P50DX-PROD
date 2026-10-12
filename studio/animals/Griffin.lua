@@ -4,7 +4,10 @@ local G, GD, WH, BK, BR = rgb(222, 166, 72), rgb(176, 120, 44), rgb(250, 250, 24
 local k = quad{claws = rgb(60, 50, 40), col = G, belly = WH, pawCol = BK, W = 2.4, H = 2.2, L = 4.2, legH = 1.8, legW = 0.75, head = {1.7, 1.6, 1.6}, neckUp = 0.8, headFwd = 0.4, tailN = 4, tailW0 = 0.35, tailW1 = 0.3, tailLen = 0.8, tailCols = {G}, tailCurl = 8}
 local f, c = k.face, k.head
 add("Head", V(1.7, 1.6, 1.6), c, WH, {studs = true})
-add("Head", V(0.7, 0.55, 0.7), V(0, c.Y - 0.1, f - 0.3), BK); add("Head", V(0.45, 0.4, 0.3), V(0, c.Y - 0.45, f - 0.6), rgb(210, 150, 30))
+add("Head", V(0.62, 0.42, 0.42), V(0, c.Y - 0.08, f - 0.18), BK)                                 -- hooked eagle beak
+add("Head", V(0.46, 0.36, 0.3), V(0, c.Y - 0.3, f - 0.42), BK, {rot = {35, 0, 0}})
+add("Head", V(0.24, 0.2, 0.16), V(0, c.Y - 0.47, f - 0.44), rgb(60, 50, 40))
+add("Head", V(0.42, 0.14, 0.26), V(0, c.Y - 0.36, f - 0.16), rgb(210, 150, 30))
 both(function(sx, s)
 	eye("Head", sx * 0.48, c.Y + 0.3, f - 0.02, 0.36, "sharp", rgb(255, 170, 30)); brow("Head", sx * 0.5, c.Y + 0.6, f - 0.04, 0.5, BR, 20)
 	add("Ear" .. s, V(0.25, 0.7, 0.4), V(sx * 0.55, c.Y + 1.05, c.Z + 0.4), WH, {rot = {-25, 0, sx * -15}})
