@@ -46,7 +46,11 @@ joint("Jaw", "Head", V(0, 6.8, -5.0))
 both(function(sx, s)
 	local sh, el, wr = V(sx * 1.3, 5.0, -2.9), V(sx * 1.45, 4.35, -3.25), V(sx * 1.4, 4.4, -3.9)
 	rod("Arm" .. s, sh, el, 0.38, G); rod("Arm" .. s, el, wr, 0.32, G)
-	rod("Arm" .. s, wr, wr + V(sx * 0.08, -0.3, -0.2), 0.1, BE); rod("Arm" .. s, wr, wr + V(sx * -0.08, -0.32, -0.15), 0.1, BE)
+	add("Arm" .. s, V(0.34, 0.26, 0.3), wr, G)                                                        -- little hand
+	for _, dx in ipairs({-0.08, 0.08}) do                                                             -- two clawed fingers
+		add("Arm" .. s, V(0.11, 0.22, 0.13), wr + V(dx, -0.2, -0.08), G, {rot = {-20, 0, 0}})
+		add("Arm" .. s, V(0.09, 0.14, 0.11), wr + V(dx, -0.36, -0.16), BE, {shape = "wedge", rot = {180, 0, 0}})
+	end
 	joint("Arm" .. s, "Torso", sh)
 end)
 -- legs: thigh -> shin angled back -> long foot bone forward -> toes

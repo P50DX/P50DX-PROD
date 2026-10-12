@@ -1,7 +1,7 @@
 -- Giraffe (stylized middle ground): chunky long neck, long legs, brown patch spots, ossicones with dark knobs,
 -- cream muzzle, side ears, dark mane strip, tufted tail.
 local GO, SP, CR, DK = rgb(240, 186, 78), rgb(176, 98, 40), rgb(250, 232, 196), rgb(92, 58, 36)
-local k = quad{col = GO, belly = CR, pawCol = DK, W = 1.8, H = 1.8, L = 3.2, legH = 3.2, legW = 0.6, head = {1.3, 1.2, 1.5}, neckUp = 4.0, headFwd = 0.6, tailN = 3, tailW0 = 0.22, tailW1 = 0.2, tailLen = 0.6, tailCols = {GO, GO, DK}, tailCurl = -30}
+local k = quad{hoof = "split", col = GO, belly = CR, pawCol = DK, W = 1.8, H = 1.8, L = 3.2, legH = 3.2, legW = 0.6, head = {1.3, 1.2, 1.5}, neckUp = 4.0, headFwd = 0.6, tailN = 3, tailW0 = 0.22, tailW1 = 0.2, tailLen = 0.6, tailCols = {GO, GO, DK}, tailCurl = -30}
 local f, c = k.face, k.head
 face(k, {eyeS = 0.34, eyeY = 0.2, eyeX = 0.28, muzzle = {1.0, 0.55, 0.7, CR}, nose = {0.5, 0.12, DK}})
 both(function(sx, s)
@@ -13,7 +13,7 @@ both(function(sx, s)
 	add("Head", V(0.3, 0.14, 0.06), V(sx * 0.48, c.Y - 0.1, f - 0.02), PINK)                         -- blush
 end)
 -- spots on the body sides and the neck
-for _, p in ipairs({{3.9, -1.0}, {4.5, -0.2}, {3.7, 0.6}, {4.4, 1.2}, {3.95, -1.8}}) do
+for _, p in ipairs({{3.9, -1.0}, {4.5, -0.2}, {3.7, 0.6}, {4.4, 1.2}, {3.95, -1.4}}) do
 	both(function(sx) add("Torso", V(0.06, 0.45, 0.5), V(sx * 0.91, p[1], p[2]), SP) end)
 end
 local a, b = V(0, k.by + 0.36, -1.3), c + V(0, -0.24, 0.3)

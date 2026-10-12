@@ -1,6 +1,6 @@
 -- Tiger: bright orange with bold black stripes, white cheeks + muzzle + belly, fierce amber eyes, striped tail.
 local O, OD, W, BK = rgb(240, 130, 40), rgb(200, 96, 26), rgb(250, 246, 240), rgb(32, 26, 26)
-local k = quad{col = O, belly = W, pawCol = W, W = 2.3, H = 2.1, L = 4.4, legH = 1.8, legW = 0.75, head = {1.9, 1.7, 1.7}, neckUp = 0.5, headFwd = 0.4, tailN = 6, tailW0 = 0.45, tailW1 = 0.35, tailLen = 0.8, tailCols = {O, BK}, tailCurl = 5}
+local k = quad{claws = rgb(240, 230, 210), col = O, belly = W, pawCol = W, W = 2.3, H = 2.1, L = 4.4, legH = 1.8, legW = 0.75, head = {1.9, 1.7, 1.7}, neckUp = 0.5, headFwd = 0.4, tailN = 6, tailW0 = 0.45, tailW1 = 0.35, tailLen = 0.8, tailCols = {O, BK}, tailCurl = 5}
 local mc = face(k, {eyeS = 0.42, iris = rgb(250, 190, 40), brow = BK, browAng = 20, muzzle = {1.05, 0.65, 0.5, W}, nose = {0.4, 0.26, rgb(220, 120, 120)}})
 local c, f = k.head, k.face
 both(function(sx)

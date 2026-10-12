@@ -12,8 +12,8 @@ add("Head", V(0.2, 0.18, 0.12), V(0.17, 0.85, -2.6), BEL); add("Head", V(0.2, 0.
 joint("Torso", "Root", V(0, 1.2, 0.3)); joint("Head", "Torso", V(0, 1.25, -1.75))
 both(function(sx, s)
 	-- antennae: two thin segments sweeping up and back
-	add("Ant" .. s, V(0.1, 0.1, 1.4), V(sx * 0.35, 1.95, -2.75), LEG, {rot = {35, sx * 15, 0}})
-	add("Ant" .. s, V(0.08, 0.08, 1.4), V(sx * 0.6, 2.75, -2.6), LEG, {rot = {-30, sx * 30, 0}})
+	local a0, a1, a2 = V(sx * 0.3, 1.7, -2.45), V(sx * 0.45, 2.3, -3.15), V(sx * 0.8, 3.15, -2.85)   -- jointed antenna
+	rod("Ant" .. s, a0, a1, 0.1, LEG); rod("Ant" .. s, a1, a2, 0.08, LEG); add("Ant" .. s, V(0.13, 0.13, 0.13), a1, LEG)
 	joint("Ant" .. s, "Head", V(sx * 0.3, 1.6, -2.4))
 	for i, z in ipairs({-0.9, 0.2, 1.3}) do
 		local g = "Leg" .. i .. s

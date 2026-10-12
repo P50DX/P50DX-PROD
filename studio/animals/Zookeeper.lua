@@ -19,7 +19,8 @@ add("Head", V(0.5, 0.1, 0.05), V(0, 4.9, -0.71), rgb(150, 70, 60)); add("Head", 
 joint("Head", "Torso", V(0, 4.6, 0))
 both(function(sx, s)
 	add("Arm" .. s, V(0.8, 1.0, 0.9), V(sx * 1.42, 4.05, 0), SH, {studs = true})
-	add("Arm" .. s, V(0.7, 1.2, 0.8), V(sx * 1.42, 2.95, 0), SK)
+	add("Arm" .. s, V(0.7, 0.75, 0.8), V(sx * 1.42, 3.18, 0), SK)
+	hand("Arm" .. s, V(sx * 1.42, 2.84, 0), sx, 1.05, SK, {fist = (sx < 0)})   -- right hand grips the net pole
 	joint("Arm" .. s, "Torso", V(sx * 1.42, 4.4, 0))
 	add("Leg" .. s, V(0.9, 2.0, 1.0), V(sx * 0.5, 1.4, 0), PA, {studs = true})
 	add("Leg" .. s, V(1.0, 0.5, 1.3), V(sx * 0.5, 0.25, -0.12), BO)
@@ -30,7 +31,7 @@ local hc = h + V(0, 3.1, -1.7)
 rod("ArmR", h + V(0, -0.2, 0.4), hc + V(0, -0.65, 0), 0.15, rgb(180, 140, 90))
 for i = 0, 7 do
 	local a = math.rad(i * 45)
-	add("ArmR", V(0.55, 0.12, 0.12), hc + V(math.cos(a) * 0.65, math.sin(a) * 0.65, 0), rgb(200, 200, 210), {rot = {0, 0, i * 45 + 90}})
+	add("ArmR", V(0.62, 0.14, 0.14), hc + V(math.cos(a) * 0.65, math.sin(a) * 0.65, 0), rgb(200, 200, 210), {rot = {0, 0, i * 45 + 90}})
 end
-for i, s in ipairs({1.15, 0.85, 0.5}) do add("ArmR", V(s, s, 0.3), hc + V(0, -0.12 * i, 0.12 + i * 0.25), WHITE, {transp = 0.55}) end   -- net bag
+for i, s in ipairs({1.15, 0.85, 0.5}) do add("ArmR", V(s, s, 0.3), hc + V(0, -0.12 * i, -0.02 + i * 0.22), WHITE, {transp = 0.55}) end   -- net bag
 return {name = "Zookeeper", parts = P, joints = J, hrpSize = V(2.4, 6.6, 1.4), hrpPos = V(0, 3.3, 0)}

@@ -1,6 +1,6 @@
 -- Boar: heavy front, bristly dark mane ridge, long snout with big curved tusks, small angry eyes, short legs.
 local B, BD, BR, TU = rgb(110, 74, 52), rgb(74, 48, 34), rgb(46, 32, 26), rgb(246, 238, 210)
-local k = quad{col = B, belly = BD, pawCol = BR, W = 2.4, H = 2.2, L = 3.6, legH = 1.0, legW = 0.65, head = {2.0, 1.8, 1.7}, neckUp = 0.1, headFwd = 0.2, tailN = 2, tailW0 = 0.2, tailW1 = 0.2, tailLen = 0.5, tailCols = {BR}, tailCurl = -40}
+local k = quad{hoof = "split", col = B, belly = BD, pawCol = BR, W = 2.4, H = 2.2, L = 3.6, legH = 1.0, legW = 0.65, head = {2.0, 1.8, 1.7}, neckUp = 0.1, headFwd = 0.2, tailN = 2, tailW0 = 0.2, tailW1 = 0.2, tailLen = 0.5, tailCols = {BR}, tailCurl = -40}
 local mc = face(k, {eyeS = 0.34, eyeY = 0.3, iris = rgb(220, 60, 40), brow = BR, browAng = 24, muzzle = {1.1, 0.85, 0.9, BD}})
 add("Head", V(1.0, 0.75, 0.15), V(0, mc.Y, mc.Z - 0.52), rgb(200, 130, 120))              -- snout disc
 add("Head", V(0.15, 0.3, 0.06), V(0.25, mc.Y, mc.Z - 0.61), BR); add("Head", V(0.15, 0.3, 0.06), V(-0.25, mc.Y, mc.Z - 0.61), BR)

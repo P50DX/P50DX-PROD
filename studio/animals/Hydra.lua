@@ -1,7 +1,7 @@
 -- Hydra (scary): teal-green four-legged serpent with three necks, each head with glowing red eyes, fangs and
 -- horns; spiked back and tail.
 local G, GD, BE, HN, RED = rgb(40, 140, 110), rgb(24, 90, 74), rgb(206, 222, 150), rgb(236, 226, 196), rgb(255, 40, 40)
-local k = quad{col = G, belly = BE, pawCol = GD, W = 3.0, H = 2.4, L = 4.2, legH = 1.4, legW = 0.95, head = {1.4, 1.2, 1.6}, neckUp = 2.6, headFwd = 0.4, tailN = 5, tailW0 = 0.9, tailW1 = 0.35, tailLen = 0.9, tailCols = {G, GD}, tailCurl = -3}
+local k = quad{claws = HN, col = G, belly = BE, pawCol = GD, W = 3.0, H = 2.4, L = 4.2, legH = 1.4, legW = 0.95, head = {1.4, 1.2, 1.6}, neckUp = 2.6, headFwd = 0.4, tailN = 5, tailW0 = 0.9, tailW1 = 0.35, tailLen = 0.9, tailCols = {G, GD}, tailCurl = -3}
 local function head(g, c, block)
 	if block then add(g, V(1.4, 1.2, 1.6), c, G, {studs = true}) end
 	local f = c.Z - 0.8
@@ -22,5 +22,5 @@ both(function(sx, s)
 	head("Head" .. s, c2, true)
 	joint("Head" .. s, "Torso", V(sx * 0.9, k.by + 0.6, -1.6))
 end)
-for i = 0, 5 do add("Torso", V(0.3, 0.55, 0.5), V(0, k.by + 1.45, -1.6 + i * 0.6), HN, {shape = "wedge", rot = {0, 180, 0}}) end
+for i = 0, 5 do add("Torso", V(0.3, 0.55, 0.5), V(0, k.by + ((-1.6 + i * 0.6) > 0.3 and 1.35 or 1.45), -1.6 + i * 0.6), HN, {shape = "wedge", rot = {0, 180, 0}}) end
 return {name = "Hydra", parts = P, joints = J, hrpSize = V(5, 7, 5), hrpPos = V(0, 3.5, 0)}

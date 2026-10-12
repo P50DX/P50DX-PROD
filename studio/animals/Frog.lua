@@ -13,7 +13,13 @@ both(function(sx, s)
 	add("Head", V(0.7, 0.6, 0.06), V(sx * 0.85, 2.32, -1.88), WHITE)
 	eye("Head", sx * 0.85, 2.3, -1.92, 0.38, "cute")
 	add("ArmF" .. s, V(0.45, 0.9, 0.45), V(sx * 1.05, 0.5, -0.7), GR, {rot = {0, 0, sx * 10}})
-	add("ArmF" .. s, V(0.75, 0.12, 0.6), V(sx * 1.15, 0.06, -0.9), GRD)
+	local fp = V(sx * 1.13, 0.07, -0.85)                                                          -- webbed hand: 3 splayed fingers
+	add("ArmF" .. s, V(0.4, 0.14, 0.36), fp, GR)
+	for i, a in ipairs({-35, 0, 35}) do
+		local d = V(math.sin(math.rad(a)) * sx, 0, -math.cos(math.rad(a)))
+		add("ArmF" .. s, V(0.1, 0.1, 0.36), fp + d * 0.3, GR, {rot = {0, -a * sx, 0}})
+		add("ArmF" .. s, V(0.16, 0.12, 0.16), fp + d * 0.5, GRD, {shape = "ball"})
+	end
 	joint("ArmF" .. s, "Torso", V(sx * 1.0, 0.95, -0.7))
 	add("LegB" .. s, V(0.9, 0.85, 1.6), V(sx * 1.35, 0.7, 1.2), GR, {studs = true})          -- folded thigh
 	add("LegB" .. s, V(0.55, 0.45, 1.3), V(sx * 1.45, 0.25, 0.4), GR)

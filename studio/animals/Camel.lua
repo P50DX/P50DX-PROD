@@ -1,6 +1,6 @@
 -- Camel: tall, long curved neck, single big studded hump, droopy-lidded eyes, split lip, knobbly knees, tuft tail.
 local S, SD, SL = rgb(214, 170, 116), rgb(170, 124, 78), rgb(236, 206, 160)
-local k = quad{col = S, belly = SL, pawCol = SD, W = 2.0, H = 2.0, L = 3.8, legH = 2.8, legW = 0.55, head = {1.2, 1.2, 2.0}, neckUp = 2.0, headFwd = 1.0, tailN = 2, tailW0 = 0.25, tailW1 = 0.25, tailLen = 0.7, tailCols = {S, SD}, tailCurl = -30}
+local k = quad{hoof = "split", col = S, belly = SL, pawCol = SD, W = 2.0, H = 2.0, L = 3.8, legH = 2.8, legW = 0.55, head = {1.2, 1.2, 2.0}, neckUp = 2.0, headFwd = 1.0, tailN = 2, tailW0 = 0.25, tailW1 = 0.25, tailLen = 0.7, tailCols = {S, SD}, tailCurl = -30}
 local mc = face(k, {eyeS = 0.36, eyeY = 0.3, eyeX = 0.33, muzzle = {0.95, 0.7, 0.8, SL}})
 both(function(sx) add("Head", V(0.42, 0.14, 0.08), V(sx * 0.4, k.head.Y + 0.42, k.face - 0.03), SD) end)  -- heavy lids
 both(function(sx) add("Head", V(0.15, 0.12, 0.06), V(sx * 0.25, mc.Y + 0.2, mc.Z - 0.43), SD) end)

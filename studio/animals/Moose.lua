@@ -1,6 +1,6 @@
 -- Moose: huge dark brown, tall shoulder hump, long droopy muzzle, dewlap, wide flat palmate antlers.
 local B, BD, BL, AN = rgb(96, 64, 44), rgb(64, 42, 30), rgb(150, 112, 80), rgb(206, 182, 140)
-local k = quad{col = B, belly = BD, legCol = BL, pawCol = BD, W = 2.4, H = 2.4, L = 4.2, legH = 2.6, legW = 0.65, head = {1.5, 1.5, 2.2}, neckUp = 0.7, headFwd = 0.6, tailN = 1, tailW0 = 0.3, tailW1 = 0.3, tailLen = 0.4, tailCols = {BD}, tailCurl = -30}
+local k = quad{hoof = "split", col = B, belly = BD, legCol = BL, pawCol = BD, W = 2.4, H = 2.4, L = 4.2, legH = 2.6, legW = 0.65, head = {1.5, 1.5, 2.2}, neckUp = 0.7, headFwd = 0.6, tailN = 1, tailW0 = 0.3, tailW1 = 0.3, tailLen = 0.4, tailCols = {BD}, tailCurl = -30}
 local mc = face(k, {eyeS = 0.36, eyeY = 0.3, eyeX = 0.33, muzzle = {1.2, 1.0, 1.0, BD}})
 add("Head", V(0.25, 0.8, 0.4), V(0, k.head.Y - 1.1, k.head.Z + 0.2), BD)                   -- dewlap
 add("Torso", V(2.4, 1.0, 2.0), V(0, k.by + 1.5, -1.0), B, {studs = true})                   -- shoulder hump

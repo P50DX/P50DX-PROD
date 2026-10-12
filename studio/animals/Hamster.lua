@@ -13,7 +13,7 @@ both(function(sx, s)
 	add("Ear" .. s, V(0.55, 0.55, 0.2), V(sx * 0.85, 4.0, -0.7), O); add("Ear" .. s, V(0.32, 0.32, 0.06), V(sx * 0.85, 4.0, -0.82), PINK)
 	joint("Ear" .. s, "Head", V(sx * 0.8, 3.75, -0.7))
 	add("Head", V(0.3, 0.15, 0.06), V(sx * 0.95, 2.6, -1.88), PINK, {transp = 0.2})          -- blush
-	add("ArmF" .. s, V(0.45, 0.5, 0.45), V(sx * 0.6, 1.25, -1.35), O); add("ArmF" .. s, V(0.4, 0.15, 0.3), V(sx * 0.6, 0.98, -1.45), PINK)
+	add("ArmF" .. s, V(0.4, 0.4, 0.4), V(sx * 0.6, 1.3, -1.35), O); hand("ArmF" .. s, V(sx * 0.6, 1.12, -1.4), sx, 0.55, PINK)
 	joint("ArmF" .. s, "Torso", V(sx * 0.6, 1.5, -1.3))
 	add("LegB" .. s, V(0.6, 0.5, 0.75), V(sx * 0.8, 0.25, 0.6), O); add("LegB" .. s, V(0.55, 0.12, 0.75), V(sx * 0.8, 0.06, 0.45), PINK)
 	joint("LegB" .. s, "Torso", V(sx * 0.8, 0.5, 0.6))

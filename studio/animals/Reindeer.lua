@@ -1,6 +1,6 @@
 -- Reindeer: brown with cream neck mane + belly, big branching antlers, red nose, little bell collar.
 local B, BD, CR, AN = rgb(140, 92, 58), rgb(98, 62, 38), rgb(240, 226, 200), rgb(214, 196, 162)
-local k = quad{col = B, belly = CR, pawCol = rgb(40, 32, 28), W = 1.9, H = 1.9, L = 3.6, legH = 2.1, legW = 0.55, head = {1.5, 1.5, 1.7}, neckUp = 1.1, tailN = 1, tailW0 = 0.45, tailW1 = 0.45, tailLen = 0.4, tailCols = {CR}, tailCurl = 30}
+local k = quad{hoof = "split", col = B, belly = CR, pawCol = rgb(40, 32, 28), W = 1.9, H = 1.9, L = 3.6, legH = 2.1, legW = 0.55, head = {1.5, 1.5, 1.7}, neckUp = 1.1, tailN = 1, tailW0 = 0.45, tailW1 = 0.45, tailLen = 0.4, tailCols = {CR}, tailCurl = 30}
 local mc = face(k, {eyeS = 0.4, muzzle = {0.85, 0.65, 0.75, BD}})
 add("Head", V(0.45, 0.4, 0.3), V(0, mc.Y + 0.1, mc.Z - 0.48), rgb(240, 40, 40), {neon = true})   -- red nose
 ears(k, "round", B, CR, 0.5, 0.45, 0.5)

@@ -15,7 +15,7 @@ function BlockAnimal.build(spec, origin)
 		if o.shape == "ball" then part.Shape = Enum.PartType.Ball elseif o.shape == "cyl" then part.Shape = Enum.PartType.Cylinder end
 		part.Size = size
 		local r = o.rot or {0, 0, 0}
-		if o.look then part.CFrame = CFrame.lookAt(origin + pos, origin + o.look)        -- rods: long axis = Z
+		if o.look then part.CFrame = CFrame.lookAt(origin + pos, origin + o.look, o.up or Vector3.yAxis)        -- rods: long axis = Z
 		else part.CFrame = CFrame.new(origin + pos) * CFrame.Angles(math.rad(r[1]), math.rad(r[2]), math.rad(r[3])) end
 		part.Color = color
 		part.Material = o.neon and Enum.Material.Neon or (o.mat or (o.studs and Enum.Material.Plastic or Enum.Material.SmoothPlastic))  -- studs only render on Plastic

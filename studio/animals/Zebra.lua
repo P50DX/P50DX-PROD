@@ -1,6 +1,6 @@
 -- Zebra: clean bold black stripes on white, black muzzle, upright striped mane, tufted tail, red bowtie on a collar band.
 local W, BK, BTIE = rgb(246, 246, 246), rgb(30, 30, 34), rgb(220, 36, 44)
-local k = quad{col = W, belly = W, legCol = W, pawCol = BK, W = 1.9, H = 2.0, L = 3.8, legH = 2.2, legW = 0.58, head = {1.3, 1.4, 2.0}, neckUp = 1.4, headFwd = 0.4, tailN = 3, tailW0 = 0.3, tailW1 = 0.25, tailLen = 0.7, tailCols = {W, W, BK}, tailCurl = -25}
+local k = quad{hoof = "solid", col = W, belly = W, legCol = W, pawCol = BK, W = 1.9, H = 2.0, L = 3.8, legH = 2.2, legW = 0.58, head = {1.3, 1.4, 2.0}, neckUp = 1.4, headFwd = 0.4, tailN = 3, tailW0 = 0.3, tailW1 = 0.25, tailLen = 0.7, tailCols = {W, W, BK}, tailCurl = -25}
 local mc = face(k, {eyeS = 0.38, eyeY = 0.25, eyeX = 0.32, muzzle = {1.0, 0.75, 0.85, BK}})
 ears(k, "point", W, BK, 0.4, 0.55, 0.3)
 -- body stripes: vertical bands wrapping the torso, bands on legs, bands on the face

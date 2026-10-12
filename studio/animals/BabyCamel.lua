@@ -1,6 +1,6 @@
 -- Baby Camel (Desert egg, Rare): tan calf, one fluffy hump, longer legs, eyelashes, little round ears.
 local C, CL, CD = rgb(214, 170, 110), rgb(240, 214, 170), rgb(150, 110, 70)
-local k = pup{col = C, belly = CL, pawCol = CD, legH = 0.9, legW = 0.36, neckUp = 0.6, head = {1.35, 1.25, 1.3}, tailN = 1, tailW0 = 0.2, tailW1 = 0.2, tailLen = 0.4, tailCurl = -40}
+local k = pup{hoof = "split", col = C, belly = CL, pawCol = CD, legH = 0.9, legW = 0.36, neckUp = 0.6, head = {1.35, 1.25, 1.3}, tailN = 1, tailW0 = 0.2, tailW1 = 0.2, tailLen = 0.4, tailCurl = -40}
 cute(k, CL, CD)
 both(function(sx) add("Head", V(0.08, 0.16, 0.05), V(sx * 0.5, k.head.Y + 0.42, k.face - 0.03), BLACK, {rot = {0, 0, sx * 30}}) end)
 ears(k, "round", C, CL, 0.3, 0.28, 0.42)

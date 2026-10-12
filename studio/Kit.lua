@@ -40,7 +40,7 @@ end
 local function quad(o)
 	local by = o.legH + o.H / 2                          -- body centre height
 	add("Torso", V(o.W, o.H, o.L * 0.55), V(0, by + o.H * 0.03, -o.L * 0.2), o.col, {studs = true})     -- chest
-	add("Torso", V(o.W * 0.9, o.H * 0.92, o.L * 0.5), V(0, by, o.L * 0.25), o.col, {studs = true})       -- hips
+	add("Torso", V(o.W, o.H, o.L * 0.5), V(0, by + o.H * 0.03, o.L * 0.25), o.col, {studs = true})       -- hips (same size as the chest so markings sit on it)
 	if o.belly then add("Torso", V(o.W * 0.75, 0.3, o.L * 0.8), V(0, by - o.H / 2 - 0.05, 0), o.belly) end
 	joint("Torso", "Root", V(0, by, 0))
 	local hw, hh, hd = o.head[1], o.head[2], o.head[3]
@@ -54,7 +54,23 @@ local function quad(o)
 		local g, sx, sz = "Leg" .. leg[1], leg[2], leg[3]
 		local x, z = sx * (o.W / 2 - o.legW / 2), sz * (o.L / 2 - o.legW * 0.7)
 		add(g, V(o.legW, o.legH + 0.3, o.legW * 1.1), V(x, (o.legH + 0.3) / 2 + 0.15, z), o.legCol or o.col, {studs = o.legH > 1.4})
-		add(g, V(o.legW * 1.08, 0.32, o.legW * 1.35), V(x, 0.16, z - o.legW * 0.15), o.pawCol or o.belly or o.col)
+		-- foot: toe-line paw (leg colour, a touch darker, 3 toes), hoof (solid or split), optional claws / nails
+		local lc = o.legCol or o.col
+		local fw, fd = o.legW * 1.06, o.legW * 1.2
+		local fz = z - o.legW * 0.08
+		local front = fz - fd / 2
+		if o.hoof then
+			local hc = o.pawCol or rgb(60, 50, 44)
+			add(g, V(fw, 0.34, fd), V(x, 0.17, fz), hc)
+			add(g, V(fw + 0.02, 0.07, fd + 0.02), V(x, 0.36, fz), hc:Lerp(WHITE, 0.15))
+			if o.hoof == "split" then add(g, V(0.05, 0.26, 0.06), V(x, 0.15, front - 0.02), hc:Lerp(BLACK, 0.5)) end
+		else
+			local pc = lc:Lerp(BLACK, 0.12)
+			add(g, V(fw, 0.3, fd), V(x, 0.15, fz), pc)
+			for _, dx in ipairs({-0.17, 0.17}) do add(g, V(0.045, 0.2, 0.05), V(x + dx * o.legW, 0.13, front - 0.02), lc:Lerp(BLACK, 0.5)) end
+			if o.claws then for _, dx in ipairs({-0.33, 0, 0.33}) do add(g, V(0.1, 0.1, 0.16), V(x + dx * o.legW, 0.06, front - 0.07), o.claws, {shape = "wedge", rot = {0, 180, 0}}) end end
+			if o.nails then for _, dx in ipairs({-0.33, 0, 0.33}) do add(g, V(0.2 * o.legW, 0.16, 0.08), V(x + dx * o.legW, 0.12, front - 0.03), o.nails) end end
+		end
 		joint(g, "Torso", V(x, o.legH + 0.2, z))
 	end
 	if o.tailN then tail(o.tailN, V(0, by + o.H * 0.25, o.L / 2), o.tailW0, o.tailW1, o.tailLen, o.tailCols or {o.col}, o.tailCurl or 0) end
@@ -418,4 +434,108 @@ local function lavaRock(g, p, s)
 	add(g, V(0.24 * s, 0.22 * s, 0.24 * s), c + V(0.15 * s, 0.1 * s, 0), D, {rot = {-15, 35, 20}})
 	add(g, V(0.2 * s, 0.2 * s, 0.22 * s), c + V(-0.14 * s, -0.08 * s, 0), D, {rot = {25, -10, -15}})
 	for _, r in ipairs({{0.3, 25}, {0.24, -40}, {0.18, 70}}) do add(g, V(r[1] * s, 0.035 * s, 0.4 * s), c, rgb(255, 120, 20), {neon = true, rot = {0, 0, r[2]}}) end
+end
+-------------------------------------------------------------------------------- wings
+-- foldedWing: a bird wing lying flat on the body side. top = shoulder point ON the body side surface, side = +1/-1,
+-- len = how far back it reaches, h = how tall it is, cols = {shoulder coverts, middle feathers, long flight feathers}
+local function foldedWing(g, top, side, len, h, cols, o)
+	o = o or {}
+	add(g, V(0.22, h * 0.5, len * 0.5), top + V(side * 0.1, -h * 0.22, len * 0.22), cols[1], {rot = {-6, 0, 0}, studs = o.studs})
+	for i = 0, 2 do
+		add(g, V(0.2, h * 0.3, len * 0.42), top + V(side * 0.13, -h * (0.4 + 0.13 * i), len * (0.34 + 0.13 * i)), (i % 2 == 0) and cols[2] or cols[2]:Lerp(BLACK, 0.12), {rot = {10 + 5 * i, 0, 0}})
+	end
+	for i = 0, 2 do                                      -- long flight feathers stacked tight into one wingtip
+		add(g, V(0.17, h * 0.17, len * 0.45), top + V(side * 0.16, -h * (0.55 + 0.08 * i), len * (0.55 + 0.05 * i)), (i % 2 == 0) and cols[3] or cols[3]:Lerp(BLACK, 0.15), {rot = {14 + 3 * i, 0, 0}, neon = o.tipNeon})
+	end
+end
+-- membraneWing: bat / dragon wing. Arm bone to elbow and wrist, three finger bones fanning out, membrane stretched
+-- between the fingers and back to the body, thumb claw at the wrist. Returns the finger tips.
+local function membraneWing(g, sh, side, span, boneCol, memCol, o)
+	o = o or {}
+	local k = span / 3
+	local el = sh + V(side * span * 0.38, span * 0.28, span * 0.1)
+	local wr = sh + V(side * span * 0.62, span * 0.14, span * 0.15)
+	local tips = {
+		sh + V(side * span * 1.0, span * 0.42, span * 0.24),
+		sh + V(side * span * 1.05, -span * 0.08, span * 0.28),
+		sh + V(side * span * 0.82, -span * 0.45, span * 0.26),
+		sh + V(side * span * 0.42, -span * 0.5, span * 0.2),
+	}
+	local up = V(0, 0, 1)
+	-- membrane panels (slightly behind the bones)
+	local back = V(0, 0, 0.05 * k)
+	for i = 1, 3 do
+		local a, b = tips[i], tips[i + 1]
+		rod(g, wr + back, (a + b) / 2 + back, (a - b).Magnitude * 0.92, memCol, {h = 0.08 * k, up = up, extra = 0})
+	end
+	rod(g, sh + V(side * span * 0.15, -span * 0.05, span * 0.08) + back, (tips[4] + wr) / 2 + back, span * 0.42, memCol, {h = 0.08 * k, up = up, extra = 0})
+	rod(g, el + back, (tips[1] + wr) / 2 + back, (tips[1] - el).Magnitude * 0.45, memCol, {h = 0.08 * k, up = up, extra = 0})
+	-- bones
+	rod(g, sh, el, 0.26 * k, boneCol); rod(g, el, wr, 0.22 * k, boneCol)
+	for i = 1, 3 do rod(g, wr, tips[i], 0.13 * k, boneCol) end
+	add(g, V(0.18 * k, 0.3 * k, 0.18 * k), wr + V(0, 0.2 * k, -0.05 * k), o.claw or rgb(240, 230, 210), {shape = "wedge"})   -- thumb claw
+	if o.tipCol then for i = 1, 3 do add(g, V(0.26 * k, 0.26 * k, 0.26 * k), tips[i], o.tipCol, {neon = true, rot = {0, 0, 45}}) end end
+	return tips
+end
+-- featherWing: spread feathered wing raised up and out (Pegasus, Griffin). arm = leading edge colour,
+-- cols = {flight feathers, flight feathers alt, small coverts}
+local function featherWing(g, sh, side, span, armCol, cols)
+	local k = span / 3
+	local el = sh + V(side * span * 0.38, span * 0.32, span * 0.12)
+	local wr = sh + V(side * span * 0.72, span * 0.52, span * 0.26)
+	local tip = sh + V(side * span * 1.0, span * 0.6, span * 0.36)
+	rod(g, sh, el, 0.34 * k, armCol); rod(g, el, wr, 0.3 * k, armCol); rod(g, wr, tip, 0.24 * k, armCol)
+	local edge = (tip - sh).Unit
+	local backDir = V(0, -0.45, 1).Unit
+	local dir = (backDir - edge * edge:Dot(backDir)).Unit
+	local n = edge:Cross(dir).Unit
+	for i = 0, 8 do
+		local t = i / 8
+		local base = sh:Lerp(tip, 0.08 + t * 0.92)
+		local len = span * (0.3 + 0.38 * t)
+		rod(g, base, base + dir * len, span * 0.15, (i % 2 == 0) and cols[1] or cols[2], {h = 0.08 * k, up = n, extra = 0})
+	end
+	for i = 0, 6 do
+		local base = sh:Lerp(tip, 0.1 + (i / 6) * 0.8)
+		rod(g, base + n * 0.04 * k, base + n * 0.04 * k + dir * span * 0.18, span * 0.14, cols[3], {h = 0.08 * k, up = n, extra = 0})
+	end
+end
+-- beeWing: see-through rounded insect wing (two overlapping discs) with veins, root on the body top
+local function beeWing(g, root, side, size)
+	local tilt = side * 25
+	local c1 = root + V(side * size * 0.45, size * 0.15, -size * 0.05)
+	add(g, V(0.04, size, size), c1, rgb(220, 240, 255), {shape = "cyl", rot = {0, 0, 90 + tilt}, transp = 0.4})
+	add(g, V(0.04, size * 0.7, size * 0.7), c1 + V(side * size * 0.05, -size * 0.02, size * 0.45), rgb(220, 240, 255), {shape = "cyl", rot = {0, 0, 90 + tilt}, transp = 0.4})
+	rod(g, root, c1 + V(side * size * 0.4, size * 0.18, -size * 0.2), 0.04, rgb(120, 130, 150))
+	rod(g, root, c1 + V(side * size * 0.3, size * 0.12, size * 0.35), 0.035, rgb(120, 130, 150))
+end
+-------------------------------------------------------------------------------- hands and front paws
+-- hand: palm hanging below the wrist with four separate fingers and a thumb on the inner side.
+-- o.fist = clenched (row of knuckles on the front), o.knuckle = knuckle-walking (fingers curled under, on the ground)
+local function hand(g, wrist, side, s, col, o)
+	o = o or {}
+	local dark = col:Lerp(BLACK, 0.3)
+	local pc = wrist + V(0, -0.28 * s, 0)
+	add(g, V(0.62 * s, 0.56 * s, 0.5 * s), pc, col)
+	if o.fist then
+		for i = 0, 3 do add(g, V(0.14 * s, 0.22 * s, 0.2 * s), pc + V((-0.21 + 0.14 * i) * s, -0.1 * s, -0.3 * s), col) end
+		for i = 0, 2 do add(g, V(0.02 * s, 0.2 * s, 0.03 * s), pc + V((-0.14 + 0.14 * i) * s, -0.1 * s, -0.41 * s), dark) end
+		add(g, V(0.36 * s, 0.14 * s, 0.16 * s), pc + V(-side * 0.08 * s, 0.06 * s, -0.33 * s), col)         -- thumb across
+	elseif o.knuckle then
+		for i = 0, 3 do add(g, V(0.14 * s, 0.24 * s, 0.32 * s), pc + V((-0.21 + 0.14 * i) * s, -0.36 * s, -0.12 * s), col) end
+		for i = 0, 2 do add(g, V(0.02 * s, 0.22 * s, 0.03 * s), pc + V((-0.14 + 0.14 * i) * s, -0.36 * s, -0.29 * s), dark) end
+		add(g, V(0.16 * s, 0.28 * s, 0.2 * s), pc + V(-side * 0.36 * s, -0.12 * s, -0.08 * s), col, {rot = {0, 0, side * 20}})
+	else
+		for i = 0, 3 do
+			local len = (i == 0 or i == 3) and 0.28 or 0.34
+			add(g, V(0.13 * s, len * s, 0.16 * s), pc + V((-0.21 + 0.14 * i) * s, -(0.28 + len / 2 - 0.04) * s, -0.06 * s), col, {rot = {-12, 0, 0}})
+		end
+		add(g, V(0.16 * s, 0.3 * s, 0.18 * s), pc + V(-side * 0.36 * s, -0.12 * s, -0.12 * s), col, {rot = {0, 0, side * 28}})
+	end
+	return pc
+end
+-- toePaw: small front paw / foot block with two toe lines (centre c = paw centre)
+local function toePaw(g, c, w, h, d, col)
+	add(g, V(w, h, d), c, col)
+	for _, dx in ipairs({-0.17, 0.17}) do add(g, V(0.04, h * 0.7, 0.04), c + V(dx * w, -h * 0.05, -d / 2 - 0.02), col:Lerp(BLACK, 0.5)) end
 end

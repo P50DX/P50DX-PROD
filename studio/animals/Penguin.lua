@@ -14,7 +14,7 @@ for i = -3, 3 do add("Head", V(0.06, 0.34, 0.05), V(i * 0.26, 4.5, -0.97), rgb(2
 add("Head", V(0.7, 0.7, 0.7), V(0, 5.75, 0), W, {shape = "ball"})
 joint("Head", "Torso", V(0, 3.05, 0))
 both(function(sx, s)
-	add("Wing" .. s, V(0.3, 1.8, 1.0), V(sx * 1.2, 1.95, 0.1), ND, {studs = true, rot = {0, 0, sx * -12}}); joint("Wing" .. s, "Torso", V(sx * 1.05, 2.8, 0.1))
+	add("Wing" .. s, V(0.28, 1.1, 0.9), V(sx * 1.12, 2.3, 0.1), ND, {rot = {0, 0, sx * -12}}); add("Wing" .. s, V(0.24, 0.9, 0.6), V(sx * 1.27, 1.45, 0.15), ND, {rot = {0, 0, sx * -18}}); joint("Wing" .. s, "Torso", V(sx * 1.05, 2.8, 0.1))
 	add("Leg" .. s, V(0.6, 0.25, 0.9), V(sx * 0.5, 0.13, -0.35), OR); add("Leg" .. s, V(0.4, 0.35, 0.4), V(sx * 0.5, 0.4, -0.05), OR); joint("Leg" .. s, "Torso", V(sx * 0.5, 0.4, 0))
 end)
 return {name = "Penguin", parts = P, joints = J, hrpSize = V(2.2, 5.6, 2.2), hrpPos = V(0, 2.8, 0)}

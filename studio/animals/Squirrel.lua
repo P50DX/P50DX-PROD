@@ -10,7 +10,7 @@ eye("Head", 0.42, 3.55, -1.13, 0.38, "cute"); eye("Head", -0.42, 3.55, -1.13, 0.
 both(function(sx, s)
 	add("Ear" .. s, V(0.45, 0.6, 0.2), V(sx * 0.55, 4.3, -0.25), R, {rot = {0, 0, sx * -10}}); add("Ear" .. s, V(0.18, 0.3, 0.18), V(sx * 0.6, 4.72, -0.25), RD)  -- tufts
 	joint("Ear" .. s, "Head", V(sx * 0.5, 4.0, -0.25))
-	add("ArmF" .. s, V(0.38, 0.8, 0.4), V(sx * 0.5, 2.0, -0.95), R, {rot = {-35, 0, 0}}); add("ArmF" .. s, V(0.35, 0.25, 0.3), V(sx * 0.4, 1.75, -1.25), CR)
+	add("ArmF" .. s, V(0.38, 0.8, 0.4), V(sx * 0.5, 2.0, -0.95), R, {rot = {-35, 0, 0}}); hand("ArmF" .. s, V(sx * 0.42, 1.85, -1.25), sx, 0.5, CR)
 	joint("ArmF" .. s, "Torso", V(sx * 0.6, 2.3, -0.7))
 	add("LegB" .. s, V(0.7, 0.9, 1.1), V(sx * 0.75, 0.6, 0.35), R, {studs = true}); add("LegB" .. s, V(0.5, 0.15, 0.9), V(sx * 0.75, 0.07, -0.3), RD)
 	joint("LegB" .. s, "Torso", V(sx * 0.7, 1.0, 0.4))

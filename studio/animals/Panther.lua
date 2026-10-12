@@ -1,6 +1,6 @@
 -- Panther: sleek glossy black big cat, glowing green eyes, faint rosettes, long low tail, lean muscular shoulders.
 local B, BD, BL, GR = rgb(36, 34, 42), rgb(22, 20, 28), rgb(58, 56, 68), rgb(120, 255, 120)
-local k = quad{col = B, belly = BD, pawCol = BD, W = 2.0, H = 1.8, L = 4.2, legH = 1.7, legW = 0.65, head = {1.8, 1.5, 1.6}, neckUp = 0.4, tailN = 6, tailW0 = 0.5, tailW1 = 0.35, tailLen = 0.85, tailCols = {B, BD}, tailCurl = 4}
+local k = quad{claws = rgb(230, 230, 230), col = B, belly = BD, pawCol = BD, W = 2.0, H = 1.8, L = 4.2, legH = 1.7, legW = 0.65, head = {1.8, 1.5, 1.6}, neckUp = 0.4, tailN = 6, tailW0 = 0.5, tailW1 = 0.35, tailLen = 0.85, tailCols = {B, BD}, tailCurl = 4}
 local f, c = k.face, k.head
 both(function(sx)
 	local e = V(sx * 0.45, c.Y + 0.2, f)

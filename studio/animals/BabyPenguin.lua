@@ -9,8 +9,8 @@ both(function(sx) add("Torso", V(0.2, 0.1, 0.05), V(sx * 0.4, 1.25, -0.72), PINK
 add("Torso", V(0.5, 0.3, 0.5), V(0, 2.05, 0), G)
 joint("Torso", "Root", V(0, 1.1, 0))
 both(function(sx, s)
-	add("Wing" .. s, V(0.2, 0.9, 0.6), V(sx * 0.8, 1.05, 0), GD, {rot = {0, 0, sx * -12}}); joint("Wing" .. s, "Torso", V(sx * 0.72, 1.45, 0))
-	add("Leg" .. s, V(0.4, 0.15, 0.55), V(sx * 0.3, 0.08, -0.25), O); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.25, 0))
+	add("Wing" .. s, V(0.2, 0.6, 0.55), V(sx * 0.78, 1.25, 0), GD, {rot = {0, 0, sx * -12}}); add("Wing" .. s, V(0.18, 0.5, 0.4), V(sx * 0.87, 0.8, 0.05), GD, {rot = {0, 0, sx * -18}}); joint("Wing" .. s, "Torso", V(sx * 0.72, 1.45, 0))
+	add("Leg" .. s, V(0.4, 0.3, 0.55), V(sx * 0.3, 0.15, -0.25), O); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.25, 0))
 end)
 fish("Torso", V(0, 1.24, -0.93), 0.8, rgb(150, 190, 230))   -- food in the mouth
 return {name = "BabyPenguin", parts = P, joints = J, hrpSize = V(1.6, 2.4, 1.6), hrpPos = V(0, 1.2, 0)}

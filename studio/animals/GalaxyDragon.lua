@@ -3,8 +3,7 @@
 -- Galaxy Dragon (Space egg, Legendary premium): violet chibi dragon, glowing magenta eyes, crystal wing shards,
 -- star-filled body.
 both(function(sx, s)
-	local sh = V(sx * 0.55, k.by + 0.5, -0.3)
-	for i, o in ipairs({{0.35, 0.45, 0.35}, {0.75, 0.3, 0.35}, {0.55, -0.05, 0.35}}) do add("Wing" .. s, V(0.18, 0.45, 0.25), sh + V(sx * o[1], o[2], o[3]), i == 2 and rgb(120, 230, 255) or rgb(255, 120, 240), {neon = true, rot = {0, 45, sx * -30}}) end
+	for i = 1, 3 do add("Wing" .. s, V(0.16, 0.34, 0.16), WINGTIPS[s][i], i == 2 and rgb(120, 230, 255) or rgb(255, 120, 240), {neon = true, rot = {0, 45, sx * -30}}) end   -- crystal finger tips
 end)
 sprinkle("Torso", V(0, k.by, 0), V(1.3, 1.1, 1.7), 8, {rgb(255, 255, 255), rgb(150, 220, 255), rgb(255, 160, 240)}, 37)
 sprinkle("Head", k.head, V(1.6, 1.45, 1.35), 4, {rgb(255, 255, 255)}, 38)

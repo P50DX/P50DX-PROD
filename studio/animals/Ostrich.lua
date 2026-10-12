@@ -3,7 +3,7 @@ local BK, BKL, W, PK, PKD = rgb(40, 38, 44), rgb(70, 66, 76), rgb(246, 244, 238)
 add("Torso", V(2.4, 1.9, 3.0), V(0, 4.3, 0.2), BK, {studs = true})
 add("Torso", V(2.0, 0.8, 1.2), V(0, 4.6, 1.9), W, {studs = true, rot = {-25, 0, 0}})     -- tail plume
 joint("Torso", "Root", V(0, 4.2, 0.2))
-both(function(sx, s) add("Wing" .. s, V(0.3, 1.2, 2.2), V(sx * 1.3, 4.3, 0.5), BKL, {studs = true}); add("Wing" .. s, V(0.32, 0.5, 1.4), V(sx * 1.32, 3.75, 1.2), W); joint("Wing" .. s, "Torso", V(sx * 1.2, 4.8, 0)) end)
+both(function(sx, s) foldedWing("Wing" .. s, V(sx * 1.2, 4.9, -0.6), sx, 2.6, 1.3, {BK, BKL, W}); joint("Wing" .. s, "Torso", V(sx * 1.2, 4.8, 0)) end)
 -- neck: rods up and forward to the head
 local n0, n1, n2 = V(0, 4.9, -1.2), V(0, 6.3, -1.5), V(0, 7.6, -1.6)
 rod("Neck", n0, n1, 0.55, PK); rod("Neck", n1, n2, 0.48, PK)

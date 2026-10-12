@@ -11,10 +11,9 @@ add("Head", V(0.22, 0.25, 0.2), V(0, 2.35, -0.85), Y)
 both(function(sx) add("Head", V(0.3, 0.45, 0.3), V(sx * 0.6, 3.4, 0), B, {rot = {0, 0, sx * -20}}) end)
 joint("Head", "Torso", V(0, 2.0, 0))
 both(function(sx, s)
-	add("Wing" .. s, V(0.25, 1.4, 1.0), V(sx * 0.85, 1.2, 0.1), BD, {rot = {0, 0, sx * -8}})
-	add("Wing" .. s, V(0.26, 0.35, 0.9), V(sx * 0.9, 0.55, 0.15), TIP, {neon = TIPN})
+	foldedWing("Wing" .. s, V(sx * 0.75, 1.85, -0.35), sx, 1.3, 1.5, {B, BD, TIP}, {tipNeon = TIPN})
 	joint("Wing" .. s, "Torso", V(sx * 0.75, 1.8, 0))
-	add("Leg" .. s, V(0.35, 0.2, 0.45), V(sx * 0.3, 0.1, -0.2), Y); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.3, 0))
+	add("Leg" .. s, V(0.35, 0.32, 0.45), V(sx * 0.3, 0.16, -0.2), Y); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.3, 0))
 end)
 if not SKIP_FOOD then fish("Head", V(0, 2.16, -0.96), 0.8, rgb(190, 205, 220)) end   -- food in the mouth
 return {name = "IceOwl", parts = P, joints = J, hrpSize = V(1.8, 3.6, 1.6), hrpPos = V(0, 1.8, 0)}

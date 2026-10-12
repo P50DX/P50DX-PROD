@@ -13,7 +13,7 @@ both(function(sx)
 end)
 joint("Head", "Torso", V(0, 1.5, -0.6))
 both(function(sx, s)
-	add("Wing" .. s, V(0.9, 0.06, 0.7), V(sx * 0.6, 2.1, 0.2), rgb(220, 240, 255), {transp = 0.35, rot = {0, 0, sx * 25}})
+	beeWing("Wing" .. s, V(sx * 0.3, 2.05, 0.2), sx, 0.9)
 	joint("Wing" .. s, "Torso", V(sx * 0.3, 2.05, 0.2))
 end)
 sprig("Head", V(0, 1.33, -1.44), 0.8, rgb(80, 170, 60), rgb(255, 250, 250), "flower")   -- food in the mouth

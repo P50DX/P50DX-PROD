@@ -13,8 +13,7 @@ for i, p in ipairs({{0, 5.8, -0.6, 0.9, -10}, {0, 5.75, -0.1, 1.1, 20}, {0, 5.6,
 end
 joint("Head", "Torso", V(0, 4.0, -0.4))
 both(function(sx, s)
-	add("Wing" .. s, V(0.3, 1.9, 2.2), V(sx * 1.15, 3.1, 0.3), OR, {studs = true, rot = {10, 0, sx * -8}})
-	add("Wing" .. s, V(0.25, 0.7, 1.8), V(sx * 1.2, 1.9, 0.9), YE, {neon = true, rot = {25, 0, sx * -8}})
+	foldedWing("Wing" .. s, V(sx * 1.0, 3.85, -0.7), sx, 2.6, 2.0, {OR, RD, YE}, {tipNeon = true})
 	joint("Wing" .. s, "Torso", V(sx * 1.0, 3.8, 0))
 	rod("Leg" .. s, V(sx * 0.5, 2.0, 0.2), V(sx * 0.5, 0.25, 0.1), 0.3, GD)
 	add("Leg" .. s, V(0.7, 0.18, 0.8), V(sx * 0.5, 0.09, -0.1), GD)

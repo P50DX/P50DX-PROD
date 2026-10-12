@@ -8,9 +8,8 @@ joint("Torso", "Root", V(0, 1.7, 0))
 both(function(sx, s)
 	add("Ear" .. s, V(0.4, 0.6, 0.2), V(sx * 0.4, 2.55, 0), R, {rot = {0, 0, sx * -15}}); add("Ear" .. s, V(0.2, 0.4, 0.06), V(sx * 0.4, 2.52, -0.11), PINK, {rot = {0, 0, sx * -15}})
 	joint("Ear" .. s, "Torso", V(sx * 0.4, 2.3, 0))
-	add("Wing" .. s, V(1.2, 0.8, 0.12), V(sx * 1.2, 1.9, 0.1), RD, {rot = {0, 0, sx * 15}})
-	add("Wing" .. s, V(0.5, 0.5, 0.13), V(sx * 1.8, 2.1, 0.1), FL, {neon = true, rot = {0, 0, sx * 35}})
+	membraneWing("Wing" .. s, V(sx * 0.6, 1.9, 0.1), sx, 1.5, RD:Lerp(BLACK, 0.3), RD, {tipCol = FL})
 	joint("Wing" .. s, "Torso", V(sx * 0.6, 1.9, 0.1))
 end)
-dragonFruit("Torso", V(0, 1.45, -0.6), 0.8)   -- food in the mouth
+dragonFruit("Torso", V(0, 1.42, -0.5), 0.8)   -- food in the mouth
 return {name = "FireBat", parts = P, joints = J, hrpSize = V(1.6, 2.6, 1.4), hrpPos = V(0, 1.3, 0)}
