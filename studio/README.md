@@ -47,3 +47,24 @@ Every animal, pet and zookeeper is built from Roblox Parts in a brick style:
    3. Set `player.Character = clone` (or use it as `StarterCharacter`).
 4. Variants: `AnimalVariants.apply(model, "Golden")`.
 5. Pets: call `PetService.equip(player, petName)` from the egg-hatch code.
+
+## Worlds, obbies and the map (World 1: Zoo)
+
+Built entirely in Studio from Parts by the builder modules in `studio/map/` (installed in Studio under
+`ServerStorage.MapBuilder`). Rebuild with `tools/build_zoo_world.lua` (run it with execute_luau / the command bar).
+
+| File | What it builds |
+|---|---|
+| `map/MapKit.lua` | Part / text / effect helpers |
+| `map/Props.lua` | Trees, rocks, cliffs, lamps, fences, crates, banners, signposts, arches, distant hills |
+| `map/Stations.lua` | Stage gates, reward pads (yellow / purple x2 / green skip), speed upgrades, treadmills, eggs, Version Wheel, shops, leaderboards, portals, premium (Alpha) pads |
+| `map/Obby.lua` | Generic 10-stage course builder (jumps, ramps, climbs, movers, sweepers, crushers, blink + collapse platforms, cage walls, nets, rolling ball with safe pockets, Zookeeper chase routes) |
+| `map/ZooHub.lua`, `map/ZooObby.lua` | World 1 (hub layout from your overhead screenshot; 10 stages, chases on 3/5/9, ball on 6 + 10, nets on 8 + 10). No Version Wheel in the Zoo. |
+
+Runtime:
+- `src/ReplicatedStorage/ZooMapConfig.lua` - what the gates / pads / stations display, Product IDs (empty = free in TestMode).
+- `src/ServerScriptService/ObbyService.server.lua` - gates, checkpoints, rewards, skip, Zookeeper chase AI, prompts.
+  Your systems connect through `ServerStorage.ZooMapHooks`: `GrantReward`, `StageReached`, `Interact`,
+  and you fire `ProductPurchased(player, productId)` from your own ProcessReceipt.
+- `src/StarterPlayerScripts/ObbyClient.client.lua` - hazard animation (server-clock synced), falls/hits -> checkpoint,
+  HUD (1-10 bar, banners, chase warnings, SAFE!), hold-to-interact prompts, world lighting, ambience.
