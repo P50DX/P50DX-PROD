@@ -1,0 +1,38 @@
+-- Fire Drake: two-legged orange wyvern, long neck, horned head with glowing eyes and teeth, bat wings,
+-- tail ending in a flame.
+local O, OD, BE, HN, FL = rgb(236, 110, 30), rgb(170, 60, 20), rgb(255, 210, 110), rgb(250, 236, 200), rgb(255, 170, 30)
+add("Torso", V(2.2, 2.2, 3.0), V(0, 3.4, 0.2), O, {studs = true})
+add("Torso", V(1.8, 0.3, 2.6), V(0, 2.25, 0.2), BE)
+for i = 0, 3 do add("Torso", V(0.25, 0.5, 0.45), V(0, 4.7, -0.8 + i * 0.6), HN, {shape = "wedge", rot = {0, 180, 0}}) end
+joint("Torso", "Root", V(0, 3.4, 0.2))
+rod("Head", V(0, 4.0, -1.0), V(0, 5.6, -1.9), 1.0, O)
+add("Head", V(1.6, 1.3, 1.8), V(0, 6.0, -2.3), O, {studs = true})
+add("Head", V(1.1, 0.7, 1.0), V(0, 5.75, -3.6), O, {studs = true})
+add("Head", V(1.0, 0.25, 0.9), V(0, 5.3, -3.55), BE)
+add("Head", V(0.9, 0.08, 0.06), V(0, 5.5, -4.12), BLACK)
+for _, x in ipairs({-0.3, 0, 0.3}) do add("Head", V(0.12, 0.2, 0.06), V(x, 5.4, -4.14), WHITE, {shape = "wedge", rot = {0, 0, 180}}) end
+both(function(sx)
+	local e = V(sx * 0.45, 6.35, -3.22)
+	add("Head", V(0.45, 0.32, 0.06), e, BLACK); add("Head", V(0.35, 0.22, 0.06), e + V(0, 0, -0.02), FL, {neon = true}); add("Head", V(0.08, 0.22, 0.06), e + V(0, 0, -0.04), BLACK)
+	add("Head", V(0.6, 0.18, 0.25), e + V(0, 0.25, 0.05), OD, {rot = {0, 0, sx * 20}})
+	add("Head", V(0.16, 0.1, 0.06), V(sx * 0.25, 5.95, -4.12), BLACK)
+	rod("Head", V(sx * 0.5, 6.6, -1.8), V(sx * 0.75, 7.2, -0.9), 0.3, HN)
+end)
+joint("Head", "Torso", V(0, 4.0, -1.0))
+both(function(sx, s)
+	local sh = V(sx * 0.9, 4.3, -0.6)
+	local el, tip = sh + V(sx * 1.7, 1.3, 0.5), sh + V(sx * 3.4, 1.7, 1.3)
+	rod("Wing" .. s, sh, el, 0.3, OD); rod("Wing" .. s, el, tip, 0.22, OD)
+	add("Wing" .. s, V(1.7, 1.8, 0.12), (sh + el) / 2 + V(0, -0.6, 0.8), rgb(200, 80, 30), {rot = {-15, 0, sx * -20}})
+	add("Wing" .. s, V(1.8, 2.0, 0.12), (el + tip) / 2 + V(0, -0.8, 0.8), rgb(200, 80, 30), {rot = {-15, 0, sx * -10}})
+	joint("Wing" .. s, "Torso", sh)
+	add("Leg" .. s, V(0.9, 2.7, 1.0), V(sx * 0.85, 1.5, 0.6), O, {studs = true})
+	add("Leg" .. s, V(1.0, 0.35, 1.4), V(sx * 0.85, 0.18, 0.35), OD)
+	for _, dx in ipairs({-0.3, 0, 0.3}) do add("Leg" .. s, V(0.14, 0.16, 0.25), V(sx * 0.85 + dx, 0.1, -0.45), HN) end
+	joint("Leg" .. s, "Torso", V(sx * 0.85, 2.8, 0.6))
+end)
+tail(5, V(0, 3.5, 1.7), 0.9, 0.35, 1.0, {O, OD}, -6)
+local last = P[#P][3]; local d = V(0, math.sin(math.rad(-30)), math.cos(math.rad(-30)))
+add("Tail5", V(0.6, 0.6, 0.6), last + d * 0.7, FL, {neon = true, rot = {0, 45, 0}})
+add("Tail5", V(0.35, 0.8, 0.35), last + d * 0.7 + V(0, 0.45, 0), rgb(255, 230, 90), {neon = true})
+return {name = "FireDrake", parts = P, joints = J, hrpSize = V(2.6, 7, 4), hrpPos = V(0, 3.5, -0.5)}
