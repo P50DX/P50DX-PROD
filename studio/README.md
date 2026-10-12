@@ -27,6 +27,12 @@ Every animal, pet and zookeeper is built from Roblox Parts in a brick style:
 - **StarterPlayer.StarterCharacter:** a playable Cheetah, for testing.
 - **ServerScriptService.PetTest:** a test-only script that equips 3 pets. Delete it for the real game.
 
+## Testing animals yourself (Change Animal button)
+- `ServerScriptService.AnimalSwitchService` + `StarterPlayerScripts.AnimalPicker`: press **Change Animal** (bottom-left)
+  in Play mode, pick a tab (Animals / Pets / Zookeepers), a version (Normal, Golden, ...) and click a thumbnail.
+  You turn into it on the spot; the pick is kept when you respawn. Remove both scripts before publishing if players
+  shouldn't have it.
+
 ## Moving it into the real Zoo Escape place
 
 1. In the test place, select these and right-click → Save to File (`.rbxm`):
