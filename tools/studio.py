@@ -70,8 +70,15 @@ if __name__ == "__main__":
         args = json.loads(sys.argv[4]) if len(sys.argv) > 4 else {}
         res = rpc(url, "tools/call", {"name": sys.argv[3], "arguments": args})
         if "result" in res:
-            for c in res["result"].get("content", []):
-                print(c.get("text", c))
+            for i, c in enumerate(res["result"].get("content", [])):
+                if c.get("type") == "image":            # screenshots: save to a file
+                    import base64
+                    ext = c.get("mimeType", "image/png").split("/")[-1]
+                    path = f"/tmp/studio_capture_{os.getpid()}_{i}.{ext}"
+                    open(path, "wb").write(base64.b64decode(c["data"]))
+                    print("IMAGE", path)
+                else:
+                    print(c.get("text", c))
             if res["result"].get("isError"):
                 sys.exit(1)
         else:
