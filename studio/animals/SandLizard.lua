@@ -5,5 +5,5 @@ face(k, {eyeS = 0.36, eyeY = 0.25, eyeX = 0.28})
 add("Head", V(0.6, 0.06, 0.05), V(0, k.head.Y - 0.2, k.face - 0.02), BLACK)
 both(function(sx) add("Head", V(0.25, 0.1, 0.05), V(sx * 0.48, k.head.Y - 0.12, k.face - 0.02), PINK) end)
 for _, p in ipairs({{0.3, -0.5}, {-0.3, -0.1}, {0.25, 0.4}, {-0.2, 0.75}}) do add("Torso", V(0.28, 0.06, 0.28), V(p[1], k.by + 0.37, p[2]), SP) end
-if not SKIP_FOOD then fruit("Head", V(0, k.head.Y - 0.22, k.face), 0.9, rgb(236, 80, 140), {spots = rgb(40, 30, 30)}) end   -- food in the mouth
+if not SKIP_FOOD then cactusFruit("Head", V(0, k.head.Y - 0.22, k.face), 0.9) end   -- food in the mouth
 return {name = "SandLizard", parts = P, joints = J, hrpSize = V(1.6, 1.6, 3), hrpPos = V(0, 0.8, 0)}

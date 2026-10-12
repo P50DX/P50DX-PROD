@@ -8,5 +8,5 @@ eye("Torso", 0.38, 0.85, -0.93, 0.4, "cute"); eye("Torso", -0.38, 0.85, -0.93, 0
 add("Torso", V(0.4, 0.08, 0.05), V(0, 0.45, -0.93), CR)
 both(function(sx) add("Torso", V(0.3, 0.12, 0.05), V(sx * 0.62, 0.55, -0.93), rgb(255, 90, 110)) end)
 joint("Torso", "Root", V(0, 0.75, 0))
-crystal("Torso", V(0, 0.45, -0.95), 1, rgb(60, 40, 40), {cracks = rgb(255, 120, 20)})   -- food in the mouth
+lavaRock("Torso", V(0, 0.45, -0.95), 1)   -- food in the mouth
 return {name = "MagmaSlime", parts = P, joints = J, hrpSize = V(1.8, 1.6, 1.8), hrpPos = V(0, 0.8, 0)}

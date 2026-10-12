@@ -16,5 +16,5 @@ both(function(sx, s)
 	joint("Wing" .. s, "Torso", V(sx * 0.75, 1.8, 0))
 	add("Leg" .. s, V(0.35, 0.2, 0.45), V(sx * 0.3, 0.1, -0.2), Y); joint("Leg" .. s, "Torso", V(sx * 0.3, 0.3, 0))
 end)
-if not SKIP_FOOD then fish("Head", V(0, 2.3, -0.96), 0.9, rgb(190, 205, 220)) end   -- food in the mouth
+if not SKIP_FOOD then fish("Head", V(0, 2.16, -0.96), 0.8, rgb(190, 205, 220)) end   -- food in the mouth
 return {name = "IceOwl", parts = P, joints = J, hrpSize = V(1.8, 3.6, 1.6), hrpPos = V(0, 1.8, 0)}
