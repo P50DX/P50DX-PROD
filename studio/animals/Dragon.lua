@@ -21,7 +21,7 @@ both(function(sx)
 end)
 -- back spikes
 for i = 0, 6 do add("Torso", V(0.3, 0.55 - math.abs(i - 3) * 0.05, 0.5), V(0, k.by + 1.45, -1.8 + i * 0.6), HN, {shape = "wedge", rot = {0, 180, 0}}) end
-for i = 1, 6 do local t = P[#P]; end
+
 -- wings: arm bone (rods) + two membrane panels, attached at the shoulders
 both(function(sx, s)
 	local sh = V(sx * 1.1, k.by + 1.1, -1.0)
@@ -37,5 +37,6 @@ for _, leg in ipairs({{"FL", 1, -1}, {"FR", -1, -1}, {"BL", 1, 1}, {"BR", -1, 1}
 	local x, z = leg[2] * (2.6 / 2 - 0.425), leg[3] * (4.4 / 2 - 0.6)
 	for _, dx in ipairs({-0.25, 0, 0.25}) do add("Leg" .. leg[1], V(0.14, 0.18, 0.25), V(x + dx, 0.1, z - 0.7), HN) end
 end
-add("Tail6", V(0.9, 0.2, 0.9), V(0, 4.0, 4.4 / 2 + 5.8), HN, {shape = "wedge", rot = {90, 0, 0}})   -- tail spade
+local tt = tipOf("Tail6")                                                                       -- tail spade on the tip
+add("Tail6", V(1.0, 0.18, 0.7), tt + V(0, 0, 0.25), HN, {rot = {0, 45, 0}}); add("Tail6", V(0.5, 0.2, 0.5), tt, HN)
 return {name = "Dragon", parts = P, joints = J, hrpSize = V(3, 5.6, 5), hrpPos = V(0, 2.8, 0)}

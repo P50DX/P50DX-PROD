@@ -9,8 +9,8 @@ add("Head", V(2.4, 0.6, 1.0), V(0, c.Y + 1.55, c.Z + 0.6), MND, {studs = true})
 both(function(sx) add("Head", V(0.6, 2.2, 1.0), V(sx * 1.65, c.Y - 0.2, c.Z + 0.6), MND, {studs = true}) end)
 add("Torso", V(2.3, 1.6, 0.8), V(0, k.by + 0.1, -2.15), MN, {studs = true})
 -- crown sitting on the mane top
-add("Head", V(1.6, 0.4, 1.2), V(0, c.Y + 2.05, c.Z + 0.45), CRW, {mat = Enum.Material.Metal})
-for _, x in ipairs({-0.6, 0, 0.6}) do add("Head", V(0.35, 0.5, 0.35), V(x, c.Y + 2.45, c.Z + 0.0), CRW, {mat = Enum.Material.Metal}); add("Head", V(0.2, 0.2, 0.2), V(x, c.Y + 2.75, c.Z + 0.0), rgb(220, 40, 60), {mat = Enum.Material.Glass}) end
+crown("Head", V(0, c.Y + 1.85, c.Z + 0.5), 1.5, CRW, rgb(220, 40, 60), {d = 1.0})
 ears(k, "round", G, GD, 0.45, 0.4, 0.38)
-add("Tail5", V(0.55, 0.6, 0.6), V(0, k.by + 1.4, 4.2 / 2 + 4.0), MND)                         -- tail tuft (approx end)
+local tt = tipOf("Tail5")
+add("Tail5", V(0.6, 0.6, 0.6), tt, MND); add("Tail5", V(0.4, 0.4, 0.4), tt + V(0, 0.1, 0.25), MND)   -- tail tuft on the tip
 return {name = "Lion", parts = P, joints = J, hrpSize = V(2.6, 5, 4.6), hrpPos = V(0, 2.5, 0)}

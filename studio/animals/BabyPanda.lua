@@ -11,5 +11,8 @@ for _, leg in ipairs({{"FL", 1, -1}, {"FR", -1, -1}, {"BL", 1, 1}, {"BR", -1, 1}
 	local x, z = leg[2] * (1.3 / 2 - 0.21), leg[3] * (1.7 / 2 - 0.29)
 	add("Leg" .. leg[1], V(0.44, 0.82, 0.48), V(x, 0.4, z), B)
 end
-rod("LegFL", V(0.5, 0.2, -1.2), V(0.6, 1.8, -1.0), 0.16, BB); add("LegFL", V(0.3, 0.12, 0.08), V(0.65, 1.5, -1.05), rgb(80, 160, 60))
+-- bamboo stalk held out at the side: green segments with node rings, two leaves at the top, paw wrapped round it
+for i = 0, 4 do add("LegFL", V(0.22, 0.5, 0.22), V(1.2, 0.27 + i * 0.5, -1.0), (i % 2 == 0) and BB or rgb(126, 204, 92)); add("LegFL", V(0.28, 0.07, 0.28), V(1.2, 0.52 + i * 0.5, -1.0), rgb(80, 150, 56)) end
+add("LegFL", V(0.7, 0.07, 0.26), V(1.5, 2.5, -1.0), rgb(80, 170, 60), {rot = {0, 0, 30}}); add("LegFL", V(0.6, 0.07, 0.22), V(0.92, 2.35, -1.0), rgb(80, 170, 60), {rot = {0, 0, -35}})
+add("LegFL", V(0.75, 0.3, 0.36), V(0.85, 0.6, -0.95), B)                                                 -- paw holding it
 return {name = "BabyPanda", parts = P, joints = J, hrpSize = V(1.8, 2.8, 2.4), hrpPos = V(0, 1.4, 0)}

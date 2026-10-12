@@ -6,7 +6,7 @@ add("Head", V(0.45, 0.4, 0.3), V(0, mc.Y + 0.1, mc.Z - 0.48), rgb(240, 40, 40), 
 ears(k, "round", B, CR, 0.5, 0.45, 0.5)
 add("Torso", V(1.6, 1.4, 1.0), V(0, k.by + 0.5, -1.9), CR, {studs = true})                   -- neck mane
 add("Torso", V(1.5, 0.22, 0.9), V(0, k.by + 0.8, -2.05), rgb(200, 30, 36), {rot = {-30, 0, 0}})
-add("Torso", V(0.4, 0.4, 0.4), V(0, k.by + 0.5, -2.5), rgb(250, 200, 40))                   -- bell
+bell("Torso", V(0, k.by + 0.35, -2.45), 0.55)                                              -- bell on the collar
 both(function(sx)
 	local t = V(sx * 0.4, k.head.Y + k.hh / 2, k.head.Z + 0.2)
 	local a1, a2, a3 = t + V(sx * 0.4, 0.8, 0.3), t + V(sx * 0.8, 1.7, 0.5), t + V(sx * 0.7, 2.5, 0.9)

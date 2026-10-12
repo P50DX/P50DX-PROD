@@ -3,7 +3,10 @@
 local C, CL, G, BL = rgb(222, 186, 126), rgb(246, 226, 186), rgb(255, 200, 50), rgb(40, 80, 180)
 add("Torso", V(1.2, 1.4, 1.3), V(0, 0.9, 0.15), C, {studs = true})
 add("Torso", V(0.9, 0.9, 0.1), V(0, 0.9, -0.52), CL)
-add("Torso", V(1.25, 0.18, 0.9), V(0, 1.55, -0.1), G); add("Torso", V(0.2, 0.2, 0.06), V(0, 1.45, -0.58), rgb(60, 220, 255), {neon = true})
+-- broad Egyptian collar: gold band round the neck + layered gold / blue rows on the chest, gem at the bottom
+add("Torso", V(1.28, 0.2, 1.38), V(0, 1.5, 0.15), G)
+for i, r in ipairs({{1.05, 1.38, G}, {0.92, 1.24, BL}, {0.78, 1.11, G}, {0.62, 0.99, BL}}) do add("Torso", V(r[1], 0.14, 0.08), V(0, r[2], -0.6), r[3]) end
+add("Torso", V(0.2, 0.2, 0.08), V(0, 0.86, -0.62), rgb(60, 220, 255), {neon = true, rot = {0, 0, 45}})
 joint("Torso", "Root", V(0, 0.9, 0))
 both(function(sx, s)
 	add("Leg" .. s, V(0.36, 1.0, 0.38), V(sx * 0.35, 0.5, -0.45), C); add("Leg" .. s, V(0.4, 0.2, 0.5), V(sx * 0.35, 0.1, -0.55), CL)

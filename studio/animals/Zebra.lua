@@ -13,7 +13,6 @@ for _, dy in ipairs({0.45, 0.0}) do add("Head", V(1.36, 0.18, 1.6), V(0, k.head.
 for i = 0, 4 do add("Head", V(0.3, 0.55, 0.5), V(0, k.head.Y + 0.75 - i * 0.5, k.head.Z + 0.9 + i * 0.38), (i % 2 == 0) and BK or W) end   -- mane
 -- collar band + bowtie (sits on the band at the throat, no floating)
 local nb = V(0, k.by + 0.95, -2.0)
-add("Torso", V(1.25, 0.25, 1.0), nb, BTIE, {rot = {-35, 0, 0}})
-add("Torso", V(0.7, 0.45, 0.25), nb + V(0.35, -0.15, -0.5), BTIE, {rot = {0, 0, 15}}); add("Torso", V(0.7, 0.45, 0.25), nb + V(-0.35, -0.15, -0.5), BTIE, {rot = {0, 0, -15}})
-add("Torso", V(0.25, 0.25, 0.3), nb + V(0, -0.15, -0.52), rgb(160, 20, 30))
+add("Torso", V(1.3, 0.28, 1.05), nb, BTIE, {rot = {-35, 0, 0}})                               -- collar band
+bowtie("Torso", nb + V(0, -0.2, -0.62), 1.1, BTIE)
 return {name = "Zebra", parts = P, joints = J, hrpSize = V(2.2, 5, 4.4), hrpPos = V(0, 2.5, 0)}

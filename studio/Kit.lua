@@ -119,3 +119,92 @@ local function cute(k, mcol, ncol, o)
 	both(function(sx) add("Head", V(0.3, 0.12, 0.05), V(sx * 0.56, k.head.Y - 0.22, k.face - 0.02), PINK) end)
 	return mc
 end
+-------------------------------------------------------------------------------- accessories (fitted, nothing floats)
+local GOLD, GOLDD = rgb(255, 200, 40), rgb(206, 140, 20)
+-- tipOf: the far end of a tail segment group built by tail() (so tufts / spades / flames sit exactly on the tip)
+local function tipOf(g)
+	for i = #P, 1, -1 do
+		local p = P[i]
+		if p[1] == g and p[5] and p[5].rot then
+			local a = -math.rad(p[5].rot[1])
+			return p[3] + V(0, math.sin(a), math.cos(a)) * (p[2].Z / 2), a
+		end
+	end
+	error("no tail group " .. g)
+end
+-- crown: base = centre of its bottom (put it on the top surface). w = width. Band with rims, 8 diamond points with
+-- pearl tips, a big front gem and side gems.
+local function crown(g, base, w, col, gem, o)
+	o = o or {}
+	col = col or GOLD; gem = gem or rgb(230, 40, 70)
+	local dark = o.dark or col:Lerp(BLACK, 0.3)
+	local d = o.d or w * 0.85
+	local h = w * 0.3
+	add(g, V(w, h, d), base + V(0, h / 2 - 0.03, 0), col, {mat = Enum.Material.Metal})
+	add(g, V(w + 0.08, h * 0.22, d + 0.08), base + V(0, h * 0.11, 0), dark, {mat = Enum.Material.Metal})
+	add(g, V(w + 0.06, h * 0.16, d + 0.06), base + V(0, h - 0.06, 0), dark, {mat = Enum.Material.Metal})
+	local pts = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, -1}, {0, 1}, {1, 0}, {-1, 0}}
+	for i, q in ipairs(pts) do
+		local tall = (q[1] == 0 and q[2] == -1) and 1.5 or ((q[1] == 0 or q[2] == 0) and 1.15 or 0.9)
+		local ps = w * 0.2
+		local p = base + V(q[1] * (w / 2 - ps * 0.45), h + ps * tall * 0.5 - 0.06, q[2] * (d / 2 - ps * 0.45))
+		add(g, V(ps, ps * tall, ps), p, col, {mat = Enum.Material.Metal, rot = {0, 45, 0}})
+		add(g, V(ps * 0.55, ps * 0.55, ps * 0.55), p + V(0, ps * tall * 0.5 + ps * 0.15, 0), o.tip or WHITE, {shape = "ball", neon = o.neonTips})
+	end
+	add(g, V(w * 0.22, w * 0.22, 0.08), base + V(0, h * 0.55, -d / 2 - 0.03), gem, {rot = {0, 0, 45}, neon = o.neonGem})
+	both(function(sx)
+		add(g, V(w * 0.12, w * 0.12, 0.07), base + V(sx * w * 0.3, h * 0.55, -d / 2 - 0.03), o.gem2 or rgb(60, 140, 255), {rot = {0, 0, 45}})
+		add(g, V(0.07, w * 0.14, w * 0.14), base + V(sx * (w / 2 + 0.03), h * 0.55, 0), gem, {rot = {45, 0, 0}})
+	end)
+end
+-- collar: a band wrapped round a body block (centre c, block width w / depth d), buckle and a hanging round tag
+local function collar(g, c, w, d, col, tagCol, o)
+	o = o or {}
+	local hb = o.h or 0.3
+	add(g, V(w + 0.12, hb, d + 0.12), c, col)
+	add(g, V(w + 0.14, hb * 0.25, d + 0.14), c + V(0, hb * 0.32, 0), col:Lerp(WHITE, 0.25))
+	add(g, V(0.08, hb * 1.1, 0.3), c + V(w / 2 + 0.09, 0, 0), rgb(220, 220, 228))             -- buckle
+	if tagCol then
+		local f = c + V(0, 0, -d / 2 - 0.08)
+		add(g, V(0.14, 0.2, 0.14), f + V(0, -hb / 2 - 0.05, 0), rgb(220, 220, 228))           -- ring
+		add(g, V(0.08, 0.42, 0.42), f + V(0, -hb / 2 - 0.32, -0.02), tagCol, {shape = "cyl", rot = {0, 90, 0}, mat = Enum.Material.Metal})
+		add(g, V(0.06, 0.18, 0.18), f + V(0, -hb / 2 - 0.32, -0.07), tagCol:Lerp(WHITE, 0.4), {shape = "cyl", rot = {0, 90, 0}})
+	end
+end
+-- bowtie at p (its back touches whatever is behind it), s = overall width
+local function bowtie(g, p, s, col)
+	local dark = col:Lerp(BLACK, 0.35)
+	add(g, V(s * 0.24, s * 0.28, s * 0.22), p + V(0, 0, -s * 0.05), col)                     -- knot
+	add(g, V(s * 0.25, s * 0.06, s * 0.05), p + V(0, 0, -s * 0.17), dark)
+	both(function(sx)
+		add(g, V(s * 0.3, s * 0.32, s * 0.16), p + V(sx * s * 0.25, 0, 0), col)               -- inner wing
+		add(g, V(s * 0.16, s * 0.5, s * 0.18), p + V(sx * s * 0.42, 0, 0), col)               -- flared end
+		add(g, V(s * 0.04, s * 0.36, s * 0.05), p + V(sx * s * 0.3, 0, -s * 0.09), dark)      -- fold line
+		add(g, V(s * 0.04, s * 0.26, s * 0.05), p + V(sx * s * 0.42, 0, -s * 0.1), dark)
+	end)
+end
+-- scarf: wrapped band (block w x d at c) + knot on one side + two striped tails hanging down the chest
+local function scarf(g, c, w, d, col, stripe, len)
+	len = len or 0.9
+	add(g, V(w + 0.16, 0.38, d + 0.16), c, col)
+	add(g, V(w + 0.18, 0.08, d + 0.18), c, stripe)
+	local k = c + V(w * 0.28, -0.12, -d / 2 - 0.12)
+	add(g, V(0.36, 0.32, 0.26), k, col)
+	for i, dx in ipairs({-0.1, 0.14}) do
+		local top = k + V(dx, -0.12, -0.02 - i * 0.03)
+		add(g, V(0.26, len, 0.1), top + V(0, -len / 2, 0), col, {rot = {0, 0, (i == 1) and 6 or -8}})
+		add(g, V(0.27, 0.08, 0.11), top + V(0, -len * 0.35, 0), stripe, {rot = {0, 0, (i == 1) and 6 or -8}})
+		add(g, V(0.27, 0.08, 0.11), top + V(0, -len * 0.7, 0), stripe, {rot = {0, 0, (i == 1) and 6 or -8}})
+		for f = -1, 1 do add(g, V(0.05, 0.12, 0.05), top + V(f * 0.08, -len - 0.04, 0), stripe) end
+	end
+end
+-- bell hanging under p (p = point on the strap): loop, dome, flared rim, slot, clapper
+local function bell(g, p, s, col)
+	col = col or GOLD
+	add(g, V(s * 0.2, s * 0.25, s * 0.2), p + V(0, -s * 0.1, 0), col:Lerp(BLACK, 0.3))
+	add(g, V(s * 0.55, s * 0.55, s * 0.55), p + V(0, -s * 0.4, 0), col, {shape = "ball", mat = Enum.Material.Metal})
+	add(g, V(s * 0.7, s * 0.4, s * 0.7), p + V(0, -s * 0.68, 0), col, {mat = Enum.Material.Metal})
+	add(g, V(s * 0.86, s * 0.12, s * 0.86), p + V(0, -s * 0.9, 0), col:Lerp(BLACK, 0.2), {mat = Enum.Material.Metal})
+	add(g, V(s * 0.5, s * 0.06, 0.04), p + V(0, -s * 0.72, -s * 0.36), col:Lerp(BLACK, 0.5))
+	add(g, V(s * 0.2, s * 0.2, s * 0.2), p + V(0, -s * 1.0, 0), col:Lerp(BLACK, 0.4), {shape = "ball"})
+end

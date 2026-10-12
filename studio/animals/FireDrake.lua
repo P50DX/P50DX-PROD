@@ -32,7 +32,7 @@ both(function(sx, s)
 	joint("Leg" .. s, "Torso", V(sx * 0.85, 2.8, 0.6))
 end)
 tail(5, V(0, 3.5, 1.7), 0.9, 0.35, 1.0, {O, OD}, -6)
-local last = P[#P][3]; local d = V(0, math.sin(math.rad(-30)), math.cos(math.rad(-30)))
+local last, ta = tipOf("Tail5"); local d = V(0, math.sin(ta), math.cos(ta)); last = last - d * 0.5
 add("Tail5", V(0.6, 0.6, 0.6), last + d * 0.7, FL, {neon = true, rot = {0, 45, 0}})
 add("Tail5", V(0.35, 0.8, 0.35), last + d * 0.7 + V(0, 0.45, 0), rgb(255, 230, 90), {neon = true})
 return {name = "FireDrake", parts = P, joints = J, hrpSize = V(2.6, 7, 4), hrpPos = V(0, 3.5, -0.5)}

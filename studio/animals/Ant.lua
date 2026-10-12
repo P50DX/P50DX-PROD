@@ -18,9 +18,10 @@ both(function(sx, s)
 	joint("Ant" .. s, "Head", V(sx * 0.3, 2.55, -1.4))
 	for i, z in ipairs({-0.45, 0.05, 0.55}) do
 		local g = "Leg" .. i .. s
-		add(g, V(1.0, 0.16, 0.16), V(sx * 0.9, 1.75, z), RD, {rot = {0, (i - 2) * sx * -25, sx * 35}})
-		add(g, V(0.14, 1.35, 0.14), V(sx * 1.38, 0.72, z + (i - 2) * 0.35), RD, {rot = {(i - 2) * -12, 0, sx * -8}})
-		add(g, V(0.25, 0.1, 0.3), V(sx * 1.45, 0.05, z + (i - 2) * 0.5), RD)
+		local hip, knee, foot = V(sx * 0.35, 1.6, z), V(sx * 1.25, 2.05, z + (i - 2) * 0.3), V(sx * 1.5, 0.1, z + (i - 2) * 0.55)
+		rod(g, hip, knee, 0.16, RD); rod(g, knee, foot, 0.14, RD)
+		add(g, V(0.22, 0.22, 0.22), knee, RD)
+		add(g, V(0.26, 0.1, 0.34), foot + V(0, -0.04, -0.06), RD)
 		joint(g, "Torso", V(sx * 0.45, 1.6, z))
 	end
 end)

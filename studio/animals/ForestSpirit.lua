@@ -3,7 +3,7 @@
 local G, GL, WD, LF, LT = rgb(110, 230, 150), rgb(190, 255, 210), rgb(130, 90, 56), rgb(70, 190, 80), rgb(230, 255, 140)
 add("Torso", V(1.2, 1.3, 1.1), V(0, 1.75, 0), G, {transp = 0.25})
 for i = 0, 5 do add("Torso", V(0.5, 0.15, 0.6), V(math.cos(math.rad(i * 60)) * 0.5, 1.05, math.sin(math.rad(i * 60)) * 0.5), LF, {rot = {0, -i * 60, -20}}) end
-for i = 0, 3 do add("Torso", V(0.22, 0.22, 0.22), V(math.cos(math.rad(i * 90 + 20)) * 1.2, 1.6 + (i % 2) * 0.6, math.sin(math.rad(i * 90 + 20)) * 1.2), LT, {neon = true}) end
+
 joint("Torso", "Root", V(0, 1.75, 0))
 add("Head", V(1.5, 1.3, 1.3), V(0, 3.0, -0.1), G, {transp = 0.15})
 both(function(sx)

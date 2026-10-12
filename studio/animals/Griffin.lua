@@ -19,5 +19,5 @@ both(function(sx, s)
 	joint("Wing" .. s, "Torso", sh)
 end)
 add("Torso", V(1.8, 1.6, 0.3), V(0, k.by + 0.2, -4.2 * 0.2 - 4.2 * 0.55 / 2 - 0.1), WH)             -- chest feathers
-add("Tail4", V(0.55, 0.55, 0.55), V(0, 0, 0) + P[#P][3] + V(0, 0.2, 0.35), BR)
+add("Tail4", V(0.55, 0.55, 0.55), tipOf("Tail4"), BR)
 return {name = "Griffin", parts = P, joints = J, hrpSize = V(2.6, 5.4, 4.6), hrpPos = V(0, 2.7, 0)}

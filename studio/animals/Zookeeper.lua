@@ -26,11 +26,11 @@ both(function(sx, s)
 	joint("Leg" .. s, "Torso", V(sx * 0.5, 2.4, 0))
 end)
 local h = V(-1.42, 2.5, -0.3)
-rod("ArmR", h + V(0, -0.2, 0.4), h + V(0, 2.6, -1.4), 0.15, rgb(180, 140, 90))
 local hc = h + V(0, 3.1, -1.7)
+rod("ArmR", h + V(0, -0.2, 0.4), hc + V(0, -0.65, 0), 0.15, rgb(180, 140, 90))
 for i = 0, 7 do
 	local a = math.rad(i * 45)
-	add("ArmR", V(0.12, 0.12, 0.45), hc + V(math.cos(a) * 0.65, math.sin(a) * 0.65, 0), rgb(200, 200, 210), {rot = {0, 90, i * 45}})
+	add("ArmR", V(0.55, 0.12, 0.12), hc + V(math.cos(a) * 0.65, math.sin(a) * 0.65, 0), rgb(200, 200, 210), {rot = {0, 0, i * 45 + 90}})
 end
-add("ArmR", V(1.2, 1.2, 0.05), hc + V(0, 0, 0.15), WHITE, {transp = 0.6})
+for i, s in ipairs({1.15, 0.85, 0.5}) do add("ArmR", V(s, s, 0.3), hc + V(0, -0.12 * i, 0.12 + i * 0.25), WHITE, {transp = 0.55}) end   -- net bag
 return {name = "Zookeeper", parts = P, joints = J, hrpSize = V(2.4, 6.6, 1.4), hrpPos = V(0, 3.3, 0)}

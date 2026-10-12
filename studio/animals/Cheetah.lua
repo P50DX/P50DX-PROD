@@ -24,7 +24,7 @@ add("Torso", V(2.3, 0.25, 4.2), V(0, 5.05, 0.6), C.goldD)                       
 local spots = { {1.26, 4.3, -1.8}, {1.26, 3.5, -0.9}, {1.26, 4.5, -0.4}, {0.96, 3.6, 0.6}, {0.96, 4.4, 1.3},
 	{1.11, 3.6, 2.3}, {1.11, 4.4, 3.1}, {1.26, 3.1, -1.9} }
 for _, s in ipairs(spots) do both(function(sx) add("Torso", V(0.08, 0.38, 0.38), V(sx * s[1], s[2], s[3]), C.spot) end) end
-for _, z in ipairs({-1.6, -0.3, 0.9, 2.1, 3.2}) do add("Torso", V(0.38, 0.08, 0.38), V((z % 2 > 1) and 0.45 or -0.45, 5.2, z), C.spot) end
+for _, z in ipairs({-1.6, -0.3, 0.9, 2.1}) do add("Torso", V(0.38, 0.08, 0.38), V((z % 2 > 1) and 0.45 or -0.45, 5.2, z), C.spot) end
 
 -- neck (rises forward from the chest)
 add("Neck", V(1.4, 1.5, 1.4), V(0, 4.75, -2.55), C.gold, {studs = true, rot = {-25, 0, 0}})
@@ -68,18 +68,22 @@ both(function(sx)
 	add("BackLower" .. s, V(0.08, 0.12, 0.1), V(sx * 1.06, 0.2, 2.46), C.black)
 end)
 
--- tail: long, tapering, curling up at the end; black rings and a white tip
-local tz, ty = 3.7, 4.3
+-- tail: long, tapering, carried low then curling up at the end; black rings and a white tip. Each segment starts
+-- where the last one ends, and pivots there.
+local TJ = {}
+local tp, ang = V(0, 4.35, 3.5), -10
 for i = 1, 6 do
 	local w = 0.72 - i * 0.06
 	local len = 0.95
 	local col = (i >= 4) and ((i % 2 == 0) and C.black or C.gold) or C.gold
-	local up = (i >= 4) and (i - 3) * 0.28 or -0.1
-	ty += up; tz += len * 0.92
-	add("Tail" .. i, V(w, w, len), V(0, ty, tz), col, {rot = {-(i >= 4 and (i - 3) * 16 or -4), 0, 0}})
-	if i <= 3 then add("Tail" .. i, V(0.08, 0.2, 0.25), V(w / 2 + 0.01, ty, tz), C.spot) end
+	if i >= 4 then ang += 24 end
+	local dir = V(0, math.sin(math.rad(ang)), math.cos(math.rad(ang)))
+	add("Tail" .. i, V(w, w, len), tp + dir * len / 2, col, {rot = {-ang, 0, 0}})
+	if i <= 3 then add("Tail" .. i, V(0.08, 0.2, 0.25), tp + dir * len / 2 + V(w / 2 + 0.01, 0, 0), C.spot) end
+	TJ[i] = tp + V(0, LIFT, 0)
+	tp = tp + dir * len * 0.92
 end
-add("Tail6", V(0.36, 0.36, 0.3), V(0, ty + 0.12, tz + 0.55), C.white)
+add("Tail6", V(0.4, 0.4, 0.34), tp + V(0, 0.05, 0), C.white)
 
 local J = { Torso = {"Root", V(0, 5.1, 0.5)}, Neck = {"Torso", V(0, 5.7, -2.1)}, Head = {"Neck", V(0, 6.5, -2.9)},
 	EarL = {"Head", V(0.7, 7.75, -3.1)}, EarR = {"Head", V(-0.7, 7.75, -3.1)},
@@ -87,6 +91,6 @@ local J = { Torso = {"Root", V(0, 5.1, 0.5)}, Neck = {"Torso", V(0, 5.7, -2.1)},
 	FrontLowerL = {"FrontUpperL", V(0.82, 2.0, -1.5)}, FrontLowerR = {"FrontUpperR", V(-0.82, 2.0, -1.5)},
 	BackUpperL = {"Torso", V(0.86, 4.4, 2.7)}, BackUpperR = {"Torso", V(-0.86, 4.4, 2.7)},
 	BackLowerL = {"BackUpperL", V(0.86, 2.2, 3.1)}, BackLowerR = {"BackUpperR", V(-0.86, 2.2, 3.1)},
-	Tail1 = {"Torso", V(0, 5.6, 3.6)} }
-for i = 2, 6 do J["Tail" .. i] = {"Tail" .. (i - 1), V(0, 0, 0)} end
+	Tail1 = {"Torso", TJ[1]} }
+for i = 2, 6 do J["Tail" .. i] = {"Tail" .. (i - 1), TJ[i]} end
 return { name = "Cheetah", parts = P, joints = J, hrpSize = V(2.4, 5.8, 5), hrpPos = V(0, 2.9, 0.3) }

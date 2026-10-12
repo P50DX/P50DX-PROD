@@ -7,8 +7,12 @@ add("Torso", V(2.4, 1.0, 2.0), V(0, k.by + 1.5, -1.0), B, {studs = true})       
 ears(k, "point", B, BD, 0.45, 0.5, 0.48)
 both(function(sx)
 	local b = V(sx * 0.55, k.head.Y + k.hh / 2, k.head.Z + 0.3)
-	rod("Head", b, b + V(sx * 0.6, 0.4, 0), 0.25, AN)
-	add("Head", V(1.6, 0.25, 1.3), b + V(sx * 1.3, 0.75, 0.1), AN, {studs = true, rot = {0, 0, sx * 25}})   -- palm
-	for i = 0, 3 do add("Head", V(0.2, 0.45, 0.2), b + V(sx * (0.9 + i * 0.32), 1.25 + i * 0.12, -0.3 + i * 0.25), AN) end   -- points
+	local pc = b + V(sx * 1.3, 0.75, 0.1)                                                     -- palm centre
+	rod("Head", b, pc, 0.3, AN)
+	add("Head", V(1.6, 0.25, 1.3), pc, AN, {studs = true, rot = {0, 0, sx * 25}})                -- palm
+	for i = 0, 3 do                                                                             -- points on the palm's top edge
+		local dx = -0.55 + i * 0.36
+		add("Head", V(0.2, 0.5, 0.2), pc + V(sx * dx * math.cos(math.rad(25)), dx * math.sin(math.rad(25)) + 0.33, -0.35 + i * 0.25), AN, {rot = {0, 0, sx * 12}})
+	end
 end)
 return {name = "Moose", parts = P, joints = J, hrpSize = V(2.6, 6.4, 4.8), hrpPos = V(0, 3.2, 0)}

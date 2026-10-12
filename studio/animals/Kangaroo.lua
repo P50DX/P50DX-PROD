@@ -12,7 +12,10 @@ both(function(sx, s)
 	add("Ear" .. s, V(0.4, 0.9, 0.2), V(sx * 0.45, 5.8, -0.1), K, {rot = {0, 0, sx * -12}}); add("Ear" .. s, V(0.22, 0.6, 0.06), V(sx * 0.45, 5.8, -0.22), CR, {rot = {0, 0, sx * -12}})
 	joint("Ear" .. s, "Head", V(sx * 0.4, 5.35, -0.1))
 	rod("Arm" .. s, V(sx * 0.75, 3.7, -0.6), V(sx * 0.7, 3.0, -1.3), 0.38, K)
-	add("Arm" .. s, V(0.65, 0.65, 0.65), V(sx * 0.68, 2.85, -1.5), GL, {studs = true}); add("Arm" .. s, V(0.5, 0.15, 0.4), V(sx * 0.68, 3.22, -1.45), WHITE)
+	-- boxing glove: rounded fist, padded knuckles, thumb on the inside, white cuff with a lace
+	add("Arm" .. s, V(0.72, 0.68, 0.78), V(sx * 0.7, 2.85, -1.55), GL); add("Arm" .. s, V(0.6, 0.5, 0.12), V(sx * 0.7, 2.88, -1.98), rgb(240, 70, 70))
+	add("Arm" .. s, V(0.22, 0.38, 0.32), V(sx * 0.3, 2.95, -1.62), GL)
+	add("Arm" .. s, V(0.64, 0.24, 0.64), V(sx * 0.7, 3.27, -1.45), WHITE); add("Arm" .. s, V(0.05, 0.22, 0.05), V(sx * 0.7, 3.27, -1.78), rgb(200, 200, 200))
 	joint("Arm" .. s, "Torso", V(sx * 0.75, 3.7, -0.6))
 	add("Leg" .. s, V(0.9, 1.6, 1.6), V(sx * 0.85, 1.6, 0.6), K, {studs = true, rot = {20, 0, 0}})   -- big thigh
 	rod("Leg" .. s, V(sx * 0.85, 1.1, 1.1), V(sx * 0.85, 0.25, 0.7), 0.5, K)

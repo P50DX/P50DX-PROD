@@ -5,7 +5,8 @@ add("Torso", V(3.6, 3.0, 5.0), V(0, 3.0, 0), N, {studs = true})
 add("Torso", V(3.0, 0.4, 4.6), V(0, 1.4, -0.1), BE)
 for i = 0, 3 do add("Torso", V(2.8, 0.1, 0.25), V(0, 1.6 + (i % 2) * 0.05, -1.8 + i * 1.1), ND) end
 sprinkle("Torso", V(0, 3.0, 0), V(3.6, 3.0, 5.0), 14, {ST, rgb(255, 255, 255), rgb(140, 220, 255)}, 21)
-for i = 0, 4 do add("Torso", V(0.3, 1.0 + i * 0.25, 0.3), V((i - 2) * 0.35, 5.2 + i * 0.15, -0.8), i % 2 == 0 and ST or rgb(140, 220, 255), {neon = true, rot = {0, 0, (i - 2) * 18}}) end
+for i = 0, 4 do add("Torso", V(0.3, 1.0 + i * 0.25, 0.3), V((i - 2) * 0.3, 4.2 + (1.0 + i * 0.25) / 2, -0.8), i % 2 == 0 and ST or rgb(140, 220, 255), {neon = true, rot = {0, 0, (i - 2) * 18}}) end
+add("Torso", V(0.7, 0.2, 0.7), V(0, 4.55, -0.8), rgb(140, 220, 255), {neon = true})   -- blowhole
 joint("Torso", "Root", V(0, 3.0, 0))
 add("Head", V(3.4, 2.7, 1.8), V(0, 3.05, -3.3), N, {studs = true})
 add("Head", V(2.8, 0.5, 1.6), V(0, 1.75, -3.3), BE)
