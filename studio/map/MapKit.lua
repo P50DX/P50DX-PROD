@@ -51,6 +51,10 @@ function K.part(size, cf, color, o)
 	if o.neon then p.Material = Enum.Material.Neon end
 	if o.glass then p.Material = Enum.Material.Glass end
 	p.TopSurface = o.studs and Enum.SurfaceType.Studs or Enum.SurfaceType.Smooth
+	if o.lego then -- studs on every face (chunky toy-brick look)
+		p.Material = Enum.Material.Plastic
+		for _, f in ipairs({ "TopSurface", "FrontSurface", "BackSurface", "LeftSurface", "RightSurface" }) do p[f] = Enum.SurfaceType.Studs end
+	end
 	p.BottomSurface = Enum.SurfaceType.Smooth
 	p.Transparency = o.transp or 0
 	p.Reflectance = o.refl or 0
