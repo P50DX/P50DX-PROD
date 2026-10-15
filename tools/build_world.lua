@@ -2,7 +2,7 @@
 local B = game.ServerStorage.MapBuilder
 local function R(n) local c = B[n]:Clone(); c.Parent = B; local ok, r = pcall(require, c); c:Destroy(); assert(ok, r); return r end
 local K = R("MapKit"); local P = R("Props")(K); local S = R("Stations")(K, P); local Obby = R("Obby")(K, P, S)
-S.eggBuilder = R("Eggs")(K)
+S.eggBuilder = R("Eggs3")(K)
 local Wd = R("Worlds")(K, P, S)
 local cfg = (function() local c = game.ReplicatedStorage.ZooMapConfig:Clone(); c.Parent = B; local r = require(c); c:Destroy(); return r end)()
 local T = Wd[WORLD]()

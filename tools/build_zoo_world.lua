@@ -1,7 +1,7 @@
 local B = game.ServerStorage.MapBuilder
 local function R(n) local c = B[n]:Clone(); c.Parent = B; local ok, r = pcall(require, c); c:Destroy(); assert(ok, r); return r end
 local K = R("MapKit"); local P = R("Props")(K); local S = R("Stations")(K, P); local Obby = R("Obby")(K, P, S)
-S.eggBuilder = R("Eggs")(K)
+S.eggBuilder = R("Eggs3")(K)
 -- the 6 world eggs as clean models for later worlds / UI
 local zm = game.ServerStorage:FindFirstChild("ZooModels")
 if zm then
