@@ -15,6 +15,8 @@ local ok, T = pcall(R("ZooHub"), K, P, S, cfg, O)
 if not ok then return "hub " .. tostring(T) end
 local ok2, err = pcall(R("ZooObby"), K, P, S, Obby, cfg, O, T)
 if not ok2 then return "obby " .. tostring(err) end
+-- menu titles + glow rings on every station
+for _, w in workspace:GetChildren() do if w.Name:match("^World%d") and w:FindFirstChild("Hub") then R("MenuStyle")(K).apply(w.Hub) end end
 local n = 0
 for _, d in workspace.World1_Zoo:GetDescendants() do if d:IsA("BasePart") then n += 1 end end
 local info = ""

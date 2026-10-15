@@ -30,6 +30,8 @@ for iter = 1, 14 do
 	if lens[1] > 520 then okLen = false; mult[1] = mult[1] * 0.85 end
 	if okLen then break end
 end
+-- menu titles + glow rings on every station
+for _, w in workspace:GetChildren() do if w.Name:match("^World%d") and w:FindFirstChild("Hub") then R("MenuStyle")(K).apply(w.Hub) end end
 local n = 0
 for _, d in root:GetDescendants() do if d:IsA("BasePart") then n += 1 end end
 return "ok " .. WORLD .. " parts=" .. n .. " lens=" .. table.concat(lens, ",")

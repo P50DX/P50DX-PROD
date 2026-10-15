@@ -202,6 +202,55 @@ function K.billboard(adornee, lines, o)
 	return b
 end
 
+-- Station title in the "TRAILS SHOP" style: big bold yellow-gradient letters with a thick black outline,
+-- optional small tilted green tag ("FREE!") and a small white sub-line. Floats above the adornee.
+function K.menuLabel(adornee, title, o)
+	o = o or {}
+	local old = adornee:FindFirstChild("MenuLabel"); if old then old:Destroy() end
+	local b = Instance.new("BillboardGui")
+	b.Name = "MenuLabel"; b.Adornee = adornee; b.LightInfluence = 0; b.AlwaysOnTop = false
+	b.MaxDistance = o.dist or 260
+	local w = o.width or math.max(14, #title * 1.9)
+	b.Size = UDim2.fromScale(w, o.height or 4.6)
+	b.StudsOffsetWorldSpace = o.offset or Vector3.new(0, 6, 0)
+	b.Parent = adornee
+	local t = Instance.new("TextLabel")
+	t.Name = "Title"; t.BackgroundTransparency = 1; t.Size = UDim2.fromScale(1, o.sub and 0.72 or 1)
+	t.Font = Enum.Font.LuckiestGuy; t.Text = title; t.TextScaled = true; t.TextColor3 = Color3.new(1, 1, 1); t.Parent = b
+	local g = Instance.new("UIGradient"); g.Rotation = 90
+	g.Color = o.grad or ColorSequence.new({ ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 150)), ColorSequenceKeypoint.new(0.55, Color3.fromRGB(255, 226, 40)), ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 176, 10)) })
+	g.Parent = t
+	local st = Instance.new("UIStroke"); st.Thickness = o.stroke or 5; st.Color = Color3.fromRGB(10, 8, 14); st.LineJoinMode = Enum.LineJoinMode.Round; st.Parent = t
+	if o.sub then
+		local s2 = Instance.new("TextLabel")
+		s2.Name = "Sub"; s2.BackgroundTransparency = 1; s2.Position = UDim2.fromScale(0, 0.72); s2.Size = UDim2.fromScale(1, 0.28)
+		s2.Font = Enum.Font.FredokaOne; s2.Text = o.sub; s2.TextScaled = true; s2.TextColor3 = Color3.new(1, 1, 1); s2.Parent = b
+		local st2 = Instance.new("UIStroke"); st2.Thickness = 3; st2.Color = Color3.fromRGB(10, 8, 14); st2.Parent = s2
+	end
+	if o.tag then
+		local tg = Instance.new("TextLabel")
+		tg.Name = "Tag"; tg.BackgroundTransparency = 1; tg.AnchorPoint = Vector2.new(1, 1)
+		tg.Position = UDim2.fromScale(1.02, 0.1); tg.Size = UDim2.fromScale(0.34, 0.42); tg.Rotation = -8
+		tg.Font = Enum.Font.LuckiestGuy; tg.Text = o.tag; tg.TextScaled = true; tg.TextColor3 = o.tagColor or Color3.fromRGB(90, 255, 90); tg.Parent = b
+		local st3 = Instance.new("UIStroke"); st3.Thickness = 3; st3.Color = Color3.fromRGB(10, 8, 14); st3.Parent = tg
+	end
+	return b
+end
+
+-- glowing yellow ring on the floor around a station (+ a faint fill)
+function K.glowRing(cf, r, parent, col)
+	col = col or Color3.fromRGB(255, 225, 40)
+	local m = Instance.new("Model"); m.Name = "GlowRing"; m.Parent = parent or K.parent
+	local n = math.max(16, math.floor(r * 1.6))
+	for i = 1, n do
+		local a = (i - 0.5) / n * math.pi * 2
+		local seg = 2 * r * math.tan(math.pi / n) + 0.1
+		K.part(Vector3.new(seg, 0.25, 1.4), cf * CFrame.Angles(0, a, 0) * CFrame.new(0, 0.42, -r), col, { parent = m, neon = true, collide = false, shadow = false, name = "Ring" })
+	end
+	local fill = K.part(Vector3.new(0.12, r * 2 - 1, r * 2 - 1), cf * CFrame.new(0, 0.36, 0) * CFrame.Angles(0, 0, math.rad(90)), col, { parent = m, shape = "cyl", neon = true, transp = 0.82, collide = false, shadow = false, name = "Fill" })
+	return m
+end
+
 ----------------------------------------------------------------------------------------------------------------
 -- Effects
 ----------------------------------------------------------------------------------------------------------------
