@@ -284,7 +284,7 @@ return function(K, P)
 		local sm = Instance.new("SpecialMesh"); sm.MeshType = Enum.MeshType.Sphere; sm.Scale = size; sm.Parent = part
 		return part
 	end
-	local function shopIcon(kind, cf, c, parent)
+	local function shopIcon(kind, cf, c, parent, scale)
 		local m = K.model("ShopIcon", parent)
 		local root = K.part(V(1, 1, 1), cf, Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Root" })
 		local ink = Color3.fromRGB(30, 20, 30)
@@ -325,7 +325,7 @@ return function(K, P)
 			ell(m, V(0.5, 1.6, 0.3), cf * CFrame.new(-0.9, 1.4, -1.7) * CFrame.Angles(0, 0, rad(-30)), Color3.new(1, 1, 1), { neon = true })
 		end
 		m.PrimaryPart = root
-		m:ScaleTo(1.7)
+		m:ScaleTo(scale or 1.7)
 		K.sparkle(root, c, { rate = 5, size = 0.9, shape = Enum.ParticleEmitterShape.Sphere })
 		K.tag(m, "SpinIcon")
 		return m

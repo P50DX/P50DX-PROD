@@ -55,28 +55,39 @@ return function(K, P, S)
 		local m = K.model("Shop_" .. info.id, parent)
 		local W, D, H = 26, 12, 10
 		lego(m, V(W + 8, 1.2, D + 12), cf * CFrame.new(0, 0.6, 1), t.ground)
-		-- posts (2x2 bricks)
-		for _, sx in ipairs({ -1, 1 }) do for _, sz in ipairs({ -1, 1 }) do
-			lego(m, V(2, H, 2), cf * CFrame.new(sx * (W / 2 - 1), 1.2 + H / 2, sz * (D / 2 - 1)), t.frame)
-		end end
-		-- top rails
-		for _, sz in ipairs({ -1, 1 }) do lego(m, V(W, 1.2, 1.6), cf * CFrame.new(0, 1.2 + H - 0.6, sz * (D / 2 - 1)), t.frameD) end
+		-- posts (2x2 bricks): back posts full height, front posts shorter so they meet the sloped awning
+		local Hf = H - 2.4
+		for _, sx in ipairs({ -1, 1 }) do
+			lego(m, V(2, H, 2), cf * CFrame.new(sx * (W / 2 - 1), 1.2 + H / 2, D / 2 - 1), t.frame)
+			lego(m, V(2, Hf, 2), cf * CFrame.new(sx * (W / 2 - 1), 1.2 + Hf / 2, -D / 2 + 1), t.frame)
+		end
+		lego(m, V(W, 1.2, 1.6), cf * CFrame.new(0, 1.2 + H - 0.6, D / 2 - 1), t.frameD)
+		lego(m, V(W, 1.2, 1.6), cf * CFrame.new(0, 1.2 + Hf - 0.6, -D / 2 + 1), t.frameD)
 		-- counter (front) + low back wall
 		lego(m, V(W - 4, 4, 3), cf * CFrame.new(0, 3.2, -D / 2 + 1.5), t.frame)
 		lego(m, V(W - 3.4, 0.8, 3.8), cf * CFrame.new(0, 5.6, -D / 2 + 1.5), t.frameD)
 		for k = -1, 1 do lego(m, V(W - 4.4, 0.6, 0.3), cf * CFrame.new(0, 3.2 + k * 1.2, -D / 2 - 0.05), t.frameD) end
 		lego(m, V(W - 4, 5, 1.2), cf * CFrame.new(0, 3.7, D / 2 - 1), t.frameD)
 		goods(m, cf * CFrame.new(0, 6, -D / 2 + 1.5), theme, c, 5)
-		-- striped awning sloping to the front, scalloped lip
+		-- striped awning: one continuous slope from the back rail over the front rail, ending in the scalloped lip
 		local stripes = 8
+		local sw = W / stripes
+		local tilt = math.atan2((H - Hf) + 0.2, D - 2) -- slope that rests on both rails
+		local L = (D - 2) / math.cos(tilt) + 3.2          -- + overhang past the front rail
+		local back = cf * CFrame.new(0, 1.2 + H + 0.4, D / 2 - 1)
+		local rot = cf - cf.Position
 		for i = 1, stripes do
-			local x = -W / 2 + (i - 0.5) * (W / stripes)
+			local x = -W / 2 + (i - 0.5) * sw
 			local col = (i % 2 == 0) and t.stripe2 or c
-			lego(m, V(W / stripes + 0.02, 1, D + 3), cf * CFrame.new(x, 1.2 + H + 1.6, -0.5) * CFrame.Angles(rad(14), 0, 0), col, { neon = t.neon and i % 2 == 0 })
-			lego(m, V(W / stripes + 0.02, 1.6, 0.8), cf * CFrame.new(x, 1.2 + H + 0.2, -D / 2 - 2.3), col, { neon = t.neon and i % 2 == 0 })
-			p(m, V(0.8, W / stripes - 0.2, W / stripes - 0.2), cf * CFrame.new(x, 1.2 + H - 0.6, -D / 2 - 2.3) * CFrame.Angles(0, rad(90), 0), col, { shape = "cyl" })
+			local glow = t.neon and i % 2 == 0
+			local plane = back * CFrame.new(x, 0, 0) * CFrame.Angles(-tilt, 0, 0)
+			lego(m, V(sw + 0.04, 0.8, L), plane * CFrame.new(0, 0, -L / 2), col, { neon = glow })
+			local edge = (plane * CFrame.new(0, -0.4, -L)).Position             -- bottom of the front edge
+			local lip = CFrame.new(edge) * rot * CFrame.new(0, -0.55, 0.35)
+			lego(m, V(sw + 0.04, 1.9, 0.8), lip, col, { neon = glow })
+			p(m, V(0.7, sw + 0.12, sw + 0.12), lip * CFrame.new(0, -0.95, 0.04) * CFrame.Angles(0, rad(90), 0), col, { shape = "cyl" })
 		end
-		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, 1.2 + H + 7.5, D / 2 - 2), c, m)
+		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, 1.2 + H + 5.2, D / 2 - 2), c, m, 1.05)
 		-- little flowers / props at the corners
 		for _, sx in ipairs({ -1, 1 }) do
 			lego(m, V(3, 2, 3), cf * CFrame.new(sx * (W / 2 + 2.2), 2.2, -D / 2 - 3), K.shade(t.ground, 0.85))
@@ -175,7 +186,7 @@ return function(K, P, S)
 			signY = floorY + H + 9
 		end
 		-- sign above the entrance
-		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, signY + 1, -D / 2 + 1), c, m)
+		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, signY + 1, -D / 2 + 1), c, m, 1.05)
 		return m
 	end
 
