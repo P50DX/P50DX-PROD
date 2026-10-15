@@ -239,7 +239,7 @@ return function(K, P, S, cfg, O)
 	}
 	for i, sh in ipairs(shops) do
 		local cf = face(-66 + (i - 1) * 66, 132, -66 + (i - 1) * 66, 0)
-		if S.shopBuilder then S.shopBuilder("Zoo", 2, cf, sh, K.parent) else S.shop(cf, sh, T, K.parent) end
+		if S.shopBuilder then S.shopBuilder("Zoo", 2, cf * CFrame.Angles(0, math.pi, 0), sh, K.parent) else S.shop(cf, sh, T, K.parent) end
 	end
 
 	------------------------------------------------------------------------------------------------------------
