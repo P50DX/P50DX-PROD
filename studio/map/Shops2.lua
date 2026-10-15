@@ -82,10 +82,6 @@ return function(K, P, S)
 			local glow = t.neon and i % 2 == 0
 			local plane = back * CFrame.new(x, 0, 0) * CFrame.Angles(-tilt, 0, 0)
 			lego(m, V(sw + 0.04, 0.8, L), plane * CFrame.new(0, 0, -L / 2), col, { neon = glow })
-			local edge = (plane * CFrame.new(0, -0.4, -L)).Position             -- bottom of the front edge
-			local lip = CFrame.new(edge) * rot * CFrame.new(0, -0.55, 0.35)
-			lego(m, V(sw + 0.04, 1.9, 0.8), lip, col, { neon = glow })
-			p(m, V(0.7, sw + 0.12, sw + 0.12), lip * CFrame.new(0, -0.95, 0.04) * CFrame.Angles(0, rad(90), 0), col, { shape = "cyl" })
 			-- same scalloped edge on the high side of the roof (the side that faces the plaza)
 			local top = (plane * CFrame.new(0, 0.4, 0)).Position
 			local lip2 = CFrame.new(top) * rot * CFrame.new(0, -0.95, 1.6)
