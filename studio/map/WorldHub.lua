@@ -121,7 +121,7 @@ return function(K, P, S, cfg, O, T)
 	}
 	for i, sh in ipairs(shops) do
 		local cf = face(-66 + (i - 1) * 66, 132, -66 + (i - 1) * 66, 0)
-		S.shop(cf, sh, T, K.parent)
+		if S.shopBuilder then S.shopBuilder(T.key, 2, cf, sh, K.parent) else S.shop(cf, sh, T, K.parent) end
 		if T.shopDecor then T.shopDecor(cf, sh.color, K.parent) end
 	end
 

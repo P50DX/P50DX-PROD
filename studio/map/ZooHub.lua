@@ -238,7 +238,8 @@ return function(K, P, S, cfg, O)
 		{ id = "Premium", title = "PREMIUM SHOP", iconKind = "gem", color = rgb(180, 85, 255) },
 	}
 	for i, sh in ipairs(shops) do
-		S.shop(face(-66 + (i - 1) * 66, 132, -66 + (i - 1) * 66, 0), sh, T, K.parent)
+		local cf = face(-66 + (i - 1) * 66, 132, -66 + (i - 1) * 66, 0)
+		if S.shopBuilder then S.shopBuilder("Zoo", 2, cf, sh, K.parent) else S.shop(cf, sh, T, K.parent) end
 	end
 
 	------------------------------------------------------------------------------------------------------------
