@@ -13,7 +13,7 @@ for _, w in workspace:GetChildren() do
 			local id = shop.Name:match("^Shop_(%a+)$")
 			local trig = shop:FindFirstChild("Interact")
 			if id and trig then
-				local cf = trig.CFrame * CFrame.new(0, -4, 9.5)
+				local cf = trig.CFrame * CFrame.new(0, -4, 9)
 				local c = Color3.fromRGB(255, 170, 60)
 				local icon = shop:FindFirstChild("ShopIcon")
 				if icon then for _, q in icon:GetDescendants() do if q:IsA("ParticleEmitter") and q.Name == "Sparkle" then c = q.Color.Keypoints[1].Value end end end

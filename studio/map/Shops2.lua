@@ -86,6 +86,11 @@ return function(K, P, S)
 			local lip = CFrame.new(edge) * rot * CFrame.new(0, -0.55, 0.35)
 			lego(m, V(sw + 0.04, 1.9, 0.8), lip, col, { neon = glow })
 			p(m, V(0.7, sw + 0.12, sw + 0.12), lip * CFrame.new(0, -0.95, 0.04) * CFrame.Angles(0, rad(90), 0), col, { shape = "cyl" })
+			-- same scalloped edge on the high side of the roof (the side that faces the plaza)
+			local top = (plane * CFrame.new(0, 0.4, 0)).Position
+			local lip2 = CFrame.new(top) * rot * CFrame.new(0, -0.95, 1.6)
+			lego(m, V(sw + 0.04, 1.9, 0.8), lip2, col, { neon = glow })
+			p(m, V(0.7, sw + 0.12, sw + 0.12), lip2 * CFrame.new(0, -0.95, -0.04) * CFrame.Angles(0, rad(90), 0), col, { shape = "cyl" })
 		end
 		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, 1.2 + H + 5.2, D / 2 - 2), c, m, 1.05)
 		-- little flowers / props at the corners
