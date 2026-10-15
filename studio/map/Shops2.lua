@@ -76,9 +76,7 @@ return function(K, P, S)
 			lego(m, V(W / stripes + 0.02, 1.6, 0.8), cf * CFrame.new(x, 1.2 + H + 0.2, -D / 2 - 2.3), col, { neon = t.neon and i % 2 == 0 })
 			p(m, V(0.8, W / stripes - 0.2, W / stripes - 0.2), cf * CFrame.new(x, 1.2 + H - 0.6, -D / 2 - 2.3) * CFrame.Angles(0, rad(90), 0), col, { shape = "cyl" })
 		end
-		-- sign board standing on the awning ridge
-		board(m, cf * CFrame.new(0, 1.2 + H + 6.6, D / 2 - 1), 15, 5, t, info.title, ({ paw = "🐾", potion = "🧪", gem = "💎" })[info.iconKind] or "⭐", c)
-		for _, sx in ipairs({ -1, 1 }) do lego(m, V(1.2, 4, 1.2), cf * CFrame.new(sx * 6, 1.2 + H + 3.4, D / 2 - 1), t.frame) end
+		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, 1.2 + H + 7.5, D / 2 - 2), c, m)
 		-- little flowers / props at the corners
 		for _, sx in ipairs({ -1, 1 }) do
 			lego(m, V(3, 2, 3), cf * CFrame.new(sx * (W / 2 + 2.2), 2.2, -D / 2 - 3), K.shade(t.ground, 0.85))
@@ -177,11 +175,7 @@ return function(K, P, S)
 			signY = floorY + H + 9
 		end
 		-- sign above the entrance
-		for _, sx in ipairs({ -1, 1 }) do -- posts holding the sign up from the roof
-			local h = signY - (floorY + H)
-			lego(m, V(1.2, h, 1.2), cf * CFrame.new(sx * 5.5, floorY + H + h / 2 - 1, -D / 2 - 0.6), t.frame)
-		end
-		board(m, cf * CFrame.new(0, signY, -D / 2 - 1.2), 14, 4.4, t, info.title, ({ paw = "🐾", potion = "🧪", gem = "💎" })[info.iconKind] or "⭐", c)
+		S.shopIcon(info.iconKind or "gem", cf * CFrame.new(0, signY + 1, -D / 2 + 1), c, m)
 		return m
 	end
 

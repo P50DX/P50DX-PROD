@@ -159,12 +159,7 @@ return function(K, P, S, cfg, O)
 	K.part(V(80, 3, 4), CFrame.new(at(sx0, 34, sz0 - 58)), T.metal, { studs = true })
 	K.part(V(80, 3, 4), CFrame.new(at(sx0, 34, sz0 + 58)), T.metal, { studs = true })
 	K.part(V(4, 3, 120), CFrame.new(at(sx0 - 38, 34, sz0)), T.metal, { studs = true })
-	local labSign = K.part(V(4, 10, 60), CFrame.new(at(sx0 + 38, 30, sz0)), T.accent, { studs = true })
-	K.part(V(3.6, 11, 61), CFrame.new(at(sx0 + 38, 30, sz0)), T.metal, { collide = false })
-	for _, f in ipairs({ Enum.NormalId.Right, Enum.NormalId.Left }) do
-		K.textPanel(labSign, f, { { text = "⚡ SPEED UPGRADES ⚡", h = 0.85, color = Color3.new(1, 1, 1), font = K.FONT_BOLD } }, { pps = 10, stroke = 4 })
-	end
-	K.part(V(4, 34, 4), CFrame.new(at(sx0 + 38, 17, sz0)), T.metal, { studs = true })
+	K.part(V(4, 3, 120), CFrame.new(at(sx0 + 38, 34, sz0)), T.metal, { studs = true }) -- (title floats above: MenuStyle)
 
 	------------------------------------------------------------------------------------------------------------
 	-- Leaderboards (north, west of the obby path), facing the plaza
@@ -196,12 +191,7 @@ return function(K, P, S, cfg, O)
 	end
 	for _, z in ipairs({ -73, -24, 24, 73 }) do K.part(V(92, 2.4, 3), CFrame.new(at(tx0, 35.5, tz0 + z)), T.metal, { studs = true }) end
 	K.part(V(3, 2.4, 150), CFrame.new(at(tx0 + 44, 35.5, tz0)), T.metal, { studs = true })
-	local tSign = K.part(V(4, 12, 70), CFrame.new(at(tx0 - 44, 30, tz0)), T.accent2, { studs = true })
-	K.part(V(3.6, 13, 71), CFrame.new(at(tx0 - 44, 30, tz0)), T.metal, { collide = false })
-	for _, f in ipairs({ Enum.NormalId.Right, Enum.NormalId.Left }) do
-		K.textPanel(tSign, f, { { text = "🏃 TRAINING CENTER", h = 0.85, color = Color3.new(1, 1, 1), font = K.FONT_BOLD } }, { pps = 10, stroke = 4 })
-	end
-	K.part(V(4, 36, 4), CFrame.new(at(tx0 - 44, 18, tz0)), T.metal, { studs = true })
+	K.part(V(3, 2.4, 150), CFrame.new(at(tx0 - 44, 35.5, tz0)), T.metal, { studs = true }) -- (title floats above: MenuStyle)
 	for _, z in ipairs({ -70, 70 }) do -- water cooler + dumbbell racks as props
 		local p = at(tx0 + 40, 1, tz0 + z * 0.97)
 		K.part(V(3, 5, 3), CFrame.new(p + V(0, 2.5, 0)), rgb(240, 240, 250), {})

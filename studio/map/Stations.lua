@@ -273,28 +273,60 @@ return function(K, P)
 	------------------------------------------------------------------------------------------------------------
 	-- SHOP: kiosk with a striped awning, counter, display goods and a big rooftop icon. style = T.shopStyle(cf, m, info)
 	------------------------------------------------------------------------------------------------------------
-	-- 3D rooftop icons for shops (spun by the client: tag SpinIcon)
+	-- 3D rooftop icons for shops (spun by the client: tag SpinIcon). Chunky, outlined, readable from far away.
+	local function disc(m, d, th, cf, col, o) -- flat cylinder facing the icon's front (-Z)
+		o = o or {}; o.parent = m; o.shape = "cyl"; o.collide = false
+		return K.part(V(th, d, d), cf * CFrame.Angles(0, rad(90), 0), col, o)
+	end
+	local function ell(m, size, cf, col, o) -- ellipsoid
+		o = o or {}; o.parent = m; o.collide = false
+		local part = K.part(V(1, 1, 1), cf, col, o)
+		local sm = Instance.new("SpecialMesh"); sm.MeshType = Enum.MeshType.Sphere; sm.Scale = size; sm.Parent = part
+		return part
+	end
 	local function shopIcon(kind, cf, c, parent)
 		local m = K.model("ShopIcon", parent)
-		local root
+		local root = K.part(V(1, 1, 1), cf, Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Root" })
+		local ink = Color3.fromRGB(30, 20, 30)
 		if kind == "paw" then
-			root = K.part(V(1.2, 6, 6.6), cf * CFrame.new(0, -0.6, 0), c, { parent = m, shape = "cyl", collide = false, name = "Pad" })
-			root.CFrame = cf * CFrame.new(0, -0.8, 0) * CFrame.Angles(0, rad(90), 0)
-			for i, a in ipairs({ -50, -17, 17, 50 }) do
-				local p = cf * CFrame.Angles(0, 0, rad(a)) * CFrame.new(0, 4.6, 0)
-				local t = K.part(V(1.2, 2.8, 2.8), p * CFrame.Angles(0, rad(90), 0), c, { parent = m, shape = "cyl", collide = false })
+			-- dog paw: big heart-shaped pad + 4 toe beans, cream fur colour with pink pads and a dark outline
+			local fur, pad, padL = Color3.fromRGB(255, 176, 70), Color3.fromRGB(255, 130, 160), Color3.fromRGB(255, 190, 210)
+			local shapes = { { 0, -1.1, 5.2 }, { -1.5, -2.1, 3.4 }, { 1.5, -2.1, 3.4 }, { -3.1, 1.3, 2.4 }, { -1.1, 2.9, 2.4 }, { 1.1, 2.9, 2.4 }, { 3.1, 1.3, 2.4 } }
+			for _, sh in ipairs(shapes) do disc(m, sh[3] + 0.9, 1.2, cf * CFrame.new(sh[1], sh[2], 0), ink) end              -- outline
+			for _, sh in ipairs(shapes) do disc(m, sh[3], 1.8, cf * CFrame.new(sh[1], sh[2], 0), fur, { studs = true }) end -- fur
+			for i, sh in ipairs(shapes) do                                                                                  -- pink pads + shine
+				local d = (i <= 3) and sh[3] * 0.62 or sh[3] * 0.62
+				disc(m, d, 2, cf * CFrame.new(sh[1], sh[2] + ((i <= 3) and 0.2 or 0), 0), pad)
+				disc(m, d * 0.32, 2.1, cf * CFrame.new(sh[1] - d * 0.18, sh[2] + d * 0.2, 0), padL, { neon = true })
 			end
 		elseif kind == "potion" then
-			root = K.part(V(6, 6, 6), cf * CFrame.new(0, -1, 0), Color3.fromRGB(150, 230, 255), { parent = m, shape = "ball", collide = false, glass = true, transp = 0.35, name = "Bottle" })
-			K.part(V(4.6, 4.6, 4.6), cf * CFrame.new(0, -1.3, 0), c, { parent = m, shape = "ball", collide = false, neon = true })
-			K.part(V(3, 2.2, 2.2), cf * CFrame.new(0, 2.6, 0) * CFrame.Angles(0, 0, rad(90)), Color3.fromRGB(150, 230, 255), { parent = m, shape = "cyl", collide = false, glass = true, transp = 0.3 })
-			K.part(V(1.6, 2.6, 2.6), cf * CFrame.new(0, 4.6, 0) * CFrame.Angles(0, 0, rad(90)), Color3.fromRGB(170, 110, 60), { parent = m, shape = "cyl", collide = false })
-		else -- gem
-			root = K.part(V(5, 5, 5), cf * CFrame.Angles(rad(45), 0, rad(45)), c, { parent = m, collide = false, neon = true, name = "Gem" })
-			K.part(V(6, 1.2, 6), cf * CFrame.new(0, 1.3, 0) * CFrame.Angles(0, rad(45), 0), K.shade(c, 1.3), { parent = m, collide = false, glass = true, transp = 0.2 })
+			-- round glass flask, glowing liquid, neck with rim, cork, shine streak, bubbles
+			local glass = Color3.fromRGB(190, 240, 255)
+			ell(m, V(5.2, 5.2, 5.2), cf * CFrame.new(0, -1, 0), glass, { transp = 0.6 })
+			ell(m, V(4.6, 3.8, 4.6), cf * CFrame.new(0, -1.5, 0), c, { neon = true })
+			ell(m, V(4.5, 0.5, 4.5), cf * CFrame.new(0, 0.2, 0), K.shade(c, 1.35), { neon = true })          -- liquid surface
+			K.part(V(2.4, 1.8, 1.8), cf * CFrame.new(0, 2.2, 0) * CFrame.Angles(0, 0, rad(90)), glass, { parent = m, shape = "cyl", transp = 0.45, collide = false })
+			K.part(V(0.5, 2.4, 2.4), cf * CFrame.new(0, 3.4, 0) * CFrame.Angles(0, 0, rad(90)), Color3.fromRGB(240, 250, 255), { parent = m, shape = "cyl", collide = false })
+			K.part(V(1.4, 1.6, 1.6), cf * CFrame.new(0, 4.2, 0) * CFrame.Angles(0, 0, rad(90)), Color3.fromRGB(176, 112, 60), { parent = m, shape = "cyl", collide = false, studs = true })
+			ell(m, V(0.6, 2, 0.4), cf * CFrame.new(-1.3, -0.2, -2.3) * CFrame.Angles(0, 0, rad(-25)), Color3.new(1, 1, 1), { neon = true }) -- shine
+			for i, b in ipairs({ { 0.6, -2, 0.5 }, { -0.7, -1.2, 0.4 }, { 0.3, -0.6, 0.3 } }) do
+				ell(m, V(b[3] * 2, b[3] * 2, b[3] * 2), cf * CFrame.new(b[1], b[2], -1.2), Color3.new(1, 1, 1), { neon = true, transp = 0.2 })
+			end
+			local bub = Instance.new("ParticleEmitter"); bub.Texture = "rbxasset://textures/particles/sparkles_main.dds"
+			bub.Color = ColorSequence.new(Color3.new(1, 1, 1)); bub.Size = NumberSequence.new(0.3, 0); bub.Rate = 5; bub.Lifetime = NumberRange.new(1, 1.5)
+			bub.Speed = NumberRange.new(1, 2); bub.SpreadAngle = Vector2.new(15, 15); bub.EmissionDirection = Enum.NormalId.Top; bub.LightEmission = 1; bub.Parent = root
+		else
+			-- gem: stepped faceted diamond (table, crown, girdle, pavilion) in alternating light / dark facets
+			local light, dark = K.shade(c, 1.15), K.shade(c, 0.7)
+			local steps = { { 2.6, 1.9, light }, { 4.2, 1.1, c }, { 5.2, 0.3, light }, { 4.4, -0.5, dark }, { 3.4, -1.3, c }, { 2.3, -2.1, dark }, { 1.2, -2.9, c } }
+			for i, st in ipairs(steps) do
+				K.part(V(st[1], 1, st[1]), cf * CFrame.new(0, st[2], 0) * CFrame.Angles(0, rad(45), 0), st[3], { parent = m, collide = false, neon = (i == 1 or i == 3 or i == 6), refl = 0.2 })
+			end
+			ell(m, V(0.5, 1.6, 0.3), cf * CFrame.new(-0.9, 1.4, -1.7) * CFrame.Angles(0, 0, rad(-30)), Color3.new(1, 1, 1), { neon = true })
 		end
 		m.PrimaryPart = root
-		K.sparkle(root, c, { rate = 4, size = 0.8 })
+		m:ScaleTo(1.7)
+		K.sparkle(root, c, { rate = 5, size = 0.9, shape = Enum.ParticleEmitterShape.Sphere })
 		K.tag(m, "SpinIcon")
 		return m
 	end
@@ -348,17 +380,10 @@ return function(K, P)
 			K.part(V(W / stripes + 0.05, 0.8, 7), cf * CFrame.new(x, 1.4 + H - 1.2, -D / 2 - 2.8) * CFrame.Angles(rad(18), 0, 0), col, { parent = m, collide = false })
 			K.part(V(W / stripes * 0.8, W / stripes * 0.8, 0.6), cf * CFrame.new(x, 1.4 + H - 3.4, -D / 2 - 6.1) * CFrame.Angles(0, 0, rad(45)), col, { parent = m, collide = false })
 		end
-		-- framed sign on the front of the roof, with two little lamps
-		local board = K.part(V(W - 4, 6, 1), cf * CFrame.new(0, 1.4 + H + 4.4, -(D + 4) / 2 - 0.2), Color3.fromRGB(40, 36, 60), { parent = m, collide = false })
-		K.part(V(W - 2.8, 7.2, 0.8), cf * CFrame.new(0, 1.4 + H + 4.4, -(D + 4) / 2 + 0.3), c, { parent = m, collide = false })
-		K.textPanel(board, Enum.NormalId.Front, { { text = info.title, h = 0.85, grad = { Color3.new(1, 1, 1), K.shade(c, 1.35) }, font = K.FONT_BOLD } }, { pps = 14, stroke = 4 })
-		for _, sx in ipairs({ -1, 1 }) do
-			local l = K.part(V(1.4, 1.4, 1.4), cf * CFrame.new(sx * (W / 2 - 3), 1.4 + H + 8.2, -(D + 4) / 2 - 1), Color3.fromRGB(255, 240, 180), { parent = m, neon = true, collide = false })
-		end
 		shopIcon(info.iconKind or "gem", cf * CFrame.new(0, 1.4 + H + 1.4 + rh + 6, 0), c, m)
 		local trig = K.part(V(W - 8, 6, 4), cf * CFrame.new(0, 4, -D / 2 + 0.5), Color3.new(1, 1, 1), { parent = m, transp = 1, collide = false, name = "Interact" })
 		prompt(trig, "Open", info.title, 0.4, "ShopStation", { World = T.id, Shop = info.id })
-		K.light(board, c, 26, 1)
+		K.light(trig, c, 26, 1)
 		return m
 	end
 

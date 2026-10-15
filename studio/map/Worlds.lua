@@ -51,12 +51,6 @@ return function(K, P, S)
 			for _, z in ipairs({ -hd, hd }) do K.part(V(w - 2, 2.4, 3), cf * CFrame.new(0, 35, z), col, { parent = parent, studs = true, mat = T.frameMat }) end
 			for _, x in ipairs({ -hw, hw }) do K.part(V(3, 2.4, d - 2), cf * CFrame.new(x, 35, 0), col, { parent = parent, studs = true, mat = T.frameMat }) end
 			local sx = signSide or 1
-			local sign = K.part(V(4, 10, d * 0.5), cf * CFrame.new(sx * hw, 29, 0), T.accent, { parent = parent, studs = true })
-			K.part(V(3.6, 11, d * 0.5 + 1), cf * CFrame.new(sx * hw, 29, 0), T.frameTrim, { parent = parent, collide = false, neon = T.neonTrim })
-			for _, f in ipairs({ Enum.NormalId.Right, Enum.NormalId.Left }) do
-				K.textPanel(sign, f, { { text = text, h = 0.85, color = Color3.new(1, 1, 1), font = K.FONT_BOLD } }, { pps = 10, stroke = 4 })
-			end
-			K.part(V(4, 34, 4), cf * CFrame.new(sx * hw, 17, 0), col, { parent = parent, studs = true, mat = T.frameMat })
 		end
 	end
 
